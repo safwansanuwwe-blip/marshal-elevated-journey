@@ -1298,6 +1298,29 @@ function Contact() {
           </p>
         </Reveal>
 
+        <Reveal delay={120}>
+          <div
+            className="mt-14 mx-auto overflow-hidden"
+            style={{
+              borderRadius: RADIUS,
+              boxShadow: SHADOW_LIFT,
+              maxWidth: 820,
+              aspectRatio: "16 / 9",
+            }}
+          >
+            <video
+              src="/videos/marshal-contact.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              className="h-full w-full object-cover"
+            />
+          </div>
+        </Reveal>
+
+
         <Reveal delay={200}>
           <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
