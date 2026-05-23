@@ -17,6 +17,10 @@ import cochinAirportImg from "@/assets/cochin-airport.jpg";
 import calicutAirportImg from "@/assets/calicut-airport.jpg";
 import trivandrumAirportImg from "@/assets/trivandrum-airport.jpg";
 import kannurAirportImg from "@/assets/kannur-airport.jpg";
+import fleetInnovaImg from "@/assets/fleet-innova.png";
+import fleetUrbaniaImg from "@/assets/fleet-urbania.png";
+import fleetTravellerImg from "@/assets/fleet-traveller.png";
+import fleetBusImg from "@/assets/fleet-bus.png";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -817,25 +821,25 @@ const FLEETS = [
     name: "Toyota Innova Crysta",
     seats: "7 Seats",
     badge: "Premium",
-    img: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1600&q=80",
+    img: fleetInnovaImg,
   },
   {
     name: "Force Urbania",
     seats: "12 Seats",
     badge: "Luxury Van",
-    img: "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1600&q=80",
+    img: fleetUrbaniaImg,
   },
   {
     name: "Force Traveller",
     seats: "26 Seats",
     badge: "Mini Coach",
-    img: "https://images.unsplash.com/photo-1597007030739-6d2e7f5cdd75?auto=format&fit=crop&w=1600&q=80",
+    img: fleetTravellerImg,
   },
   {
     name: "Tourist Bus",
     seats: "AC & Non-AC",
     badge: "Group Travel",
-    img: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1600&q=80",
+    img: fleetBusImg,
   },
 ];
 
@@ -868,11 +872,11 @@ function Fleets() {
                   boxShadow: SHADOW_CARD,
                 }}
               >
-                <div className="relative h-80 overflow-hidden">
+                <div className="relative h-80 overflow-hidden flex items-center justify-center" style={{ background: SOFT }}>
                   <img
                     src={f.img}
                     alt={f.name}
-                    className="h-full w-full object-cover transition-transform duration-[1800ms] group-hover:scale-105"
+                    className="h-full w-full object-contain p-6 transition-transform duration-[1800ms] group-hover:scale-105"
                   />
                   <span
                     className="absolute left-6 top-6 px-4 py-2"
