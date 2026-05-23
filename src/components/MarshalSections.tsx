@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
+  ArrowUpRight,
   Users,
   Heart,
   UsersRound,
@@ -11,10 +12,8 @@ import {
   MapPin,
   Phone,
   MessageCircle,
-  Bus,
   ChevronLeft,
   ChevronRight,
-  Star,
   ChevronDown,
   Facebook,
   Instagram,
@@ -25,20 +24,26 @@ import {
   Award,
 } from "lucide-react";
 
-const WHATSAPP = "https://wa.me/919188700777?utm_source=chatgpt.com";
+const WHATSAPP = "https://wa.me/919188700777";
 
 const HEADING_FONT = "'Bebas Neue', sans-serif";
 const BODY_FONT = "Inter, sans-serif";
 
-/* Light palette */
-const INK = "#0B0B0F";
-const INK_SOFT = "rgba(11,11,15,0.65)";
-const INK_MUTE = "rgba(11,11,15,0.5)";
-const GOLD = "#B8893A";
-const GOLD_SOFT = "#E7C27A";
-const BG = "#F7F5F0"; // warm off-white
-const BG_ALT = "#FFFFFF";
-const BORDER = "rgba(11,11,15,0.08)";
+/* Premium luxury palette */
+const WHITE = "#FFFFFF";
+const SOFT = "#F7F7F5";
+const LIGHT = "#ECECEC";
+const INK = "#111111";
+const INK_SOFT = "#666666";
+const INK_MUTE = "#9A9A9A";
+const GOLD = "#C6A969";
+const HAIR = "rgba(17,17,17,0.08)";
+const HAIR_STRONG = "rgba(17,17,17,0.14)";
+
+const RADIUS = 30;
+const SHADOW_SOFT = "0 30px 80px -40px rgba(17,17,17,0.18)";
+const SHADOW_CARD = "0 20px 60px -30px rgba(17,17,17,0.15)";
+const SHADOW_LIFT = "0 40px 90px -35px rgba(17,17,17,0.25)";
 
 /* ---------------- Reveal on scroll ---------------- */
 function useReveal<T extends HTMLElement>() {
@@ -46,7 +51,6 @@ function useReveal<T extends HTMLElement>() {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     if (!ref.current) return;
-    // If element is already in/near viewport on mount, show immediately
     const rect = ref.current.getBoundingClientRect();
     if (rect.top < window.innerHeight && rect.bottom > 0) {
       setVisible(true);
@@ -59,14 +63,13 @@ function useReveal<T extends HTMLElement>() {
           io.disconnect();
         }
       },
-      { threshold: 0.1, rootMargin: "0px 0px -10% 0px" }
+      { threshold: 0.08, rootMargin: "0px 0px -8% 0px" }
     );
     io.observe(ref.current);
     return () => io.disconnect();
   }, []);
   return { ref, visible };
 }
-
 
 function Reveal({
   children,
@@ -84,8 +87,8 @@ function Reveal({
       className={className}
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(28px)",
-        transition: `opacity 0.9s ease-out ${delay}ms, transform 0.9s ease-out ${delay}ms`,
+        transform: visible ? "translateY(0)" : "translateY(36px)",
+        transition: `opacity 1.1s cubic-bezier(0.22,1,0.36,1) ${delay}ms, transform 1.1s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
       }}
     >
       {children}
@@ -93,23 +96,34 @@ function Reveal({
   );
 }
 
-/* ---------------- Section Heading ---------------- */
-function SectionLabel({ children }: { children: React.ReactNode }) {
+/* ---------------- Section primitives ---------------- */
+const container: React.CSSProperties = {
+  maxWidth: 1360,
+  paddingLeft: "clamp(20px, 6vw, 80px)",
+  paddingRight: "clamp(20px, 6vw, 80px)",
+};
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <span
-      className="inline-flex items-center gap-2 rounded-full px-4 py-1.5"
+      className="inline-flex items-center gap-2"
       style={{
-        background: "rgba(184,137,58,0.08)",
-        border: `1px solid rgba(184,137,58,0.25)`,
         fontFamily: BODY_FONT,
-        fontSize: 12,
-        letterSpacing: "0.18em",
+        fontSize: 11,
+        letterSpacing: "0.32em",
         textTransform: "uppercase",
-        color: GOLD,
-        fontWeight: 600,
+        color: INK_SOFT,
+        fontWeight: 500,
       }}
     >
-      <Sparkles className="h-3.5 w-3.5" style={{ color: GOLD }} />
+      <span
+        style={{
+          display: "inline-block",
+          width: 28,
+          height: 1,
+          background: GOLD,
+        }}
+      />
       {children}
     </span>
   );
@@ -128,14 +142,14 @@ function SectionHeading({
 }) {
   return (
     <div className={center ? "text-center mx-auto max-w-2xl" : "max-w-2xl"}>
-      <SectionLabel>{eyebrow}</SectionLabel>
+      <Eyebrow>{eyebrow}</Eyebrow>
       <h2
-        className="mt-5"
+        className="mt-6"
         style={{
           fontFamily: HEADING_FONT,
-          fontSize: "clamp(36px, 5vw, 64px)",
-          lineHeight: 1.02,
-          letterSpacing: "0.01em",
+          fontSize: "clamp(40px, 5.5vw, 76px)",
+          lineHeight: 0.98,
+          letterSpacing: "0.005em",
           color: INK,
         }}
       >
@@ -143,12 +157,13 @@ function SectionHeading({
       </h2>
       {subtitle && (
         <p
-          className="mt-5"
+          className="mt-6"
           style={{
             fontFamily: BODY_FONT,
             fontSize: 17,
-            lineHeight: "30px",
+            lineHeight: "32px",
             color: INK_SOFT,
+            fontWeight: 400,
           }}
         >
           {subtitle}
@@ -159,101 +174,95 @@ function SectionHeading({
 }
 
 /* ============================================================
-   ABOUT
+   ABOUT — editorial split, floating glass stat cards
 ============================================================ */
 function About() {
   return (
     <section
       id="about"
       className="relative w-full overflow-hidden"
-      style={{ background: BG, color: INK, paddingTop: 120, paddingBottom: 140 }}
+      style={{ background: WHITE, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
       <div
-        className="pointer-events-none absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full"
-        style={{ background: "radial-gradient(circle, rgba(184,137,58,0.12) 0%, transparent 70%)" }}
-      />
-      <div
-        className="pointer-events-none absolute -bottom-40 -right-40 h-[600px] w-[600px] rounded-full"
-        style={{ background: "radial-gradient(circle, rgba(120,160,255,0.08) 0%, transparent 70%)" }}
-      />
-
-      <div
-        className="relative mx-auto grid grid-cols-1 gap-16 lg:grid-cols-2 lg:items-center"
-        style={{
-          maxWidth: 1320,
-          paddingLeft: "clamp(20px, 6vw, 80px)",
-          paddingRight: "clamp(20px, 6vw, 80px)",
-        }}
+        className="relative mx-auto grid grid-cols-1 gap-20 lg:grid-cols-12 lg:items-center"
+        style={container}
       >
-        <Reveal>
-          <div className="relative h-[520px] sm:h-[600px]">
+        {/* Image collage */}
+        <Reveal className="lg:col-span-7">
+          <div className="relative h-[560px] sm:h-[640px]">
             <div
-              className="absolute left-0 top-0 h-[78%] w-[68%] overflow-hidden rounded-3xl"
-              style={{ boxShadow: "0 30px 80px -20px rgba(11,11,15,0.25)" }}
+              className="absolute left-0 top-0 h-[80%] w-[70%] overflow-hidden"
+              style={{ borderRadius: RADIUS, boxShadow: SHADOW_LIFT }}
             >
               <img
-                src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1400&q=80"
+                src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1600&q=80"
                 alt="Kerala landscape"
-                className="h-full w-full object-cover transition-transform duration-[1200ms] hover:scale-110"
+                className="h-full w-full object-cover transition-transform duration-[1400ms] hover:scale-105"
               />
             </div>
             <div
-              className="absolute bottom-0 right-0 h-[55%] w-[55%] overflow-hidden rounded-3xl"
-              style={{ boxShadow: "0 30px 80px -20px rgba(11,11,15,0.3)" }}
+              className="absolute bottom-0 right-0 h-[58%] w-[56%] overflow-hidden"
+              style={{ borderRadius: RADIUS, boxShadow: SHADOW_LIFT }}
             >
               <img
                 src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80"
                 alt="Premium travel"
-                className="h-full w-full object-cover transition-transform duration-[1200ms] hover:scale-110"
+                className="h-full w-full object-cover transition-transform duration-[1400ms] hover:scale-105"
               />
             </div>
+
+            {/* floating glass stat cards */}
             <div
-              className="absolute -left-2 sm:left-4 top-4 rounded-2xl px-5 py-4 animate-[float_6s_ease-in-out_infinite]"
+              className="absolute -left-3 sm:-left-6 top-6 px-6 py-5 animate-[float_7s_ease-in-out_infinite]"
               style={{
-                background: "rgba(255,255,255,0.85)",
-                backdropFilter: "blur(20px)",
-                border: `1px solid ${BORDER}`,
-                boxShadow: "0 20px 50px -10px rgba(11,11,15,0.2)",
+                borderRadius: 22,
+                background: "rgba(255,255,255,0.72)",
+                backdropFilter: "blur(24px)",
+                WebkitBackdropFilter: "blur(24px)",
+                border: `1px solid rgba(255,255,255,0.6)`,
+                boxShadow: "0 30px 60px -20px rgba(17,17,17,0.18)",
               }}
             >
-              <div style={{ fontFamily: HEADING_FONT, fontSize: 36, color: GOLD, lineHeight: 1 }}>
-                12+
+              <div style={{ fontFamily: HEADING_FONT, fontSize: 44, lineHeight: 1, color: INK }}>
+                12<span style={{ color: GOLD }}>+</span>
               </div>
               <div
+                className="mt-2"
                 style={{
                   fontFamily: BODY_FONT,
-                  fontSize: 12,
-                  letterSpacing: "0.12em",
+                  fontSize: 11,
+                  letterSpacing: "0.22em",
                   textTransform: "uppercase",
                   color: INK_SOFT,
-                  marginTop: 4,
-                  fontWeight: 600,
+                  fontWeight: 500,
                 }}
               >
                 Years of Service
               </div>
             </div>
             <div
-              className="absolute -right-2 sm:right-4 bottom-[42%] rounded-2xl px-5 py-4 animate-[float_7s_ease-in-out_infinite]"
+              className="absolute -right-3 sm:-right-6 bottom-[44%] px-6 py-5 animate-[float_9s_ease-in-out_infinite]"
               style={{
-                background: "rgba(255,255,255,0.85)",
-                backdropFilter: "blur(20px)",
-                border: `1px solid ${BORDER}`,
-                boxShadow: "0 20px 50px -10px rgba(11,11,15,0.2)",
+                borderRadius: 22,
+                background: "rgba(255,255,255,0.72)",
+                backdropFilter: "blur(24px)",
+                WebkitBackdropFilter: "blur(24px)",
+                border: `1px solid rgba(255,255,255,0.6)`,
+                boxShadow: "0 30px 60px -20px rgba(17,17,17,0.18)",
               }}
             >
-              <div style={{ fontFamily: HEADING_FONT, fontSize: 36, color: GOLD, lineHeight: 1 }}>
-                5K+
+              <div style={{ fontFamily: HEADING_FONT, fontSize: 44, lineHeight: 1, color: INK }}>
+                5K<span style={{ color: GOLD }}>+</span>
               </div>
               <div
+                className="mt-2"
                 style={{
                   fontFamily: BODY_FONT,
-                  fontSize: 12,
-                  letterSpacing: "0.12em",
+                  fontSize: 11,
+                  letterSpacing: "0.22em",
                   textTransform: "uppercase",
                   color: INK_SOFT,
-                  marginTop: 4,
-                  fontWeight: 600,
+                  fontWeight: 500,
                 }}
               >
                 Happy Travelers
@@ -262,15 +271,16 @@ function About() {
           </div>
         </Reveal>
 
-        <Reveal delay={150}>
+        {/* Copy */}
+        <Reveal delay={150} className="lg:col-span-5">
           <div>
             <SectionHeading
               eyebrow="About Marshal Holidays"
-              title="Welcome to Marshal Holidays"
-              subtitle="From premium tourist vehicles and comfortable airport transfers to customized holiday packages, we make every trip smooth, safe, and memorable. Whether it's a family vacation, group tour, honeymoon, corporate travel, or a weekend getaway, Marshal Holidays is here to take you there with comfort and care."
+              title="Quiet luxury, in motion."
+              subtitle="From premium tourist vehicles and discreet airport transfers to bespoke holiday journeys — we design effortless travel for those who value comfort, time, and the finer details."
             />
 
-            <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="mt-12 grid grid-cols-3 gap-3 sm:gap-4">
               {[
                 { icon: ShieldCheck, label: "Safe Travel" },
                 { icon: Clock, label: "24/7 Support" },
@@ -278,17 +288,24 @@ function About() {
               ].map(({ icon: Icon, label }) => (
                 <div
                   key={label}
-                  className="rounded-2xl p-5 transition-all hover:-translate-y-1"
+                  className="transition-all duration-500 hover:-translate-y-1"
                   style={{
-                    background: BG_ALT,
-                    border: `1px solid ${BORDER}`,
-                    boxShadow: "0 10px 30px -15px rgba(11,11,15,0.15)",
+                    borderRadius: 22,
+                    background: SOFT,
+                    border: `1px solid ${HAIR}`,
+                    padding: "22px 18px",
                   }}
                 >
-                  <Icon className="h-6 w-6" style={{ color: GOLD }} />
+                  <Icon className="h-5 w-5" strokeWidth={1.4} style={{ color: INK }} />
                   <div
-                    className="mt-3"
-                    style={{ fontFamily: BODY_FONT, fontSize: 14, fontWeight: 600, color: INK }}
+                    className="mt-4"
+                    style={{
+                      fontFamily: BODY_FONT,
+                      fontSize: 13,
+                      fontWeight: 500,
+                      color: INK,
+                      letterSpacing: "0.01em",
+                    }}
                   >
                     {label}
                   </div>
@@ -300,19 +317,21 @@ function About() {
               href={WHATSAPP}
               target="_blank"
               rel="noreferrer"
-              className="mt-10 inline-flex items-center gap-2 rounded-lg px-6 transition-all hover:-translate-y-0.5"
+              className="mt-12 inline-flex items-center gap-3 transition-all hover:gap-5"
               style={{
-                height: 48,
+                height: 56,
+                padding: "0 28px",
+                borderRadius: 999,
                 background: INK,
-                color: "#fff",
+                color: WHITE,
                 fontFamily: BODY_FONT,
-                fontSize: 15,
-                fontWeight: 600,
-                boxShadow: "0 15px 40px -10px rgba(11,11,15,0.4)",
+                fontSize: 14,
+                fontWeight: 500,
+                letterSpacing: "0.04em",
               }}
             >
               Plan Your Journey
-              <ArrowRight className="h-4 w-4" />
+              <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>
         </Reveal>
@@ -322,16 +341,17 @@ function About() {
 }
 
 /* ============================================================
-   SERVICES
+   SERVICES — minimal large cards
 ============================================================ */
 const SERVICES = [
   { icon: Users, title: "Family Tours", desc: "Comfortable getaways crafted for every age." },
-  { icon: Heart, title: "Honeymoon Packages", desc: "Romantic escapes to dreamy destinations." },
+  { icon: Heart, title: "Honeymoon", desc: "Romantic escapes to dreamy destinations." },
   { icon: UsersRound, title: "Group Tours", desc: "Memorable journeys for friends & teams." },
-  { icon: Church, title: "Pilgrimage Tours", desc: "Spiritual travel with reverent comfort." },
-  { icon: GraduationCap, title: "Educational & College Trips", desc: "Safe, fun, organised student travel." },
-  { icon: Plane, title: "Airport Transfer Services", desc: "Reliable pickups & drops, on time, every time." },
-  { icon: Sparkles, title: "Customised Holiday Packages", desc: "Tailored itineraries that fit you perfectly." },
+  { icon: Church, title: "Pilgrimage", desc: "Spiritual travel with reverent comfort." },
+  { icon: GraduationCap, title: "College Trips", desc: "Safe, organised student travel." },
+  { icon: Plane, title: "Airport Transfer", desc: "On-time pickups and drops, always." },
+  { icon: Sparkles, title: "Custom Holidays", desc: "Tailored itineraries, made to fit you." },
+  { icon: MapPin, title: "Weekend Getaways", desc: "Short escapes, perfectly planned." },
 ];
 
 function Services() {
@@ -339,59 +359,57 @@ function Services() {
     <section
       id="services"
       className="relative w-full overflow-hidden"
-      style={{ background: BG_ALT, color: INK, paddingTop: 120, paddingBottom: 140 }}
+      style={{ background: SOFT, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
-      <div
-        className="mx-auto"
-        style={{
-          maxWidth: 1320,
-          paddingLeft: "clamp(20px, 6vw, 80px)",
-          paddingRight: "clamp(20px, 6vw, 80px)",
-        }}
-      >
+      <div className="mx-auto" style={container}>
         <Reveal>
           <SectionHeading
             eyebrow="Our Services"
-            title="Choose Your Journey"
-            subtitle="From short getaways to grand expeditions — pick the experience and we'll craft it to perfection."
+            title="Choose your journey."
+            subtitle="From short escapes to grand expeditions — pick the experience and we'll craft it to perfection."
             center
           />
         </Reveal>
 
-        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {SERVICES.map(({ icon: Icon, title, desc }, i) => (
-            <Reveal key={title} delay={i * 70}>
+            <Reveal key={title} delay={i * 60}>
               <div
-                className="group relative h-full overflow-hidden rounded-3xl p-7 transition-all duration-500 hover:-translate-y-2"
+                className="group relative h-full transition-all duration-700 hover:-translate-y-2"
                 style={{
-                  background: BG,
-                  border: `1px solid ${BORDER}`,
-                  boxShadow: "0 10px 40px -20px rgba(11,11,15,0.15)",
+                  borderRadius: RADIUS,
+                  background: WHITE,
+                  border: `1px solid ${HAIR}`,
+                  padding: 32,
+                  boxShadow: SHADOW_CARD,
+                  minHeight: 280,
                 }}
               >
-                <div
-                  className="pointer-events-none absolute -right-20 -top-20 h-48 w-48 rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                  style={{
-                    background:
-                      "radial-gradient(circle, rgba(184,137,58,0.25) 0%, transparent 70%)",
-                  }}
-                />
-                <div
-                  className="flex h-14 w-14 items-center justify-center rounded-2xl"
-                  style={{
-                    background: "linear-gradient(135deg, rgba(184,137,58,0.18), rgba(184,137,58,0.04))",
-                    border: `1px solid rgba(184,137,58,0.3)`,
-                  }}
-                >
-                  <Icon className="h-6 w-6" style={{ color: GOLD }} />
+                <div className="flex items-start justify-between">
+                  <div
+                    className="flex h-12 w-12 items-center justify-center"
+                    style={{
+                      borderRadius: 14,
+                      background: SOFT,
+                      border: `1px solid ${HAIR}`,
+                    }}
+                  >
+                    <Icon className="h-5 w-5" strokeWidth={1.4} style={{ color: INK }} />
+                  </div>
+                  <ArrowUpRight
+                    className="h-5 w-5 opacity-30 transition-all duration-500 group-hover:opacity-100 group-hover:rotate-12"
+                    style={{ color: INK }}
+                    strokeWidth={1.4}
+                  />
                 </div>
                 <h3
-                  className="mt-6"
+                  className="mt-10"
                   style={{
                     fontFamily: HEADING_FONT,
-                    fontSize: 26,
+                    fontSize: 30,
                     letterSpacing: "0.01em",
                     color: INK,
+                    lineHeight: 1.05,
                   }}
                 >
                   {title}
@@ -407,21 +425,6 @@ function Services() {
                 >
                   {desc}
                 </p>
-                <a
-                  href={WHATSAPP}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-6 inline-flex items-center gap-1.5 transition-all group-hover:gap-3"
-                  style={{
-                    fontFamily: BODY_FONT,
-                    fontSize: 13,
-                    fontWeight: 600,
-                    color: GOLD,
-                    letterSpacing: "0.04em",
-                  }}
-                >
-                  Explore <ArrowRight className="h-4 w-4" />
-                </a>
               </div>
             </Reveal>
           ))}
@@ -432,38 +435,31 @@ function Services() {
 }
 
 /* ============================================================
-   DESTINATIONS
+   DESTINATIONS — cinematic slider
 ============================================================ */
 const DESTINATIONS = [
-  { name: "Munnar", img: "https://images.unsplash.com/photo-1609766975161-d390cdc7c89e?auto=format&fit=crop&w=900&q=80" },
-  { name: "Ooty", img: "https://images.unsplash.com/photo-1580793241537-fb236ddca8a3?auto=format&fit=crop&w=900&q=80" },
-  { name: "Kodaikanal", img: "https://images.unsplash.com/photo-1591018653829-f5ad7eef3186?auto=format&fit=crop&w=900&q=80" },
-  { name: "Mysore", img: "https://images.unsplash.com/photo-1600100397196-1a7bb3a09d6e?auto=format&fit=crop&w=900&q=80" },
-  { name: "Coorg", img: "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=900&q=80" },
-  { name: "Wayanad", img: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=900&q=80" },
-  { name: "Alleppey", img: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=900&q=80" },
-  { name: "Thekkady", img: "https://images.unsplash.com/photo-1567606404787-d4e1e6f3e1a8?auto=format&fit=crop&w=900&q=80" },
-  { name: "Varkala", img: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=900&q=80" },
-  { name: "Goa", img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=900&q=80" },
-  { name: "Hyderabad", img: "https://images.unsplash.com/photo-1626714086015-c63379ec4a1b?auto=format&fit=crop&w=900&q=80" },
-  { name: "Pondicherry", img: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=900&q=80" },
-  { name: "Yercaud", img: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=900&q=80" },
-  { name: "Chikmagalur", img: "https://images.unsplash.com/photo-1572883454114-1cf0031ede2a?auto=format&fit=crop&w=900&q=80" },
-  { name: "Rameswaram", img: "https://images.unsplash.com/photo-1582636047939-bf8f43b95f80?auto=format&fit=crop&w=900&q=80" },
-  { name: "Hampi", img: "https://images.unsplash.com/photo-1600100397196-1a7bb3a09d6e?auto=format&fit=crop&w=900&q=80" },
+  { name: "Munnar", region: "Kerala", img: "https://images.unsplash.com/photo-1609766975161-d390cdc7c89e?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Ooty", region: "Tamil Nadu", img: "https://images.unsplash.com/photo-1580793241537-fb236ddca8a3?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Kodaikanal", region: "Tamil Nadu", img: "https://images.unsplash.com/photo-1591018653829-f5ad7eef3186?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Mysore", region: "Karnataka", img: "https://images.unsplash.com/photo-1600100397196-1a7bb3a09d6e?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Coorg", region: "Karnataka", img: "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Wayanad", region: "Kerala", img: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Alleppey", region: "Kerala", img: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Goa", region: "Goa", img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Pondicherry", region: "Tamil Nadu", img: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Chikmagalur", region: "Karnataka", img: "https://images.unsplash.com/photo-1572883454114-1cf0031ede2a?auto=format&fit=crop&w=1200&q=80" },
 ];
 
 function Destinations() {
   const [index, setIndex] = useState(0);
-  const [perView, setPerView] = useState(4);
+  const [perView, setPerView] = useState(3);
 
   useEffect(() => {
     const calc = () => {
       const w = window.innerWidth;
       if (w < 640) setPerView(1);
       else if (w < 1024) setPerView(2);
-      else if (w < 1280) setPerView(3);
-      else setPerView(4);
+      else setPerView(3);
     };
     calc();
     window.addEventListener("resize", calc);
@@ -474,9 +470,7 @@ function Destinations() {
   const go = (d: number) => setIndex((i) => Math.max(0, Math.min(max, i + d)));
 
   useEffect(() => {
-    const t = setInterval(() => {
-      setIndex((i) => (i >= max ? 0 : i + 1));
-    }, 3500);
+    const t = setInterval(() => setIndex((i) => (i >= max ? 0 : i + 1)), 4500);
     return () => clearInterval(t);
   }, [max]);
 
@@ -484,18 +478,11 @@ function Destinations() {
     <section
       id="destinations"
       className="relative w-full overflow-hidden"
-      style={{ background: BG, color: INK, paddingTop: 120, paddingBottom: 140 }}
+      style={{ background: WHITE, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
-      <div
-        className="mx-auto"
-        style={{
-          maxWidth: 1320,
-          paddingLeft: "clamp(20px, 6vw, 80px)",
-          paddingRight: "clamp(20px, 6vw, 80px)",
-        }}
-      >
+      <div className="mx-auto" style={container}>
         <Reveal>
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
             <SectionHeading
               eyebrow="Popular Destinations"
               title="Where do you dream of going?"
@@ -504,39 +491,34 @@ function Destinations() {
             <div className="flex gap-3">
               <button
                 onClick={() => go(-1)}
-                className="flex h-12 w-12 items-center justify-center rounded-full transition-all hover:-translate-y-0.5"
+                className="flex h-14 w-14 items-center justify-center rounded-full transition-all duration-500 hover:-translate-y-0.5"
                 style={{
-                  background: BG_ALT,
-                  border: `1px solid ${BORDER}`,
+                  background: WHITE,
+                  border: `1px solid ${HAIR_STRONG}`,
                   color: INK,
-                  boxShadow: "0 10px 25px -10px rgba(11,11,15,0.15)",
                 }}
                 aria-label="Previous"
               >
-                <ChevronLeft className="h-5 w-5" />
+                <ChevronLeft className="h-5 w-5" strokeWidth={1.4} />
               </button>
               <button
                 onClick={() => go(1)}
-                className="flex h-12 w-12 items-center justify-center rounded-full transition-all hover:-translate-y-0.5"
-                style={{
-                  background: INK,
-                  color: "#fff",
-                  boxShadow: "0 10px 25px -10px rgba(11,11,15,0.4)",
-                }}
+                className="flex h-14 w-14 items-center justify-center rounded-full transition-all duration-500 hover:-translate-y-0.5"
+                style={{ background: INK, color: WHITE }}
                 aria-label="Next"
               >
-                <ChevronRight className="h-5 w-5" />
+                <ChevronRight className="h-5 w-5" strokeWidth={1.4} />
               </button>
             </div>
           </div>
         </Reveal>
 
-        <div className="mt-14 overflow-hidden">
+        <div className="mt-20 overflow-hidden">
           <div
             className="flex"
             style={{
               transform: `translateX(-${(index * 100) / perView}%)`,
-              transition: "transform 0.9s cubic-bezier(0.7,0,0.3,1)",
+              transition: "transform 1.1s cubic-bezier(0.7,0,0.3,1)",
             }}
           >
             {DESTINATIONS.map((d) => (
@@ -546,61 +528,59 @@ function Destinations() {
                 style={{ width: `${100 / perView}%` }}
               >
                 <div
-                  className="group relative h-[440px] overflow-hidden rounded-3xl"
-                  style={{ boxShadow: "0 20px 60px -20px rgba(11,11,15,0.25)" }}
+                  className="group relative h-[520px] overflow-hidden"
+                  style={{ borderRadius: RADIUS, boxShadow: SHADOW_SOFT }}
                 >
                   <img
                     src={d.img}
                     alt={d.name}
-                    className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-110"
+                    className="h-full w-full object-cover transition-transform duration-[1800ms] group-hover:scale-110"
                   />
                   <div
                     className="absolute inset-0"
                     style={{
                       background:
-                        "linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.85) 100%)",
+                        "linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.7) 100%)",
                     }}
                   />
-                  <div className="absolute inset-x-0 bottom-0 p-6 text-white">
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4" style={{ color: GOLD_SOFT }} />
-                      <span
-                        style={{
-                          fontFamily: BODY_FONT,
-                          fontSize: 12,
-                          letterSpacing: "0.18em",
-                          textTransform: "uppercase",
-                          color: "rgba(255,255,255,0.85)",
-                        }}
-                      >
-                        South India
-                      </span>
-                    </div>
-                    <h3
-                      className="mt-2"
-                      style={{
-                        fontFamily: HEADING_FONT,
-                        fontSize: 36,
-                        lineHeight: 1,
-                        letterSpacing: "0.02em",
-                      }}
-                    >
-                      {d.name}
-                    </h3>
-                    <a
-                      href={WHATSAPP}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-4 inline-flex items-center gap-1.5 transition-all group-hover:gap-3"
+                  <div className="absolute inset-x-0 bottom-0 p-8 text-white">
+                    <div
                       style={{
                         fontFamily: BODY_FONT,
-                        fontSize: 13,
-                        fontWeight: 600,
-                        color: GOLD_SOFT,
+                        fontSize: 11,
+                        letterSpacing: "0.28em",
+                        textTransform: "uppercase",
+                        color: "rgba(255,255,255,0.75)",
+                        fontWeight: 500,
                       }}
                     >
-                      Explore <ArrowRight className="h-4 w-4" />
-                    </a>
+                      {d.region}
+                    </div>
+                    <h3
+                      className="mt-3 flex items-end justify-between gap-4"
+                      style={{
+                        fontFamily: HEADING_FONT,
+                        fontSize: 52,
+                        lineHeight: 0.95,
+                        letterSpacing: "0.01em",
+                      }}
+                    >
+                      <span>{d.name}</span>
+                      <a
+                        href={WHATSAPP}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex h-12 w-12 items-center justify-center rounded-full transition-all duration-500 group-hover:rotate-45"
+                        style={{
+                          background: "rgba(255,255,255,0.14)",
+                          backdropFilter: "blur(12px)",
+                          border: "1px solid rgba(255,255,255,0.25)",
+                        }}
+                        aria-label={`Explore ${d.name}`}
+                      >
+                        <ArrowUpRight className="h-5 w-5" strokeWidth={1.4} />
+                      </a>
+                    </h3>
                   </div>
                 </div>
               </div>
@@ -613,13 +593,13 @@ function Destinations() {
 }
 
 /* ============================================================
-   AIRPORT TRANSFERS
+   AIRPORT TRANSFERS — glass premium cards
 ============================================================ */
 const AIRPORTS = [
-  "Cochin International Airport",
-  "Trivandrum International Airport",
-  "Calicut International Airport",
-  "Kannur International Airport",
+  { name: "Cochin", code: "COK", full: "Cochin International Airport" },
+  { name: "Trivandrum", code: "TRV", full: "Trivandrum International Airport" },
+  { name: "Calicut", code: "CCJ", full: "Calicut International Airport" },
+  { name: "Kannur", code: "CNN", full: "Kannur International Airport" },
 ];
 const COVERAGE = ["Chavakkad", "Guruvayur", "Orumanayur", "Pavaratty", "Mullassery"];
 
@@ -627,70 +607,85 @@ function Airports() {
   return (
     <section
       className="relative w-full overflow-hidden"
-      style={{ background: BG_ALT, color: INK, paddingTop: 120, paddingBottom: 140 }}
+      style={{ background: SOFT, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
-      <div
-        className="mx-auto"
-        style={{
-          maxWidth: 1320,
-          paddingLeft: "clamp(20px, 6vw, 80px)",
-          paddingRight: "clamp(20px, 6vw, 80px)",
-        }}
-      >
+      <div className="mx-auto" style={container}>
         <Reveal>
           <SectionHeading
             eyebrow="Airport Transfers"
-            title="Smooth airport pickups & drops"
-            subtitle="Reliable, punctual, and luxurious airport transfers across Kerala's major airports."
+            title="Smooth airport pickups & drops."
+            subtitle="Reliable, punctual, and discreet luxury transfers across Kerala's major airports."
             center
           />
         </Reveal>
 
-        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {AIRPORTS.map((a, i) => (
-            <Reveal key={a} delay={i * 80}>
+            <Reveal key={a.code} delay={i * 70}>
               <div
-                className="group relative h-full overflow-hidden rounded-3xl p-7 transition-all hover:-translate-y-2"
+                className="group relative h-full transition-all duration-700 hover:-translate-y-2"
                 style={{
-                  background: BG,
-                  border: `1px solid ${BORDER}`,
-                  boxShadow: "0 10px 40px -20px rgba(11,11,15,0.15)",
+                  borderRadius: RADIUS,
+                  background: "rgba(255,255,255,0.6)",
+                  backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
+                  border: `1px solid rgba(255,255,255,0.7)`,
+                  boxShadow: SHADOW_CARD,
+                  padding: 32,
+                  minHeight: 280,
                 }}
               >
-                <div
-                  className="flex h-14 w-14 items-center justify-center rounded-2xl transition-transform group-hover:rotate-6"
-                  style={{
-                    background: "linear-gradient(135deg, rgba(60,100,200,0.18), rgba(60,100,200,0.04))",
-                    border: `1px solid rgba(60,100,200,0.25)`,
-                  }}
-                >
-                  <Plane className="h-6 w-6" style={{ color: "#3C64C8" }} />
+                <div className="flex items-start justify-between">
+                  <Plane className="h-6 w-6" strokeWidth={1.3} style={{ color: INK }} />
+                  <span
+                    style={{
+                      fontFamily: HEADING_FONT,
+                      fontSize: 22,
+                      letterSpacing: "0.08em",
+                      color: GOLD,
+                    }}
+                  >
+                    {a.code}
+                  </span>
                 </div>
                 <h3
-                  className="mt-6"
+                  className="mt-12"
                   style={{
                     fontFamily: HEADING_FONT,
-                    fontSize: 24,
+                    fontSize: 36,
                     letterSpacing: "0.01em",
-                    lineHeight: 1.1,
+                    lineHeight: 1,
                     color: INK,
                   }}
                 >
-                  {a}
+                  {a.name}
                 </h3>
+                <p
+                  className="mt-2"
+                  style={{
+                    fontFamily: BODY_FONT,
+                    fontSize: 13,
+                    color: INK_SOFT,
+                    lineHeight: "22px",
+                  }}
+                >
+                  {a.full}
+                </p>
                 <a
                   href={WHATSAPP}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-6 inline-flex items-center gap-1.5"
+                  className="mt-8 inline-flex items-center gap-2 transition-all group-hover:gap-3"
                   style={{
                     fontFamily: BODY_FONT,
-                    fontSize: 13,
-                    fontWeight: 600,
-                    color: "#3C64C8",
+                    fontSize: 12,
+                    fontWeight: 500,
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    color: INK,
                   }}
                 >
-                  Book Transfer <ArrowRight className="h-4 w-4" />
+                  Book Transfer <ArrowUpRight className="h-4 w-4" strokeWidth={1.4} />
                 </a>
               </div>
             </Reveal>
@@ -699,51 +694,41 @@ function Airports() {
 
         <Reveal delay={250}>
           <div
-            className="mt-14 rounded-3xl p-8"
+            className="mt-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6 px-10 py-8"
             style={{
-              background: BG,
-              border: `1px solid ${BORDER}`,
+              borderRadius: RADIUS,
+              background: WHITE,
+              border: `1px solid ${HAIR}`,
+              boxShadow: SHADOW_CARD,
             }}
           >
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-              <div>
-                <div
+            <div>
+              <Eyebrow>Pickup & Drop Coverage</Eyebrow>
+              <div
+                className="mt-3"
+                style={{ fontFamily: HEADING_FONT, fontSize: 34, letterSpacing: "0.01em", color: INK, lineHeight: 1 }}
+              >
+                Serving Across Thrissur
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {COVERAGE.map((c) => (
+                <span
+                  key={c}
+                  className="px-5 py-2.5"
                   style={{
+                    borderRadius: 999,
+                    background: SOFT,
+                    border: `1px solid ${HAIR}`,
                     fontFamily: BODY_FONT,
-                    fontSize: 12,
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    color: INK_MUTE,
-                    fontWeight: 600,
+                    fontSize: 13,
+                    color: INK,
+                    fontWeight: 500,
                   }}
                 >
-                  Pickup & Drop Coverage
-                </div>
-                <div
-                  className="mt-2"
-                  style={{ fontFamily: HEADING_FONT, fontSize: 32, letterSpacing: "0.01em", color: INK }}
-                >
-                  Serving Across Thrissur Region
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {COVERAGE.map((c) => (
-                  <span
-                    key={c}
-                    className="rounded-full px-4 py-2"
-                    style={{
-                      background: BG_ALT,
-                      border: `1px solid ${BORDER}`,
-                      fontFamily: BODY_FONT,
-                      fontSize: 13,
-                      color: INK,
-                      fontWeight: 500,
-                    }}
-                  >
-                    {c}
-                  </span>
-                ))}
-              </div>
+                  {c}
+                </span>
+              ))}
             </div>
           </div>
         </Reveal>
@@ -753,32 +738,32 @@ function Airports() {
 }
 
 /* ============================================================
-   FLEETS
+   FLEETS — automotive showcase
 ============================================================ */
 const FLEETS = [
   {
     name: "Toyota Innova Crysta",
     seats: "7 Seats",
     badge: "Premium",
-    img: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1200&q=80",
+    img: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1600&q=80",
   },
   {
     name: "Force Urbania",
     seats: "12 Seats",
     badge: "Luxury Van",
-    img: "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1200&q=80",
+    img: "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1600&q=80",
   },
   {
     name: "Force Traveller",
     seats: "26 Seats",
     badge: "Mini Coach",
-    img: "https://images.unsplash.com/photo-1597007030739-6d2e7f5cdd75?auto=format&fit=crop&w=1200&q=80",
+    img: "https://images.unsplash.com/photo-1597007030739-6d2e7f5cdd75?auto=format&fit=crop&w=1600&q=80",
   },
   {
     name: "Tourist Bus",
     seats: "AC & Non-AC",
     badge: "Group Travel",
-    img: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80",
+    img: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1600&q=80",
   },
 ];
 
@@ -787,80 +772,78 @@ function Fleets() {
     <section
       id="fleet"
       className="relative w-full overflow-hidden"
-      style={{ background: BG, color: INK, paddingTop: 120, paddingBottom: 140 }}
+      style={{ background: WHITE, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
-      <div
-        className="mx-auto"
-        style={{
-          maxWidth: 1320,
-          paddingLeft: "clamp(20px, 6vw, 80px)",
-          paddingRight: "clamp(20px, 6vw, 80px)",
-        }}
-      >
+      <div className="mx-auto" style={container}>
         <Reveal>
           <SectionHeading
-            eyebrow="Our Fleets"
-            title="Travel in luxury & comfort"
+            eyebrow="Our Fleet"
+            title="Travel in luxury & comfort."
             subtitle="Hand-picked premium vehicles maintained to the highest standards."
             center
           />
         </Reveal>
 
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-7">
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-7">
           {FLEETS.map((f, i) => (
             <Reveal key={f.name} delay={i * 90}>
               <div
-                className="group relative overflow-hidden rounded-3xl"
+                className="group relative overflow-hidden transition-all duration-700 hover:-translate-y-2"
                 style={{
-                  background: BG_ALT,
-                  border: `1px solid ${BORDER}`,
-                  boxShadow: "0 20px 60px -25px rgba(11,11,15,0.2)",
+                  borderRadius: RADIUS,
+                  background: SOFT,
+                  border: `1px solid ${HAIR}`,
+                  boxShadow: SHADOW_CARD,
                 }}
               >
-                <div className="relative h-64 overflow-hidden">
+                <div className="relative h-80 overflow-hidden">
                   <img
                     src={f.img}
                     alt={f.name}
-                    className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-110"
+                    className="h-full w-full object-cover transition-transform duration-[1800ms] group-hover:scale-105"
                   />
                   <span
-                    className="absolute left-5 top-5 rounded-full px-3 py-1"
+                    className="absolute left-6 top-6 px-4 py-2"
                     style={{
-                      background: "rgba(255,255,255,0.95)",
-                      backdropFilter: "blur(10px)",
-                      color: GOLD,
+                      borderRadius: 999,
+                      background: "rgba(255,255,255,0.85)",
+                      backdropFilter: "blur(12px)",
+                      color: INK,
                       fontFamily: BODY_FONT,
                       fontSize: 11,
-                      letterSpacing: "0.16em",
+                      letterSpacing: "0.22em",
                       textTransform: "uppercase",
-                      fontWeight: 700,
+                      fontWeight: 500,
                     }}
                   >
                     {f.badge}
                   </span>
                 </div>
-                <div className="p-7">
+                <div className="p-8 sm:p-10">
                   <div className="flex items-start justify-between gap-4">
                     <h3
                       style={{
                         fontFamily: HEADING_FONT,
-                        fontSize: 30,
+                        fontSize: 38,
                         letterSpacing: "0.01em",
                         color: INK,
+                        lineHeight: 1,
                       }}
                     >
                       {f.name}
                     </h3>
                     <span
-                      className="rounded-full px-3 py-1.5"
+                      className="px-4 py-2 shrink-0"
                       style={{
-                        background: BG,
-                        border: `1px solid ${BORDER}`,
+                        borderRadius: 999,
+                        background: WHITE,
+                        border: `1px solid ${HAIR}`,
                         fontFamily: BODY_FONT,
                         fontSize: 12,
                         color: INK,
                         whiteSpace: "nowrap",
-                        fontWeight: 600,
+                        fontWeight: 500,
+                        letterSpacing: "0.05em",
                       }}
                     >
                       {f.seats}
@@ -870,19 +853,21 @@ function Fleets() {
                     href={WHATSAPP}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-6 inline-flex items-center gap-2 rounded-lg px-5 transition-all hover:-translate-y-0.5"
+                    className="mt-8 inline-flex items-center gap-2 transition-all hover:gap-4"
                     style={{
-                      height: 44,
+                      height: 52,
+                      padding: "0 26px",
+                      borderRadius: 999,
                       background: INK,
-                      color: "#fff",
+                      color: WHITE,
                       fontFamily: BODY_FONT,
-                      fontSize: 14,
-                      fontWeight: 600,
-                      boxShadow: "0 10px 30px -10px rgba(11,11,15,0.35)",
+                      fontSize: 13,
+                      fontWeight: 500,
+                      letterSpacing: "0.06em",
                     }}
                   >
-                    <Bus className="h-4 w-4" />
                     Book Now
+                    <ArrowUpRight className="h-4 w-4" strokeWidth={1.4} />
                   </a>
                 </div>
               </div>
@@ -895,89 +880,92 @@ function Fleets() {
 }
 
 /* ============================================================
-   RESORTS
+   RESORTS — editorial grid
 ============================================================ */
 const RESORTS = [
-  { name: "Guruvayoor", img: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=900&q=80" },
-  { name: "Munnar", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=80" },
-  { name: "Thekkady", img: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=900&q=80" },
-  { name: "Wayanad", img: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=900&q=80" },
-  { name: "Varkala", img: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=900&q=80" },
-  { name: "Alleppey", img: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=900&q=80" },
-  { name: "Ooty", img: "https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?auto=format&fit=crop&w=900&q=80" },
-  { name: "Kodaikanal", img: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=900&q=80" },
-  { name: "Coorg", img: "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=900&q=80" },
+  { name: "Guruvayoor", img: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Munnar", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Thekkady", img: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Wayanad", img: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Varkala", img: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Alleppey", img: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80" },
 ];
 
 function Resorts() {
   return (
     <section
       className="relative w-full overflow-hidden"
-      style={{ background: BG_ALT, color: INK, paddingTop: 120, paddingBottom: 140 }}
+      style={{ background: SOFT, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
-      <div
-        className="mx-auto"
-        style={{
-          maxWidth: 1320,
-          paddingLeft: "clamp(20px, 6vw, 80px)",
-          paddingRight: "clamp(20px, 6vw, 80px)",
-        }}
-      >
+      <div className="mx-auto" style={container}>
         <Reveal>
           <SectionHeading
-            eyebrow="Room & Resort Booking"
-            title="Stays as memorable as the journey"
+            eyebrow="Rooms & Resorts"
+            title="Stays as memorable as the journey."
             subtitle="Curated luxury resorts and premium stays across the most loved destinations."
             center
           />
         </Reveal>
 
-        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {RESORTS.map((r, i) => (
-            <Reveal key={r.name} delay={i * 60}>
+            <Reveal key={r.name} delay={i * 70}>
               <div
-                className="group relative h-80 overflow-hidden rounded-3xl"
-                style={{ boxShadow: "0 20px 60px -25px rgba(11,11,15,0.25)" }}
+                className="group relative overflow-hidden"
+                style={{
+                  borderRadius: RADIUS,
+                  background: WHITE,
+                  border: `1px solid ${HAIR}`,
+                  boxShadow: SHADOW_CARD,
+                }}
               >
-                <img
-                  src={r.img}
-                  alt={r.name}
-                  className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-110"
-                />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.85) 100%)",
-                  }}
-                />
-                <div className="absolute inset-x-0 bottom-0 p-6 text-white">
-                  <div
-                    style={{
-                      fontFamily: BODY_FONT,
-                      fontSize: 11,
-                      letterSpacing: "0.2em",
-                      textTransform: "uppercase",
-                      color: GOLD_SOFT,
-                      fontWeight: 600,
-                    }}
-                  >
-                    Luxury Stay
+                <div className="relative h-72 overflow-hidden">
+                  <img
+                    src={r.img}
+                    alt={r.name}
+                    className="h-full w-full object-cover transition-transform duration-[1800ms] group-hover:scale-110"
+                  />
+                </div>
+                <div className="flex items-center justify-between gap-4 p-7">
+                  <div>
+                    <div
+                      style={{
+                        fontFamily: BODY_FONT,
+                        fontSize: 11,
+                        letterSpacing: "0.24em",
+                        textTransform: "uppercase",
+                        color: GOLD,
+                        fontWeight: 500,
+                      }}
+                    >
+                      Luxury Stay
+                    </div>
+                    <h3
+                      className="mt-2"
+                      style={{
+                        fontFamily: HEADING_FONT,
+                        fontSize: 32,
+                        letterSpacing: "0.01em",
+                        color: INK,
+                        lineHeight: 1,
+                      }}
+                    >
+                      {r.name}
+                    </h3>
                   </div>
-                  <h3
-                    className="mt-1"
-                    style={{ fontFamily: HEADING_FONT, fontSize: 32, letterSpacing: "0.02em" }}
-                  >
-                    {r.name}
-                  </h3>
                   <a
                     href={WHATSAPP}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-3 inline-flex items-center gap-1.5 transition-all group-hover:gap-3"
-                    style={{ fontFamily: BODY_FONT, fontSize: 13, fontWeight: 600, color: "#fff" }}
+                    className="flex h-12 w-12 items-center justify-center rounded-full transition-all duration-500 hover:rotate-45"
+                    style={{
+                      background: SOFT,
+                      border: `1px solid ${HAIR}`,
+                      color: INK,
+                    }}
+                    aria-label={`Book ${r.name}`}
                   >
-                    Book Stay <ArrowRight className="h-4 w-4" />
+                    <ArrowUpRight className="h-5 w-5" strokeWidth={1.4} />
                   </a>
                 </div>
               </div>
@@ -990,93 +978,97 @@ function Resorts() {
 }
 
 /* ============================================================
-   TESTIMONIALS
+   TESTIMONIALS — minimal luxury
 ============================================================ */
 const TESTIMONIALS = [
-  { quote: "Excellent service and very comfortable trip experience.", name: "Arjun M.", role: "Family Tour" },
-  { quote: "Best airport transfer service near Guruvayur.", name: "Priya S.", role: "Airport Transfer" },
-  { quote: "Our college tour was perfectly managed from start to finish.", name: "Rahul K.", role: "College Trip" },
+  { quote: "Excellent service and a truly comfortable trip from start to end.", name: "Arjun M.", role: "Family Tour" },
+  { quote: "The best airport transfer service we've found near Guruvayur.", name: "Priya S.", role: "Airport Transfer" },
+  { quote: "Our college tour was perfectly managed — every detail handled.", name: "Rahul K.", role: "College Trip" },
 ];
 
 function Testimonials() {
   const [i, setI] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setI((x) => (x + 1) % TESTIMONIALS.length), 5000);
+    const t = setInterval(() => setI((x) => (x + 1) % TESTIMONIALS.length), 6000);
     return () => clearInterval(t);
   }, []);
   const t = TESTIMONIALS[i];
   return (
     <section
       className="relative w-full overflow-hidden"
-      style={{ background: BG, color: INK, paddingTop: 120, paddingBottom: 140 }}
+      style={{ background: WHITE, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(184,137,58,0.10) 0%, transparent 60%)",
-        }}
-      />
-      <div
-        className="relative mx-auto"
-        style={{
-          maxWidth: 1100,
-          paddingLeft: "clamp(20px, 6vw, 80px)",
-          paddingRight: "clamp(20px, 6vw, 80px)",
-        }}
-      >
+      <div className="relative mx-auto" style={{ ...container, maxWidth: 1100 }}>
         <Reveal>
-          <SectionHeading eyebrow="Testimonials" title="Loved by travelers" center />
+          <div className="text-center">
+            <Eyebrow>Testimonials</Eyebrow>
+          </div>
         </Reveal>
 
         <Reveal delay={150}>
           <div
             key={i}
-            className="mt-14 rounded-3xl p-10 sm:p-14 text-center animate-fade-in"
+            className="mt-12 p-12 sm:p-20 text-center animate-fade-in"
             style={{
-              background: "rgba(255,255,255,0.7)",
-              backdropFilter: "blur(20px)",
-              border: `1px solid ${BORDER}`,
-              boxShadow: "0 30px 80px -20px rgba(11,11,15,0.18)",
+              borderRadius: RADIUS,
+              background: SOFT,
+              border: `1px solid ${HAIR}`,
+              boxShadow: SHADOW_CARD,
             }}
           >
-            <div className="flex justify-center gap-1">
-              {Array.from({ length: 5 }).map((_, k) => (
-                <Star key={k} className="h-5 w-5 fill-current" style={{ color: GOLD }} />
-              ))}
-            </div>
-            <p
-              className="mt-8 mx-auto"
+            <div
               style={{
                 fontFamily: HEADING_FONT,
-                fontSize: "clamp(26px, 3.4vw, 42px)",
-                lineHeight: 1.2,
+                fontSize: 80,
+                lineHeight: 0.4,
+                color: GOLD,
+                letterSpacing: "-0.02em",
+              }}
+            >
+              "
+            </div>
+            <p
+              className="mt-6 mx-auto"
+              style={{
+                fontFamily: HEADING_FONT,
+                fontSize: "clamp(28px, 3.6vw, 48px)",
+                lineHeight: 1.15,
                 letterSpacing: "0.01em",
-                maxWidth: 800,
+                maxWidth: 820,
                 color: INK,
               }}
             >
-              "{t.quote}"
+              {t.quote}
             </p>
-            <div className="mt-8">
-              <div style={{ fontFamily: BODY_FONT, fontSize: 15, fontWeight: 600, color: INK }}>
-                {t.name}
-              </div>
-              <div
-                style={{ fontFamily: BODY_FONT, fontSize: 13, color: INK_SOFT, marginTop: 4 }}
-              >
-                {t.role}
-              </div>
+            <div
+              className="mx-auto my-10"
+              style={{ height: 1, width: 60, background: HAIR_STRONG }}
+            />
+            <div style={{ fontFamily: BODY_FONT, fontSize: 15, fontWeight: 500, color: INK }}>
+              {t.name}
             </div>
-            <div className="mt-8 flex justify-center gap-2">
+            <div
+              className="mt-1"
+              style={{
+                fontFamily: BODY_FONT,
+                fontSize: 12,
+                color: INK_SOFT,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+              }}
+            >
+              {t.role}
+            </div>
+
+            <div className="mt-12 flex justify-center gap-2">
               {TESTIMONIALS.map((_, k) => (
                 <button
                   key={k}
                   onClick={() => setI(k)}
-                  className="h-1.5 rounded-full transition-all"
+                  className="h-1 rounded-full transition-all duration-500"
                   style={{
-                    width: k === i ? 32 : 12,
-                    background: k === i ? GOLD : "rgba(11,11,15,0.15)",
+                    width: k === i ? 40 : 16,
+                    background: k === i ? INK : HAIR_STRONG,
                   }}
                   aria-label={`Go to testimonial ${k + 1}`}
                 />
@@ -1090,12 +1082,12 @@ function Testimonials() {
 }
 
 /* ============================================================
-   FAQ
+   FAQ — ultra clean accordion
 ============================================================ */
 const FAQS = [
   { q: "Do you provide customized tour packages?", a: "Yes — we craft fully tailored itineraries for families, groups, honeymoons, corporate trips and more." },
-  { q: "Are airport pickup and drop services available?", a: "Absolutely. We cover Cochin, Trivandrum, Calicut and Kannur airports with premium vehicles 24/7." },
-  { q: "Can we book vehicles for group tours?", a: "Yes. From 7-seater Innovas to 26-seater Travellers and full Tourist Buses — AC & Non-AC available." },
+  { q: "Are airport pickup and drop services available?", a: "Absolutely. We cover Cochin, Trivandrum, Calicut and Kannur airports with premium vehicles, 24/7." },
+  { q: "Can we book vehicles for group tours?", a: "Yes. From 7-seater Innovas to 26-seater Travellers and full Tourist Buses — both AC and Non-AC." },
   { q: "Do you provide hotel and resort booking?", a: "Yes, we partner with premium resorts across Munnar, Thekkady, Wayanad, Alleppey and more." },
 ];
 
@@ -1104,62 +1096,62 @@ function Faq() {
   return (
     <section
       className="relative w-full overflow-hidden"
-      style={{ background: BG_ALT, color: INK, paddingTop: 120, paddingBottom: 140 }}
+      style={{ background: SOFT, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
-      <div
-        className="mx-auto"
-        style={{
-          maxWidth: 980,
-          paddingLeft: "clamp(20px, 6vw, 80px)",
-          paddingRight: "clamp(20px, 6vw, 80px)",
-        }}
-      >
+      <div className="mx-auto" style={{ ...container, maxWidth: 980 }}>
         <Reveal>
-          <SectionHeading eyebrow="FAQ" title="Questions, answered" center />
+          <SectionHeading eyebrow="FAQ" title="Questions, answered." center />
         </Reveal>
 
-        <div className="mt-14 space-y-4">
+        <div className="mt-16">
           {FAQS.map((f, i) => {
             const isOpen = open === i;
             return (
-              <Reveal key={f.q} delay={i * 70}>
+              <Reveal key={f.q} delay={i * 60}>
                 <div
-                  className="overflow-hidden rounded-2xl transition-all"
-                  style={{
-                    background: isOpen ? BG : "transparent",
-                    border: `1px solid ${BORDER}`,
-                    boxShadow: isOpen ? "0 10px 30px -15px rgba(11,11,15,0.15)" : "none",
-                  }}
+                  className="transition-all"
+                  style={{ borderTop: `1px solid ${HAIR_STRONG}` }}
                 >
                   <button
                     onClick={() => setOpen(isOpen ? null : i)}
-                    className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left"
+                    className="flex w-full items-center justify-between gap-6 py-8 text-left transition-colors"
                   >
                     <span
-                      style={{ fontFamily: BODY_FONT, fontSize: 17, fontWeight: 600, color: INK }}
+                      style={{
+                        fontFamily: HEADING_FONT,
+                        fontSize: 26,
+                        letterSpacing: "0.01em",
+                        color: INK,
+                        lineHeight: 1.1,
+                      }}
                     >
                       {f.q}
                     </span>
-                    <ChevronDown
-                      className="h-5 w-5 shrink-0 transition-transform"
+                    <span
+                      className="flex h-11 w-11 items-center justify-center rounded-full transition-all duration-500"
                       style={{
+                        background: isOpen ? INK : WHITE,
+                        color: isOpen ? WHITE : INK,
+                        border: `1px solid ${HAIR_STRONG}`,
                         transform: isOpen ? "rotate(180deg)" : "rotate(0)",
-                        color: GOLD,
                       }}
-                    />
+                    >
+                      <ChevronDown className="h-4 w-4" strokeWidth={1.6} />
+                    </span>
                   </button>
                   <div
-                    className="grid transition-all duration-500"
+                    className="grid transition-all duration-700"
                     style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
                   >
                     <div className="overflow-hidden">
                       <p
-                        className="px-6 pb-6"
+                        className="pb-10 pr-16"
                         style={{
                           fontFamily: BODY_FONT,
-                          fontSize: 15,
-                          lineHeight: "26px",
+                          fontSize: 16,
+                          lineHeight: "30px",
                           color: INK_SOFT,
+                          maxWidth: 720,
                         }}
                       >
                         {f.a}
@@ -1170,6 +1162,7 @@ function Faq() {
               </Reveal>
             );
           })}
+          <div style={{ borderTop: `1px solid ${HAIR_STRONG}` }} />
         </div>
       </div>
     </section>
@@ -1177,137 +1170,112 @@ function Faq() {
 }
 
 /* ============================================================
-   CONTACT  (kept dark for premium contrast)
+   CONTACT — white luxury layout
 ============================================================ */
 function Contact() {
   return (
     <section
       id="contact"
-      className="relative w-full overflow-hidden text-white"
-      style={{
-        paddingTop: 140,
-        paddingBottom: 140,
-        background: "radial-gradient(ellipse at top, #1a1a22 0%, #050507 60%)",
-      }}
+      className="relative w-full overflow-hidden"
+      style={{ background: WHITE, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
-      <div
-        className="pointer-events-none absolute inset-0 opacity-30"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 20% 30%, rgba(231,194,122,0.25) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(120,160,255,0.18) 0%, transparent 50%)",
-        }}
-      />
-      <div
-        className="relative mx-auto text-center"
-        style={{
-          maxWidth: 900,
-          paddingLeft: "clamp(20px, 6vw, 80px)",
-          paddingRight: "clamp(20px, 6vw, 80px)",
-        }}
-      >
+      <div className="relative mx-auto text-center" style={{ ...container, maxWidth: 1000 }}>
         <Reveal>
-          <span
-            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 backdrop-blur-md"
-            style={{
-              fontFamily: BODY_FONT,
-              fontSize: 12,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: GOLD_SOFT,
-              fontWeight: 600,
-            }}
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            Get In Touch
-          </span>
+          <Eyebrow>Get In Touch</Eyebrow>
           <h2
-            className="mt-6"
+            className="mt-8"
             style={{
               fontFamily: HEADING_FONT,
-              fontSize: "clamp(44px, 7vw, 88px)",
-              lineHeight: 1,
-              letterSpacing: "0.01em",
+              fontSize: "clamp(56px, 9vw, 132px)",
+              lineHeight: 0.92,
+              letterSpacing: "0.005em",
+              color: INK,
             }}
           >
-            Let's plan your journey
+            Let's plan your
+            <br />
+            <span style={{ fontStyle: "italic", color: GOLD, fontFamily: "'Cormorant Garamond', serif" }}>
+              journey
+            </span>
+            .
           </h2>
           <p
-            className="mt-6 mx-auto"
+            className="mt-8 mx-auto"
             style={{
               fontFamily: BODY_FONT,
               fontSize: 17,
-              lineHeight: "30px",
-              color: "rgba(255,255,255,0.7)",
-              maxWidth: 560,
+              lineHeight: "32px",
+              color: INK_SOFT,
+              maxWidth: 580,
             }}
           >
-            Reach out today for premium travel, airport transfers, and customised
-            holiday packages across South India.
+            Reach out for premium travel, airport transfers, and bespoke holiday
+            packages across South India.
           </p>
         </Reveal>
 
         <Reveal delay={200}>
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
               href="tel:+919188700777"
-              className="inline-flex items-center gap-3 rounded-lg border border-white/20 bg-white/5 px-6 backdrop-blur-md transition-all hover:-translate-y-0.5 hover:bg-white/10"
+              className="inline-flex items-center gap-3 transition-all hover:-translate-y-0.5"
               style={{
-                height: 56,
+                height: 60,
+                padding: "0 32px",
+                borderRadius: 999,
+                background: SOFT,
+                border: `1px solid ${HAIR}`,
+                color: INK,
                 fontFamily: BODY_FONT,
-                fontSize: 16,
-                fontWeight: 600,
-                color: "#fff",
+                fontSize: 15,
+                fontWeight: 500,
               }}
             >
-              <Phone className="h-5 w-5" style={{ color: GOLD_SOFT }} />
+              <Phone className="h-4 w-4" strokeWidth={1.4} style={{ color: GOLD }} />
               +91 91887 00777
             </a>
             <a
               href={WHATSAPP}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-3 rounded-lg px-6 transition-all hover:-translate-y-0.5"
+              className="inline-flex items-center gap-3 transition-all hover:-translate-y-0.5 hover:gap-5"
               style={{
-                height: 56,
-                background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
-                color: "#fff",
+                height: 60,
+                padding: "0 32px",
+                borderRadius: 999,
+                background: INK,
+                color: WHITE,
                 fontFamily: BODY_FONT,
-                fontSize: 16,
-                fontWeight: 600,
-                boxShadow: "0 20px 40px -10px rgba(37,211,102,0.45)",
+                fontSize: 15,
+                fontWeight: 500,
+                letterSpacing: "0.04em",
               }}
             >
-              <MessageCircle className="h-5 w-5" />
               Chat on WhatsApp
+              <ArrowUpRight className="h-4 w-4" strokeWidth={1.4} />
             </a>
           </div>
         </Reveal>
 
         <Reveal delay={350}>
-          <div className="mt-14">
-            <div
-              style={{
-                fontFamily: BODY_FONT,
-                fontSize: 12,
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                color: "rgba(255,255,255,0.5)",
-              }}
-            >
-              Service Areas
-            </div>
-            <div className="mt-4 flex flex-wrap justify-center gap-2">
+          <div className="mt-20">
+            <Eyebrow>Service Areas</Eyebrow>
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
               {["Guruvayur", "Chavakkad", "Thrissur", "Kerala"].map((s) => (
                 <span
                   key={s}
-                  className="rounded-full border border-white/15 bg-white/5 px-4 py-2"
+                  className="inline-flex items-center gap-2 px-5 py-2.5"
                   style={{
+                    borderRadius: 999,
+                    background: SOFT,
+                    border: `1px solid ${HAIR}`,
                     fontFamily: BODY_FONT,
                     fontSize: 13,
-                    color: "rgba(255,255,255,0.85)",
+                    color: INK,
+                    fontWeight: 500,
                   }}
                 >
-                  <MapPin className="mr-1.5 -mt-0.5 inline h-3.5 w-3.5" style={{ color: GOLD_SOFT }} />
+                  <MapPin className="h-3.5 w-3.5" strokeWidth={1.4} style={{ color: GOLD }} />
                   {s}
                 </span>
               ))}
@@ -1315,58 +1283,82 @@ function Contact() {
           </div>
         </Reveal>
       </div>
+
+      {/* Floating WhatsApp button */}
+      <a
+        href={WHATSAPP}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Chat on WhatsApp"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full transition-all hover:-translate-y-1 hover:scale-105"
+        style={{
+          background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+          color: "#fff",
+          boxShadow: "0 20px 50px -10px rgba(37,211,102,0.5)",
+        }}
+      >
+        <MessageCircle className="h-6 w-6" strokeWidth={1.6} />
+      </a>
     </section>
   );
 }
 
 /* ============================================================
-   FOOTER
+   FOOTER — minimal luxury
 ============================================================ */
 function Footer() {
   return (
-    <footer className="relative w-full bg-[#040406] text-white">
+    <footer
+      className="relative w-full"
+      style={{ background: WHITE, color: INK, borderTop: `1px solid ${HAIR}` }}
+    >
       <div
         className="mx-auto"
         style={{
-          maxWidth: 1320,
-          paddingTop: 80,
+          ...container,
+          paddingTop: 100,
           paddingBottom: 40,
-          paddingLeft: "clamp(20px, 6vw, 80px)",
-          paddingRight: "clamp(20px, 6vw, 80px)",
         }}
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-14">
           <div>
             <div
               style={{
                 fontFamily: HEADING_FONT,
-                fontSize: 32,
-                letterSpacing: "0.04em",
-                color: "#fff",
+                fontSize: 40,
+                letterSpacing: "0.06em",
+                color: INK,
+                lineHeight: 1,
               }}
             >
               MARSHAL
             </div>
             <p
-              className="mt-4"
+              className="mt-5"
               style={{
                 fontFamily: BODY_FONT,
                 fontSize: 14,
-                lineHeight: "24px",
-                color: "rgba(255,255,255,0.55)",
+                lineHeight: "26px",
+                color: INK_SOFT,
+                maxWidth: 280,
               }}
             >
-              Premium tourist vehicles, airport transfers and customised holiday
+              Premium tourist vehicles, airport transfers and bespoke holiday
               packages across South India.
             </p>
-            <div className="mt-6 flex gap-3">
+            <div className="mt-8 flex gap-2.5">
               {[Facebook, Instagram, Youtube, Mail].map((Icon, i) => (
                 <a
                   key={i}
                   href="#"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-all hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/10"
+                  className="flex h-10 w-10 items-center justify-center rounded-full transition-all hover:-translate-y-0.5"
+                  style={{
+                    background: SOFT,
+                    border: `1px solid ${HAIR}`,
+                    color: INK,
+                  }}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-4 w-4" strokeWidth={1.4} />
                 </a>
               ))}
             </div>
@@ -1375,62 +1367,40 @@ function Footer() {
           <FooterCol title="Quick Links" items={["Home", "About Us", "Fleet", "Destinations", "Contact"]} />
           <FooterCol
             title="Services"
-            items={["Family Tours", "Honeymoon Packages", "Group Tours", "Airport Transfers", "Resort Booking"]}
+            items={["Family Tours", "Honeymoon", "Group Tours", "Airport Transfers", "Resort Booking"]}
           />
 
           <div>
-            <div
-              style={{
-                fontFamily: BODY_FONT,
-                fontSize: 13,
-                fontWeight: 600,
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-                color: "rgba(255,255,255,0.5)",
-              }}
-            >
-              Contact
-            </div>
+            <ColTitle>Contact</ColTitle>
             <ul
-              className="mt-6 space-y-3"
+              className="mt-7 space-y-4"
               style={{
                 fontFamily: BODY_FONT,
                 fontSize: 14,
-                color: "rgba(255,255,255,0.75)",
+                color: INK_SOFT,
               }}
             >
               <li className="flex items-start gap-3">
-                <Phone className="h-4 w-4 mt-1" style={{ color: GOLD_SOFT }} />
+                <Phone className="h-4 w-4 mt-1" strokeWidth={1.4} style={{ color: GOLD }} />
                 +91 91887 00777
               </li>
               <li className="flex items-start gap-3">
-                <MapPin className="h-4 w-4 mt-1" style={{ color: GOLD_SOFT }} />
+                <MapPin className="h-4 w-4 mt-1" strokeWidth={1.4} style={{ color: GOLD }} />
                 Guruvayur, Thrissur, Kerala
-              </li>
-              <li>
-                <a
-                  href={WHATSAPP}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 mt-2 rounded-lg px-4 py-2 transition-all hover:-translate-y-0.5"
-                  style={{
-                    background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
-                    fontFamily: BODY_FONT,
-                    fontSize: 13,
-                    fontWeight: 600,
-                  }}
-                >
-                  <MessageCircle className="h-4 w-4" />
-                  WhatsApp Us
-                </a>
               </li>
             </ul>
           </div>
         </div>
 
         <div
-          className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/10 pt-8"
-          style={{ fontFamily: BODY_FONT, fontSize: 13, color: "rgba(255,255,255,0.5)" }}
+          className="mt-20 flex flex-col sm:flex-row items-center justify-between gap-4 pt-8"
+          style={{
+            borderTop: `1px solid ${HAIR}`,
+            fontFamily: BODY_FONT,
+            fontSize: 12,
+            color: INK_MUTE,
+            letterSpacing: "0.04em",
+          }}
         >
           <span>© {new Date().getFullYear()} Marshal Holidays. All rights reserved.</span>
           <span>Crafted with care for luxury travel.</span>
@@ -1440,31 +1410,37 @@ function Footer() {
   );
 }
 
+function ColTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      style={{
+        fontFamily: BODY_FONT,
+        fontSize: 11,
+        fontWeight: 500,
+        letterSpacing: "0.28em",
+        textTransform: "uppercase",
+        color: INK_MUTE,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 function FooterCol({ title, items }: { title: string; items: string[] }) {
   return (
     <div>
-      <div
-        style={{
-          fontFamily: BODY_FONT,
-          fontSize: 13,
-          fontWeight: 600,
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
-          color: "rgba(255,255,255,0.5)",
-        }}
-      >
-        {title}
-      </div>
-      <ul className="mt-6 space-y-3">
+      <ColTitle>{title}</ColTitle>
+      <ul className="mt-7 space-y-4">
         {items.map((it) => (
           <li key={it}>
             <a
               href="#"
-              className="inline-block transition-all hover:translate-x-1 hover:text-white"
+              className="inline-block transition-all hover:translate-x-1"
               style={{
                 fontFamily: BODY_FONT,
                 fontSize: 14,
-                color: "rgba(255,255,255,0.7)",
+                color: INK_SOFT,
               }}
             >
               {it}
