@@ -1318,6 +1318,8 @@ function Contact() {
               className="h-full w-full object-cover"
             />
           </div>
+        </Reveal>
+
 
         <Reveal delay={200}>
           <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-4">
