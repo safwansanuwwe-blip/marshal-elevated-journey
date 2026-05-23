@@ -6,6 +6,7 @@ import varkalaImg from "@/assets/varkala.jpg";
 import yercaudImg from "@/assets/yercaud.jpg";
 import ootyImg from "@/assets/ooty.jpg";
 import kodaikanalImg from "@/assets/kodaikanal.jpg";
+import hyderabadImg from "@/assets/hyderabad.jpg";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -450,6 +451,7 @@ const DESTINATIONS = [
   { name: "Kodaikanal", region: "Tamil Nadu", img: kodaikanalImg },
   { name: "Mysore", region: "Karnataka", img: "https://images.unsplash.com/photo-1600100397196-1a7bb3a09d6e?auto=format&fit=crop&w=1200&q=80" },
   { name: "Coorg", region: "Karnataka", img: coorgImg },
+  { name: "Hyderabad", region: "Telangana", img: hyderabadImg },
   { name: "Dhanushkodi", region: "Tamil Nadu", img: dhanushkodiImg },
   { name: "Yercaud", region: "Tamil Nadu", img: yercaudImg },
   { name: "Varkala", region: "Kerala", img: varkalaImg },
