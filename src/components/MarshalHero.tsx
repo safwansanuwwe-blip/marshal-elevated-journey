@@ -1,4 +1,3 @@
-import { useRef, useState } from "react";
 import { ArrowRight, Menu, Plane } from "lucide-react";
 import busImage from "@/assets/marshal-bus.png";
 import logoImage from "@/assets/marshal-logo.png";
@@ -7,24 +6,6 @@ import bgImage from "@/assets/marshal-bg.jpg";
 const NAV_LINKS = ["Home", "Fleet", "Packages", "About Us", "Contact"];
 
 export default function MarshalHero() {
-  const [rotation, setRotation] = useState({ x: -8, y: 18 });
-  const dragRef = useRef<{ x: number; y: number; rx: number; ry: number } | null>(null);
-
-  const onPointerDown = (e: React.PointerEvent) => {
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
-    dragRef.current = { x: e.clientX, y: e.clientY, rx: rotation.x, ry: rotation.y };
-  };
-  const onPointerMove = (e: React.PointerEvent) => {
-    if (!dragRef.current) return;
-    const dx = e.clientX - dragRef.current.x;
-    const dy = e.clientY - dragRef.current.y;
-    setRotation({
-      x: Math.max(-30, Math.min(30, dragRef.current.rx - dy * 0.4)),
-      y: dragRef.current.ry + dx * 0.6,
-    });
-  };
-  const onPointerUp = () => { dragRef.current = null; };
-
   return (
     <section
       className="relative w-full overflow-hidden bg-[#010101] text-white"
@@ -143,26 +124,14 @@ export default function MarshalHero() {
       {/* Featured bus image */}
       <div
         className="absolute left-1/2 z-20 -translate-x-1/2 w-full px-4 sm:px-6 bottom-[42%] sm:bottom-[32%] md:bottom-[26%]"
-        style={{ maxWidth: "1200px", perspective: "1400px" }}
+        style={{ maxWidth: "1200px" }}
       >
         <div className="animate-[float_6s_ease-in-out_infinite]">
-          <div
-            className="relative touch-none cursor-grab active:cursor-grabbing"
-            onPointerDown={onPointerDown}
-            onPointerMove={onPointerMove}
-            onPointerUp={onPointerUp}
-            onPointerCancel={onPointerUp}
-            style={{
-              transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
-              transformStyle: "preserve-3d",
-              transition: dragRef.current ? "none" : "transform 0.4s ease-out",
-            }}
-          >
+          <div className="relative">
             <img
               src={busImage}
               alt="Marshal Holidays luxury tourist bus"
-              draggable={false}
-              className="relative z-10 mx-auto w-full max-w-[95vw] sm:max-w-[800px] md:max-w-[900px] drop-shadow-[0_30px_40px_rgba(0,0,0,0.55)] select-none"
+              className="relative z-10 mx-auto w-full max-w-[95vw] sm:max-w-[800px] md:max-w-[900px] drop-shadow-[0_30px_40px_rgba(0,0,0,0.55)]"
             />
             {/* Soft ground shadow */}
             <div
