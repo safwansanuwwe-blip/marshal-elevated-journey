@@ -1461,10 +1461,17 @@ function Footer() {
               packages across South India.
             </p>
             <div className="mt-8 flex gap-2.5">
-              {[Facebook, Instagram, Youtube, Mail].map((Icon, i) => (
+              {[
+                { Icon: Facebook, href: "https://www.facebook.com/marshalholidays" },
+                { Icon: Instagram, href: "https://www.instagram.com/marshalholidays" },
+                { Icon: Youtube, href: "https://www.youtube.com/@marshalholidays" },
+                { Icon: Mail, href: "mailto:info@marshalholidays.com" },
+              ].map(({ Icon, href }, i) => (
                 <a
                   key={i}
-                  href="#"
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="flex h-10 w-10 items-center justify-center rounded-full transition-all hover:-translate-y-0.5"
                   style={{
                     background: SOFT,
@@ -1476,6 +1483,7 @@ function Footer() {
                 </a>
               ))}
             </div>
+
           </div>
 
           <FooterCol title="Quick Links" items={["Home", "About Us", "Fleet", "Destinations", "Contact"]} />
