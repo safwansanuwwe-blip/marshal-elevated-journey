@@ -3,7 +3,15 @@ import busImage from "@/assets/marshal-bus.png";
 import logoImage from "@/assets/marshal-logo.png";
 import bgImage from "@/assets/marshal-bg.jpg";
 
-const NAV_LINKS = ["Home", "Fleet", "Packages", "About Us", "Contact"];
+const NAV_LINKS: { label: string; href: string }[] = [
+  { label: "Home", href: "#" },
+  { label: "Fleet", href: "#fleet" },
+  { label: "Packages", href: "#services" },
+  { label: "About Us", href: "#about" },
+  { label: "Contact", href: "#contact" },
+];
+const WHATSAPP = "https://wa.me/919188700777";
+
 
 export default function MarshalHero() {
   return (
