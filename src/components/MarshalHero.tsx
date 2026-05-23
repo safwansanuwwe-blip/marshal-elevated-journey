@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { ArrowRight, Menu, Plane } from "lucide-react";
 import busImage from "@/assets/marshal-bus.png";
 import logoImage from "@/assets/marshal-logo.png";
