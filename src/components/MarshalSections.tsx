@@ -10,6 +10,8 @@ import hyderabadImg from "@/assets/hyderabad.jpg";
 import wayanadImg from "@/assets/wayanad.jpg";
 import thekkadyImg from "@/assets/thekkady.jpg";
 import mysoreImg from "@/assets/mysore.jpg";
+import pondicherryImg from "@/assets/pondicherry.jpg";
+import chikmagalurImg from "@/assets/chikmagalur.jpg";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -462,8 +464,8 @@ const DESTINATIONS = [
   { name: "Thekkady", region: "Kerala", img: thekkadyImg },
   { name: "Alleppey", region: "Kerala", img: alleppeyImg },
   { name: "Goa", region: "Goa", img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80" },
-  { name: "Pondicherry", region: "Tamil Nadu", img: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80" },
-  { name: "Chikmagalur", region: "Karnataka", img: "https://images.unsplash.com/photo-1572883454114-1cf0031ede2a?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Pondicherry", region: "Tamil Nadu", img: pondicherryImg },
+  { name: "Chikmagalur", region: "Karnataka", img: chikmagalurImg },
 ];
 
 function Destinations() {
