@@ -80,9 +80,9 @@ export default function MarshalHero() {
         {/* Center - links */}
         <ul className="hidden lg:flex items-center gap-10">
           {NAV_LINKS.map((link) => (
-            <li key={link}>
+            <li key={link.label}>
               <a
-                href="#"
+                href={link.href}
                 className="relative transition-colors hover:text-white"
                 style={{
                   fontFamily: "Inter, sans-serif",
@@ -92,11 +92,12 @@ export default function MarshalHero() {
                   letterSpacing: "-0.32px",
                 }}
               >
-                {link}
+                {link.label}
                 <span className="absolute -bottom-1 left-0 h-px w-0 bg-white transition-all duration-300 hover:w-full" />
               </a>
             </li>
           ))}
+
         </ul>
 
         {/* Right - actions */}
