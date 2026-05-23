@@ -185,7 +185,8 @@ export default function MarshalHero() {
               experiences. Premium tourist buses for family trips, group tours,
               and corporate journeys.
             </p>
-            <button
+            <a
+              href="#fleet"
               className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-6 transition-all hover:-translate-y-0.5 hover:shadow-2xl"
               style={{
                 height: "48px",
@@ -200,7 +201,8 @@ export default function MarshalHero() {
             >
               View Fleet
               <ArrowRight className="h-4 w-4" />
-            </button>
+            </a>
+
           </div>
 
           {/* Right - tagline */}
