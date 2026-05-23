@@ -1,8 +1,6 @@
 import { ArrowRight, Menu, Plane } from "lucide-react";
 import busImage from "@/assets/marshal-bus.png";
-import posterImage from "@/assets/kerala-road-poster.jpg";
 import logoImage from "@/assets/marshal-logo.png";
-import keralaVideo from "@/videos/kerala-hero.mp4.asset.json";
 
 const NAV_LINKS = ["Home", "Fleet", "Packages", "About Us", "Contact"];
 
@@ -12,38 +10,8 @@ export default function MarshalHero() {
       className="relative w-full overflow-hidden bg-[#010101] text-white"
       style={{ minHeight: "600px", height: "100vh", maxHeight: "965px" }}
     >
-      {/* Background video */}
-      <video
-        className="absolute inset-0 h-full w-full object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-        poster={posterImage}
-      >
-        <source src={keralaVideo.url} type="video/mp4" />
-      </video>
-
-
-      {/* Gradient overlays */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 z-10"
-        style={{
-          height: "260px",
-          background:
-            "linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0))",
-        }}
-      />
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-10"
-        style={{
-          height: "260px",
-          background:
-            "linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0))",
-        }}
-      />
-      {/* Extra dim to keep contrast cinematic */}
-      <div className="pointer-events-none absolute inset-0 z-10 bg-black/30" />
+      {/* Plain dark background */}
+      <div className="absolute inset-1 bg-[#010101]" />
 
       {/* Decorative MARSHAL typography */}
       <div
