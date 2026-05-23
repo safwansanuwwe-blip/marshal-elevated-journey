@@ -9,6 +9,7 @@ import kodaikanalImg from "@/assets/kodaikanal.jpg";
 import hyderabadImg from "@/assets/hyderabad.jpg";
 import wayanadImg from "@/assets/wayanad.jpg";
 import thekkadyImg from "@/assets/thekkady.jpg";
+import mysoreImg from "@/assets/mysore.jpg";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -451,7 +452,7 @@ const DESTINATIONS = [
   { name: "Munnar", region: "Kerala", img: "https://images.unsplash.com/photo-1609766975161-d390cdc7c89e?auto=format&fit=crop&w=1200&q=80" },
   { name: "Ooty", region: "Tamil Nadu", img: ootyImg },
   { name: "Kodaikanal", region: "Tamil Nadu", img: kodaikanalImg },
-  { name: "Mysore", region: "Karnataka", img: "https://images.unsplash.com/photo-1600100397196-1a7bb3a09d6e?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Mysore", region: "Karnataka", img: mysoreImg },
   { name: "Coorg", region: "Karnataka", img: coorgImg },
   { name: "Hyderabad", region: "Telangana", img: hyderabadImg },
   { name: "Dhanushkodi", region: "Tamil Nadu", img: dhanushkodiImg },
