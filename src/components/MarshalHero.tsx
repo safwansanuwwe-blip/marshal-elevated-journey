@@ -29,6 +29,9 @@ export default function MarshalHero() {
 
   const handleNavClick = () => setMenuOpen(false);
 
+  return (
+
+
     <section
       className="relative w-full overflow-hidden bg-[#010101] text-white"
       style={{ minHeight: "600px", height: "100vh", maxHeight: "965px" }}
