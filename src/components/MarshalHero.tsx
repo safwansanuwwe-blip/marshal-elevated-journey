@@ -12,9 +12,14 @@ export default function MarshalHero() {
       style={{ minHeight: "600px", height: "100vh", maxHeight: "965px" }}
     >
       {/* Cinematic background */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${bgImage})` }}
+      <video
+        className="absolute inset-0 h-full w-full object-cover"
+        src="/marshal-bg.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster={bgImage}
       />
       <div className="absolute inset-0 bg-black/30" />
 
