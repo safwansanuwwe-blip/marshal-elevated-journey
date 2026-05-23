@@ -103,13 +103,16 @@ export default function MarshalHero() {
         {/* Right - actions */}
         <div className="flex items-center gap-5">
           <a
-            href="#"
+            href={WHATSAPP}
+            target="_blank"
+            rel="noopener noreferrer"
             className="hidden md:inline text-white/90 hover:text-white transition-colors"
             style={{ fontFamily: "Inter, sans-serif", fontSize: "15px", fontWeight: 500 }}
           >
             Book Now
           </a>
-          <button
+          <a
+            href="#fleet"
             className="group inline-flex items-center gap-2 rounded-lg bg-white px-5 transition-all hover:shadow-2xl hover:-translate-y-0.5"
             style={{
               height: "48px",
@@ -123,7 +126,8 @@ export default function MarshalHero() {
           >
             <Plane className="h-4 w-4" />
             Explore
-          </button>
+          </a>
+
           <button className="lg:hidden text-white" aria-label="Menu">
             <Menu className="h-6 w-6" />
           </button>
