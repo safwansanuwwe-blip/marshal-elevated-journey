@@ -86,7 +86,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Luxury chauffeur-driven journeys across Kerala. Backwaters, hills, beaches — crafted by Marshal Holidays.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://marshal-elevated-journey.lovable.app" },
+      { property: "og:url", content: "https://marshal-elevated-journey.vercel.app" },
       {
         property: "og:image",
         content:
@@ -108,7 +108,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico" },
-      { rel: "canonical", href: "https://marshal-elevated-journey.lovable.app" },
+      { rel: "canonical", href: "https://marshal-elevated-journey.vercel.app" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
