@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import alleppeyImg from "@/assets/alleppey.jpg";
+import coorgImg from "@/assets/coorg.jpg";
+import dhanushkodiImg from "@/assets/dhanushkodi.jpg";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -443,7 +445,8 @@ const DESTINATIONS = [
   { name: "Ooty", region: "Tamil Nadu", img: "https://images.unsplash.com/photo-1580793241537-fb236ddca8a3?auto=format&fit=crop&w=1200&q=80" },
   { name: "Kodaikanal", region: "Tamil Nadu", img: "https://images.unsplash.com/photo-1591018653829-f5ad7eef3186?auto=format&fit=crop&w=1200&q=80" },
   { name: "Mysore", region: "Karnataka", img: "https://images.unsplash.com/photo-1600100397196-1a7bb3a09d6e?auto=format&fit=crop&w=1200&q=80" },
-  { name: "Coorg", region: "Karnataka", img: "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Coorg", region: "Karnataka", img: coorgImg },
+  { name: "Dhanushkodi", region: "Tamil Nadu", img: dhanushkodiImg },
   { name: "Wayanad", region: "Kerala", img: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=1200&q=80" },
   { name: "Alleppey", region: "Kerala", img: alleppeyImg },
   { name: "Goa", region: "Goa", img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80" },
