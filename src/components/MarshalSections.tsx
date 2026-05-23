@@ -651,8 +651,11 @@ function Destinations() {
                   <img
                     src={d.img}
                     alt={d.name}
+                    loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-cover transition-transform duration-[1800ms] group-hover:scale-110"
                   />
+
                   <div
                     className="absolute inset-0"
                     style={{
