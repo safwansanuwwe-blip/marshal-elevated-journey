@@ -12,6 +12,7 @@ import thekkadyImg from "@/assets/thekkady.jpg";
 import mysoreImg from "@/assets/mysore.jpg";
 import pondicherryImg from "@/assets/pondicherry.jpg";
 import chikmagalurImg from "@/assets/chikmagalur.jpg";
+import munnarImg from "@/assets/munnar.jpg";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -451,7 +452,7 @@ function Services() {
    DESTINATIONS — cinematic slider
 ============================================================ */
 const DESTINATIONS = [
-  { name: "Munnar", region: "Kerala", img: "https://images.unsplash.com/photo-1609766975161-d390cdc7c89e?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Munnar", region: "Kerala", img: munnarImg },
   { name: "Ooty", region: "Tamil Nadu", img: ootyImg },
   { name: "Kodaikanal", region: "Tamil Nadu", img: kodaikanalImg },
   { name: "Mysore", region: "Karnataka", img: mysoreImg },
@@ -902,7 +903,7 @@ function Fleets() {
 ============================================================ */
 const RESORTS = [
   { name: "Guruvayoor", img: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80" },
-  { name: "Munnar", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Munnar", img: munnarImg },
   { name: "Thekkady", img: thekkadyImg },
   { name: "Wayanad", img: wayanadImg },
   { name: "Varkala", img: varkalaImg },
