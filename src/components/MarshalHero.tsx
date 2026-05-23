@@ -124,26 +124,14 @@ export default function MarshalHero() {
       {/* Featured bus image */}
       <div
         className="absolute left-1/2 z-20 -translate-x-1/2 w-full px-4 sm:px-6 bottom-[42%] sm:bottom-[32%] md:bottom-[26%]"
-        style={{ maxWidth: "1200px", perspective: "1400px" }}
+        style={{ maxWidth: "1200px" }}
       >
         <div className="animate-[float_6s_ease-in-out_infinite]">
-          <div
-            className="relative touch-none cursor-grab active:cursor-grabbing"
-            onPointerDown={onPointerDown}
-            onPointerMove={onPointerMove}
-            onPointerUp={onPointerUp}
-            onPointerCancel={onPointerUp}
-            style={{
-              transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
-              transformStyle: "preserve-3d",
-              transition: dragRef.current ? "none" : "transform 0.4s ease-out",
-            }}
-          >
+          <div className="relative">
             <img
               src={busImage}
               alt="Marshal Holidays luxury tourist bus"
-              draggable={false}
-              className="relative z-10 mx-auto w-full max-w-[95vw] sm:max-w-[800px] md:max-w-[900px] drop-shadow-[0_30px_40px_rgba(0,0,0,0.55)] select-none"
+              className="relative z-10 mx-auto w-full max-w-[95vw] sm:max-w-[800px] md:max-w-[900px] drop-shadow-[0_30px_40px_rgba(0,0,0,0.55)]"
             />
             {/* Soft ground shadow */}
             <div
