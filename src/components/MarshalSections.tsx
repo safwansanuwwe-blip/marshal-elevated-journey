@@ -226,10 +226,14 @@ function About() {
               className="absolute bottom-0 right-0 h-[58%] w-[56%] overflow-hidden"
               style={{ borderRadius: RADIUS, boxShadow: SHADOW_LIFT }}
             >
-              <img
-                src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80"
-                alt="Premium travel"
-                className="h-full w-full object-cover transition-transform duration-[1400ms] hover:scale-105"
+              <video
+                src="/videos/marshal-about.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                className="h-full w-full object-cover"
               />
             </div>
 
