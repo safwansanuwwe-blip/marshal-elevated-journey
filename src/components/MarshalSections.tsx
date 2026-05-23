@@ -216,10 +216,14 @@ function About() {
               className="absolute left-0 top-0 h-[80%] w-[70%] overflow-hidden"
               style={{ borderRadius: RADIUS, boxShadow: SHADOW_LIFT }}
             >
-              <img
-                src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1600&q=80"
-                alt="Kerala landscape"
-                className="h-full w-full object-cover transition-transform duration-[1400ms] hover:scale-105"
+              <video
+                src="/videos/marshal-years.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                className="h-full w-full object-cover"
               />
             </div>
             <div
@@ -249,8 +253,8 @@ function About() {
                 boxShadow: "0 30px 60px -20px rgba(17,17,17,0.18)",
               }}
             >
-              <div style={{ fontFamily: HEADING_FONT, fontSize: 44, lineHeight: 1, color: INK }}>
-                12<span style={{ color: GOLD }}>+</span>
+              <div style={{ fontFamily: HEADING_FONT, fontSize: 28, lineHeight: 1.1, color: INK }}>
+                Years <span style={{ color: GOLD }}>of</span>
               </div>
               <div
                 className="mt-2"
@@ -263,7 +267,7 @@ function About() {
                   fontWeight: 500,
                 }}
               >
-                Years of Service
+                Service
               </div>
             </div>
             <div
