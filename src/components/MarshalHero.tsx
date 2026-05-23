@@ -1,6 +1,7 @@
 import { ArrowRight, Menu, Plane } from "lucide-react";
 import busImage from "@/assets/marshal-bus.png";
 import logoImage from "@/assets/marshal-logo.png";
+import bgImage from "@/assets/marshal-bg.jpg";
 
 const NAV_LINKS = ["Home", "Fleet", "Packages", "About Us", "Contact"];
 
@@ -10,8 +11,13 @@ export default function MarshalHero() {
       className="relative w-full overflow-hidden bg-[#010101] text-white"
       style={{ minHeight: "600px", height: "100vh", maxHeight: "965px" }}
     >
-      {/* Plain dark background */}
-      <div className="absolute inset-1 bg-[#010101]" />
+      {/* Cinematic background */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${bgImage})` }}
+      />
+      <div className="absolute inset-0 bg-black/30" />
+
 
       {/* Decorative MARSHAL typography */}
       <div
