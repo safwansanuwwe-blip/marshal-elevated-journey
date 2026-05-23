@@ -1486,11 +1486,27 @@ function Footer() {
 
           </div>
 
-          <FooterCol title="Quick Links" items={["Home", "About Us", "Fleet", "Destinations", "Contact"]} />
+          <FooterCol
+            title="Quick Links"
+            items={[
+              { label: "Home", href: "#" },
+              { label: "About Us", href: "#about" },
+              { label: "Fleet", href: "#fleet" },
+              { label: "Destinations", href: "#destinations" },
+              { label: "Contact", href: "#contact" },
+            ]}
+          />
           <FooterCol
             title="Services"
-            items={["Family Tours", "Honeymoon", "Group Tours", "Airport Transfers", "Resort Booking"]}
+            items={[
+              { label: "Family Tours", href: "#services" },
+              { label: "Honeymoon", href: "#services" },
+              { label: "Group Tours", href: "#services" },
+              { label: "Airport Transfers", href: "#services" },
+              { label: "Resort Booking", href: "#services" },
+            ]}
           />
+
 
           <div>
             <ColTitle>Contact</ColTitle>
