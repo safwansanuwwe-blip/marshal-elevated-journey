@@ -7,6 +7,24 @@ import bgImage from "@/assets/marshal-bg.jpg";
 const NAV_LINKS = ["Home", "Fleet", "Packages", "About Us", "Contact"];
 
 export default function MarshalHero() {
+  const [rotation, setRotation] = useState({ x: -8, y: 18 });
+  const dragRef = useRef<{ x: number; y: number; rx: number; ry: number } | null>(null);
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    dragRef.current = { x: e.clientX, y: e.clientY, rx: rotation.x, ry: rotation.y };
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!dragRef.current) return;
+    const dx = e.clientX - dragRef.current.x;
+    const dy = e.clientY - dragRef.current.y;
+    setRotation({
+      x: Math.max(-30, Math.min(30, dragRef.current.rx - dy * 0.4)),
+      y: dragRef.current.ry + dx * 0.6,
+    });
+  };
+  const onPointerUp = () => { dragRef.current = null; };
+
   return (
     <section
       className="relative w-full overflow-hidden bg-[#010101] text-white"
