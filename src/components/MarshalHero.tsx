@@ -1,6 +1,7 @@
-import { ArrowRight, Compass, Menu, Plane } from "lucide-react";
+import { ArrowRight, Menu, Plane } from "lucide-react";
 import busImage from "@/assets/marshal-bus.png";
 import posterImage from "@/assets/kerala-road-poster.jpg";
+import logoImage from "@/assets/marshal-logo.png";
 import keralaVideo from "@/videos/kerala-hero.mp4.asset.json";
 
 const NAV_LINKS = ["Home", "Fleet", "Packages", "About Us", "Contact"];
@@ -73,15 +74,11 @@ export default function MarshalHero() {
       >
         {/* Left - logo */}
         <a href="#" className="flex items-center gap-3 group">
-          <span className="grid h-10 w-10 place-items-center rounded-full bg-white/10 backdrop-blur-md ring-1 ring-white/20 transition-all group-hover:bg-white/20">
-            <Compass className="h-5 w-5 text-white" />
-          </span>
-          <span
-            className="hidden sm:inline text-white"
-            style={{ fontFamily: "Inter, sans-serif", fontSize: "24px", fontWeight: 600 }}
-          >
-            Marshal Holidays
-          </span>
+          <img
+            src={logoImage}
+            alt="Marshal Holidays"
+            className="h-9 sm:h-11 w-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] transition-transform group-hover:scale-105"
+          />
         </a>
 
         {/* Center - links */}
