@@ -145,11 +145,83 @@ export default function MarshalHero() {
             Explore
           </a>
 
-          <button className="lg:hidden text-white" aria-label="Menu">
+          <button
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            className="lg:hidden text-white p-2 -mr-2 relative z-50"
+            aria-label="Open menu"
+            aria-expanded={menuOpen}
+          >
             <Menu className="h-6 w-6" />
           </button>
         </div>
       </nav>
+
+      {/* Mobile menu overlay */}
+      <div
+        className={`lg:hidden fixed inset-0 z-[60] transition-opacity duration-300 ${
+          menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        aria-hidden={!menuOpen}
+      >
+        <div
+          className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+          onClick={() => setMenuOpen(false)}
+        />
+        <div
+          className={`absolute right-0 top-0 h-full w-[85%] max-w-sm bg-[#0a0a0a] shadow-2xl transition-transform duration-300 ease-out flex flex-col ${
+            menuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="flex items-center justify-between px-6 py-6 border-b border-white/10">
+            <img src={logoImage} alt="Marshal Holidays" className="h-9 w-auto object-contain" />
+            <button
+              type="button"
+              onClick={() => setMenuOpen(false)}
+              className="text-white p-2 -mr-2"
+              aria-label="Close menu"
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+          <ul className="flex flex-col px-6 py-8 gap-2">
+            {NAV_LINKS.map((link) => (
+              <li key={link.label}>
+                <a
+                  href={link.href}
+                  onClick={handleNavClick}
+                  className="block py-3 text-white/90 hover:text-white border-b border-white/5 transition-colors"
+                  style={{ fontFamily: "Inter, sans-serif", fontSize: "18px", fontWeight: 500 }}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-auto px-6 pb-10 flex flex-col gap-3">
+            <a
+              href={WHATSAPP}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleNavClick}
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 h-12 text-[#272835] font-semibold"
+              style={{ fontFamily: "Inter, sans-serif" }}
+            >
+              Book Now
+            </a>
+            <a
+              href="#fleet"
+              onClick={handleNavClick}
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 text-white px-5 h-12 font-semibold"
+              style={{ fontFamily: "Inter, sans-serif" }}
+            >
+              <Plane className="h-4 w-4" />
+              Explore Fleet
+            </a>
+          </div>
+        </div>
+      </div>
+
 
       {/* Featured bus image */}
       <div
