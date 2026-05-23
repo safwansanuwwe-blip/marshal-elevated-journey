@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import alleppeyImg from "@/assets/alleppey.jpg";
 import coorgImg from "@/assets/coorg.jpg";
 import dhanushkodiImg from "@/assets/dhanushkodi.jpg";
+import varkalaImg from "@/assets/varkala.jpg";
+import yercaudImg from "@/assets/yercaud.jpg";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -447,6 +449,8 @@ const DESTINATIONS = [
   { name: "Mysore", region: "Karnataka", img: "https://images.unsplash.com/photo-1600100397196-1a7bb3a09d6e?auto=format&fit=crop&w=1200&q=80" },
   { name: "Coorg", region: "Karnataka", img: coorgImg },
   { name: "Dhanushkodi", region: "Tamil Nadu", img: dhanushkodiImg },
+  { name: "Yercaud", region: "Tamil Nadu", img: yercaudImg },
+  { name: "Varkala", region: "Kerala", img: varkalaImg },
   { name: "Wayanad", region: "Kerala", img: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=1200&q=80" },
   { name: "Alleppey", region: "Kerala", img: alleppeyImg },
   { name: "Goa", region: "Goa", img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80" },
@@ -891,7 +895,7 @@ const RESORTS = [
   { name: "Munnar", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80" },
   { name: "Thekkady", img: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80" },
   { name: "Wayanad", img: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80" },
-  { name: "Varkala", img: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Varkala", img: varkalaImg },
   { name: "Alleppey", img: alleppeyImg },
 ];
 
