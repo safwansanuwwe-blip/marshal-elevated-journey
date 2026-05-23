@@ -27,7 +27,6 @@ export default function MarshalHero() {
         muted
         loop
         playsInline
-        preload="metadata"
         poster={bgImage}
       />
       <video
@@ -37,10 +36,8 @@ export default function MarshalHero() {
         muted
         loop
         playsInline
-        preload="metadata"
         poster={bgImage}
       />
-
       <div className="absolute inset-0 bg-black/30" />
 
 

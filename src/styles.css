@@ -157,29 +157,3 @@
   animation: fade-in 0.9s ease-out both;
 }
 
-
-/* Mobile performance + smooth scroll */
-html {
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-}
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-body {
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: none;
-  text-rendering: optimizeSpeed;
-}
-img, video {
-  max-width: 100%;
-  height: auto;
-}
-@media (max-width: 768px) {
-  /* Reduce blur cost on mobile */
-  .mobile-no-blur { filter: none !important; backdrop-filter: none !important; }
-}
