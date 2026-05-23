@@ -138,7 +138,7 @@ export default function MarshalHero() {
 
       {/* Featured bus image */}
       <div
-        className="absolute left-1/2 z-20 -translate-x-1/2 w-full px-4 sm:px-6 bottom-[30%] sm:bottom-[28%] md:bottom-[26%]"
+        className="absolute left-1/2 z-20 -translate-x-1/2 w-full px-4 sm:px-6 bottom-[42%] sm:bottom-[32%] md:bottom-[26%]"
         style={{ maxWidth: "1200px" }}
       >
         <div className="relative animate-[float_6s_ease-in-out_infinite]">
