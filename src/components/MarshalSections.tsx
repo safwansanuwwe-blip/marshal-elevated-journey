@@ -1461,10 +1461,17 @@ function Footer() {
               packages across South India.
             </p>
             <div className="mt-8 flex gap-2.5">
-              {[Facebook, Instagram, Youtube, Mail].map((Icon, i) => (
+              {[
+                { Icon: Facebook, href: "https://www.facebook.com/marshalholidays" },
+                { Icon: Instagram, href: "https://www.instagram.com/marshalholidays" },
+                { Icon: Youtube, href: "https://www.youtube.com/@marshalholidays" },
+                { Icon: Mail, href: "mailto:info@marshalholidays.com" },
+              ].map(({ Icon, href }, i) => (
                 <a
                   key={i}
-                  href="#"
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="flex h-10 w-10 items-center justify-center rounded-full transition-all hover:-translate-y-0.5"
                   style={{
                     background: SOFT,
@@ -1476,13 +1483,30 @@ function Footer() {
                 </a>
               ))}
             </div>
+
           </div>
 
-          <FooterCol title="Quick Links" items={["Home", "About Us", "Fleet", "Destinations", "Contact"]} />
+          <FooterCol
+            title="Quick Links"
+            items={[
+              { label: "Home", href: "#" },
+              { label: "About Us", href: "#about" },
+              { label: "Fleet", href: "#fleet" },
+              { label: "Destinations", href: "#destinations" },
+              { label: "Contact", href: "#contact" },
+            ]}
+          />
           <FooterCol
             title="Services"
-            items={["Family Tours", "Honeymoon", "Group Tours", "Airport Transfers", "Resort Booking"]}
+            items={[
+              { label: "Family Tours", href: "#services" },
+              { label: "Honeymoon", href: "#services" },
+              { label: "Group Tours", href: "#services" },
+              { label: "Airport Transfers", href: "#services" },
+              { label: "Resort Booking", href: "#services" },
+            ]}
           />
+
 
           <div>
             <ColTitle>Contact</ColTitle>
@@ -1541,15 +1565,15 @@ function ColTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-function FooterCol({ title, items }: { title: string; items: string[] }) {
+function FooterCol({ title, items }: { title: string; items: { label: string; href: string }[] }) {
   return (
     <div>
       <ColTitle>{title}</ColTitle>
       <ul className="mt-7 space-y-4">
         {items.map((it) => (
-          <li key={it}>
+          <li key={it.label}>
             <a
-              href="#"
+              href={it.href}
               className="inline-block transition-all hover:translate-x-1"
               style={{
                 fontFamily: BODY_FONT,
@@ -1557,7 +1581,7 @@ function FooterCol({ title, items }: { title: string; items: string[] }) {
                 color: INK_SOFT,
               }}
             >
-              {it}
+              {it.label}
             </a>
           </li>
         ))}
@@ -1565,6 +1589,7 @@ function FooterCol({ title, items }: { title: string; items: string[] }) {
     </div>
   );
 }
+
 
 /* ============================================================
    EXPORT

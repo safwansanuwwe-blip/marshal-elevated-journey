@@ -3,7 +3,15 @@ import busImage from "@/assets/marshal-bus.png";
 import logoImage from "@/assets/marshal-logo.png";
 import bgImage from "@/assets/marshal-bg.jpg";
 
-const NAV_LINKS = ["Home", "Fleet", "Packages", "About Us", "Contact"];
+const NAV_LINKS: { label: string; href: string }[] = [
+  { label: "Home", href: "#" },
+  { label: "Fleet", href: "#fleet" },
+  { label: "Packages", href: "#services" },
+  { label: "About Us", href: "#about" },
+  { label: "Contact", href: "#contact" },
+];
+const WHATSAPP = "https://wa.me/919188700777";
+
 
 export default function MarshalHero() {
   return (
@@ -72,9 +80,9 @@ export default function MarshalHero() {
         {/* Center - links */}
         <ul className="hidden lg:flex items-center gap-10">
           {NAV_LINKS.map((link) => (
-            <li key={link}>
+            <li key={link.label}>
               <a
-                href="#"
+                href={link.href}
                 className="relative transition-colors hover:text-white"
                 style={{
                   fontFamily: "Inter, sans-serif",
@@ -84,23 +92,27 @@ export default function MarshalHero() {
                   letterSpacing: "-0.32px",
                 }}
               >
-                {link}
+                {link.label}
                 <span className="absolute -bottom-1 left-0 h-px w-0 bg-white transition-all duration-300 hover:w-full" />
               </a>
             </li>
           ))}
+
         </ul>
 
         {/* Right - actions */}
         <div className="flex items-center gap-5">
           <a
-            href="#"
+            href={WHATSAPP}
+            target="_blank"
+            rel="noopener noreferrer"
             className="hidden md:inline text-white/90 hover:text-white transition-colors"
             style={{ fontFamily: "Inter, sans-serif", fontSize: "15px", fontWeight: 500 }}
           >
             Book Now
           </a>
-          <button
+          <a
+            href="#fleet"
             className="group inline-flex items-center gap-2 rounded-lg bg-white px-5 transition-all hover:shadow-2xl hover:-translate-y-0.5"
             style={{
               height: "48px",
@@ -114,7 +126,8 @@ export default function MarshalHero() {
           >
             <Plane className="h-4 w-4" />
             Explore
-          </button>
+          </a>
+
           <button className="lg:hidden text-white" aria-label="Menu">
             <Menu className="h-6 w-6" />
           </button>
@@ -172,7 +185,8 @@ export default function MarshalHero() {
               experiences. Premium tourist buses for family trips, group tours,
               and corporate journeys.
             </p>
-            <button
+            <a
+              href="#fleet"
               className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-6 transition-all hover:-translate-y-0.5 hover:shadow-2xl"
               style={{
                 height: "48px",
@@ -187,7 +201,8 @@ export default function MarshalHero() {
             >
               View Fleet
               <ArrowRight className="h-4 w-4" />
-            </button>
+            </a>
+
           </div>
 
           {/* Right - tagline */}
