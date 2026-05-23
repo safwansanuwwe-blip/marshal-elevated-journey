@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import alleppeyImg from "@/assets/alleppey.jpg";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -444,7 +445,7 @@ const DESTINATIONS = [
   { name: "Mysore", region: "Karnataka", img: "https://images.unsplash.com/photo-1600100397196-1a7bb3a09d6e?auto=format&fit=crop&w=1200&q=80" },
   { name: "Coorg", region: "Karnataka", img: "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=1200&q=80" },
   { name: "Wayanad", region: "Kerala", img: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=1200&q=80" },
-  { name: "Alleppey", region: "Kerala", img: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Alleppey", region: "Kerala", img: alleppeyImg },
   { name: "Goa", region: "Goa", img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80" },
   { name: "Pondicherry", region: "Tamil Nadu", img: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80" },
   { name: "Chikmagalur", region: "Karnataka", img: "https://images.unsplash.com/photo-1572883454114-1cf0031ede2a?auto=format&fit=crop&w=1200&q=80" },
@@ -888,7 +889,7 @@ const RESORTS = [
   { name: "Thekkady", img: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80" },
   { name: "Wayanad", img: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80" },
   { name: "Varkala", img: "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1200&q=80" },
-  { name: "Alleppey", img: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Alleppey", img: alleppeyImg },
 ];
 
 function Resorts() {
