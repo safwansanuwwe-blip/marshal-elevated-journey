@@ -13,6 +13,7 @@ import mysoreImg from "@/assets/mysore.jpg";
 import pondicherryImg from "@/assets/pondicherry.jpg";
 import chikmagalurImg from "@/assets/chikmagalur.jpg";
 import munnarImg from "@/assets/munnar.jpg";
+import cochinAirportImg from "@/assets/cochin-airport.jpg";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -637,8 +638,22 @@ function Airports() {
             center
           />
         </Reveal>
+        <Reveal>
+          <div
+            className="mt-16 w-full overflow-hidden"
+            style={{ borderRadius: RADIUS, boxShadow: SHADOW_CARD, aspectRatio: "21 / 9" }}
+          >
+            <img
+              src={cochinAirportImg}
+              alt="Cochin International Airport pickup with premium Force Urbania traveller"
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        </Reveal>
 
-        <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
           {AIRPORTS.map((a, i) => (
             <Reveal key={a.code} delay={i * 70}>
               <div
