@@ -1565,15 +1565,15 @@ function ColTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-function FooterCol({ title, items }: { title: string; items: string[] }) {
+function FooterCol({ title, items }: { title: string; items: { label: string; href: string }[] }) {
   return (
     <div>
       <ColTitle>{title}</ColTitle>
       <ul className="mt-7 space-y-4">
         {items.map((it) => (
-          <li key={it}>
+          <li key={it.label}>
             <a
-              href="#"
+              href={it.href}
               className="inline-block transition-all hover:translate-x-1"
               style={{
                 fontFamily: BODY_FONT,
@@ -1581,7 +1581,7 @@ function FooterCol({ title, items }: { title: string; items: string[] }) {
                 color: INK_SOFT,
               }}
             >
-              {it}
+              {it.label}
             </a>
           </li>
         ))}
@@ -1589,6 +1589,7 @@ function FooterCol({ title, items }: { title: string; items: string[] }) {
     </div>
   );
 }
+
 
 /* ============================================================
    EXPORT
