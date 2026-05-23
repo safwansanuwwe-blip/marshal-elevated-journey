@@ -15,7 +15,20 @@ const WHATSAPP = "https://wa.me/919188700777";
 
 
 export default function MarshalHero() {
-  return (
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (menuOpen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [menuOpen]);
+
+  const handleNavClick = () => setMenuOpen(false);
+
     <section
       className="relative w-full overflow-hidden bg-[#010101] text-white"
       style={{ minHeight: "600px", height: "100vh", maxHeight: "965px" }}
