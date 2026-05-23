@@ -1,8 +1,6 @@
 import { ArrowRight, Menu, Plane } from "lucide-react";
 import busImage from "@/assets/marshal-bus.png";
-import posterImage from "@/assets/kerala-road-poster.jpg";
 import logoImage from "@/assets/marshal-logo.png";
-import keralaVideo from "@/videos/kerala-hero.mp4.asset.json";
 
 const NAV_LINKS = ["Home", "Fleet", "Packages", "About Us", "Contact"];
 
