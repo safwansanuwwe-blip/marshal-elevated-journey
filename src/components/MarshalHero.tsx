@@ -13,8 +13,17 @@ export default function MarshalHero() {
     >
       {/* Cinematic background */}
       <video
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover hidden md:block"
         src="/marshal-bg.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster={bgImage}
+      />
+      <video
+        className="absolute inset-0 h-full w-full object-cover md:hidden"
+        src="/marshal-bg-mobile.mp4"
         autoPlay
         muted
         loop
