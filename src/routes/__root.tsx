@@ -72,21 +72,43 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "marshal" },
-      { name: "description", content: "Marshal Holiday Hero creates a premium, full-screen luxury travel bus hero section." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "marshal" },
-      { property: "og:description", content: "Marshal Holiday Hero creates a premium, full-screen luxury travel bus hero section." },
+      { title: "Marshal Holidays — Premium Kerala Chauffeur & Tour Experiences" },
+      {
+        name: "description",
+        content:
+          "Marshal Holidays offers premium chauffeur-driven tours and luxury travel across Kerala — backwaters, hill stations, and beaches with 12+ years of trusted service.",
+      },
+      { name: "author", content: "Marshal Holidays" },
+      { property: "og:title", content: "Marshal Holidays — Premium Kerala Chauffeur & Tour Experiences" },
+      {
+        property: "og:description",
+        content:
+          "Luxury chauffeur-driven journeys across Kerala. Backwaters, hills, beaches — crafted by Marshal Holidays.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "marshal" },
-      { name: "twitter:description", content: "Marshal Holiday Hero creates a premium, full-screen luxury travel bus hero section." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d4a66333-3f2c-48fc-b1b5-45a8816eb784/id-preview-5f23fa6f--a5daecb7-c446-425e-8ca3-a3b225f7e4c7.lovable.app-1779566633057.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d4a66333-3f2c-48fc-b1b5-45a8816eb784/id-preview-5f23fa6f--a5daecb7-c446-425e-8ca3-a3b225f7e4c7.lovable.app-1779566633057.png" },
+      { property: "og:url", content: "https://marshal-elevated-journey.lovable.app" },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d4a66333-3f2c-48fc-b1b5-45a8816eb784/id-preview-5f23fa6f--a5daecb7-c446-425e-8ca3-a3b225f7e4c7.lovable.app-1779566633057.png",
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Marshal Holidays — Premium Kerala Chauffeur & Tour Experiences" },
+      {
+        name: "twitter:description",
+        content:
+          "Luxury chauffeur-driven journeys across Kerala. Backwaters, hills, beaches — crafted by Marshal Holidays.",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d4a66333-3f2c-48fc-b1b5-45a8816eb784/id-preview-5f23fa6f--a5daecb7-c446-425e-8ca3-a3b225f7e4c7.lovable.app-1779566633057.png",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.ico" },
+      { rel: "canonical", href: "https://marshal-elevated-journey.lovable.app" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

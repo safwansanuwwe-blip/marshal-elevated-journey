@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://marshal-elevated-journey.lovable.app/sitemap.xml
