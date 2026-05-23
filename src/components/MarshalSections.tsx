@@ -25,11 +25,20 @@ import {
   Award,
 } from "lucide-react";
 
-const WHATSAPP =
-  "https://wa.me/919188700777?utm_source=chatgpt.com";
+const WHATSAPP = "https://wa.me/919188700777?utm_source=chatgpt.com";
 
 const HEADING_FONT = "'Bebas Neue', sans-serif";
 const BODY_FONT = "Inter, sans-serif";
+
+/* Light palette */
+const INK = "#0B0B0F";
+const INK_SOFT = "rgba(11,11,15,0.65)";
+const INK_MUTE = "rgba(11,11,15,0.5)";
+const GOLD = "#B8893A";
+const GOLD_SOFT = "#E7C27A";
+const BG = "#F7F5F0"; // warm off-white
+const BG_ALT = "#FFFFFF";
+const BORDER = "rgba(11,11,15,0.08)";
 
 /* ---------------- Reveal on scroll ---------------- */
 function useReveal<T extends HTMLElement>() {
@@ -76,16 +85,19 @@ function Reveal({
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <span
-      className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 backdrop-blur-md"
+      className="inline-flex items-center gap-2 rounded-full px-4 py-1.5"
       style={{
+        background: "rgba(184,137,58,0.08)",
+        border: `1px solid rgba(184,137,58,0.25)`,
         fontFamily: BODY_FONT,
         fontSize: 12,
         letterSpacing: "0.18em",
         textTransform: "uppercase",
-        color: "rgba(255,255,255,0.85)",
+        color: GOLD,
+        fontWeight: 600,
       }}
     >
-      <Sparkles className="h-3.5 w-3.5" style={{ color: "#E7C27A" }} />
+      <Sparkles className="h-3.5 w-3.5" style={{ color: GOLD }} />
       {children}
     </span>
   );
@@ -95,13 +107,11 @@ function SectionHeading({
   eyebrow,
   title,
   subtitle,
-  light = false,
   center = false,
 }: {
   eyebrow: string;
   title: string;
   subtitle?: string;
-  light?: boolean;
   center?: boolean;
 }) {
   return (
@@ -114,7 +124,7 @@ function SectionHeading({
           fontSize: "clamp(36px, 5vw, 64px)",
           lineHeight: 1.02,
           letterSpacing: "0.01em",
-          color: light ? "#0B0B0F" : "#fff",
+          color: INK,
         }}
       >
         {title}
@@ -126,7 +136,7 @@ function SectionHeading({
             fontFamily: BODY_FONT,
             fontSize: 17,
             lineHeight: "30px",
-            color: light ? "rgba(11,11,15,0.65)" : "rgba(255,255,255,0.72)",
+            color: INK_SOFT,
           }}
         >
           {subtitle}
@@ -143,23 +153,16 @@ function About() {
   return (
     <section
       id="about"
-      className="relative w-full overflow-hidden bg-[#070709] text-white"
-      style={{ paddingTop: 120, paddingBottom: 140 }}
+      className="relative w-full overflow-hidden"
+      style={{ background: BG, color: INK, paddingTop: 120, paddingBottom: 140 }}
     >
-      {/* Glow */}
       <div
         className="pointer-events-none absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(231,194,122,0.18) 0%, transparent 70%)",
-        }}
+        style={{ background: "radial-gradient(circle, rgba(184,137,58,0.12) 0%, transparent 70%)" }}
       />
       <div
         className="pointer-events-none absolute -bottom-40 -right-40 h-[600px] w-[600px] rounded-full"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(120,160,255,0.10) 0%, transparent 70%)",
-        }}
+        style={{ background: "radial-gradient(circle, rgba(120,160,255,0.08) 0%, transparent 70%)" }}
       />
 
       <div
@@ -170,25 +173,21 @@ function About() {
           paddingRight: "clamp(20px, 6vw, 80px)",
         }}
       >
-        {/* Image collage */}
         <Reveal>
           <div className="relative h-[520px] sm:h-[600px]">
-            {/* main */}
             <div
-              className="absolute left-0 top-0 h-[78%] w-[68%] overflow-hidden rounded-3xl shadow-2xl"
-              style={{ boxShadow: "0 30px 80px -20px rgba(0,0,0,0.6)" }}
+              className="absolute left-0 top-0 h-[78%] w-[68%] overflow-hidden rounded-3xl"
+              style={{ boxShadow: "0 30px 80px -20px rgba(11,11,15,0.25)" }}
             >
               <img
                 src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1400&q=80"
                 alt="Kerala landscape"
                 className="h-full w-full object-cover transition-transform duration-[1200ms] hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             </div>
-            {/* secondary */}
             <div
               className="absolute bottom-0 right-0 h-[55%] w-[55%] overflow-hidden rounded-3xl"
-              style={{ boxShadow: "0 30px 80px -20px rgba(0,0,0,0.7)" }}
+              style={{ boxShadow: "0 30px 80px -20px rgba(11,11,15,0.3)" }}
             >
               <img
                 src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80"
@@ -196,19 +195,16 @@ function About() {
                 className="h-full w-full object-cover transition-transform duration-[1200ms] hover:scale-110"
               />
             </div>
-            {/* floating stat 1 */}
             <div
-              className="absolute -left-2 sm:left-4 top-4 rounded-2xl border border-white/15 bg-white/10 px-5 py-4 backdrop-blur-xl animate-[float_6s_ease-in-out_infinite]"
-              style={{ boxShadow: "0 10px 40px -10px rgba(0,0,0,0.6)" }}
+              className="absolute -left-2 sm:left-4 top-4 rounded-2xl px-5 py-4 animate-[float_6s_ease-in-out_infinite]"
+              style={{
+                background: "rgba(255,255,255,0.85)",
+                backdropFilter: "blur(20px)",
+                border: `1px solid ${BORDER}`,
+                boxShadow: "0 20px 50px -10px rgba(11,11,15,0.2)",
+              }}
             >
-              <div
-                style={{
-                  fontFamily: HEADING_FONT,
-                  fontSize: 36,
-                  color: "#E7C27A",
-                  lineHeight: 1,
-                }}
-              >
+              <div style={{ fontFamily: HEADING_FONT, fontSize: 36, color: GOLD, lineHeight: 1 }}>
                 12+
               </div>
               <div
@@ -217,26 +213,24 @@ function About() {
                   fontSize: 12,
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
-                  color: "rgba(255,255,255,0.75)",
+                  color: INK_SOFT,
                   marginTop: 4,
+                  fontWeight: 600,
                 }}
               >
                 Years of Service
               </div>
             </div>
-            {/* floating stat 2 */}
             <div
-              className="absolute -right-2 sm:right-4 bottom-[42%] rounded-2xl border border-white/15 bg-white/10 px-5 py-4 backdrop-blur-xl animate-[float_7s_ease-in-out_infinite]"
-              style={{ boxShadow: "0 10px 40px -10px rgba(0,0,0,0.6)" }}
+              className="absolute -right-2 sm:right-4 bottom-[42%] rounded-2xl px-5 py-4 animate-[float_7s_ease-in-out_infinite]"
+              style={{
+                background: "rgba(255,255,255,0.85)",
+                backdropFilter: "blur(20px)",
+                border: `1px solid ${BORDER}`,
+                boxShadow: "0 20px 50px -10px rgba(11,11,15,0.2)",
+              }}
             >
-              <div
-                style={{
-                  fontFamily: HEADING_FONT,
-                  fontSize: 36,
-                  color: "#E7C27A",
-                  lineHeight: 1,
-                }}
-              >
+              <div style={{ fontFamily: HEADING_FONT, fontSize: 36, color: GOLD, lineHeight: 1 }}>
                 5K+
               </div>
               <div
@@ -245,8 +239,9 @@ function About() {
                   fontSize: 12,
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
-                  color: "rgba(255,255,255,0.75)",
+                  color: INK_SOFT,
                   marginTop: 4,
+                  fontWeight: 600,
                 }}
               >
                 Happy Travelers
@@ -255,7 +250,6 @@ function About() {
           </div>
         </Reveal>
 
-        {/* Content */}
         <Reveal delay={150}>
           <div>
             <SectionHeading
@@ -264,7 +258,6 @@ function About() {
               subtitle="From premium tourist vehicles and comfortable airport transfers to customized holiday packages, we make every trip smooth, safe, and memorable. Whether it's a family vacation, group tour, honeymoon, corporate travel, or a weekend getaway, Marshal Holidays is here to take you there with comfort and care."
             />
 
-            {/* Mini features */}
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
                 { icon: ShieldCheck, label: "Safe Travel" },
@@ -273,17 +266,17 @@ function About() {
               ].map(({ icon: Icon, label }) => (
                 <div
                   key={label}
-                  className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-md transition-all hover:-translate-y-1 hover:border-white/25 hover:bg-white/[0.07]"
+                  className="rounded-2xl p-5 transition-all hover:-translate-y-1"
+                  style={{
+                    background: BG_ALT,
+                    border: `1px solid ${BORDER}`,
+                    boxShadow: "0 10px 30px -15px rgba(11,11,15,0.15)",
+                  }}
                 >
-                  <Icon className="h-6 w-6" style={{ color: "#E7C27A" }} />
+                  <Icon className="h-6 w-6" style={{ color: GOLD }} />
                   <div
                     className="mt-3"
-                    style={{
-                      fontFamily: BODY_FONT,
-                      fontSize: 14,
-                      fontWeight: 600,
-                      color: "rgba(255,255,255,0.9)",
-                    }}
+                    style={{ fontFamily: BODY_FONT, fontSize: 14, fontWeight: 600, color: INK }}
                   >
                     {label}
                   </div>
@@ -295,14 +288,15 @@ function About() {
               href={WHATSAPP}
               target="_blank"
               rel="noreferrer"
-              className="mt-10 inline-flex items-center gap-2 rounded-lg bg-white px-6 transition-all hover:-translate-y-0.5 hover:shadow-2xl"
+              className="mt-10 inline-flex items-center gap-2 rounded-lg px-6 transition-all hover:-translate-y-0.5"
               style={{
                 height: 48,
-                color: "#272835",
+                background: INK,
+                color: "#fff",
                 fontFamily: BODY_FONT,
                 fontSize: 15,
                 fontWeight: 600,
-                boxShadow: "0 10px 30px -10px rgba(0,0,0,0.5)",
+                boxShadow: "0 15px 40px -10px rgba(11,11,15,0.4)",
               }}
             >
               Plan Your Journey
@@ -332,8 +326,8 @@ function Services() {
   return (
     <section
       id="services"
-      className="relative w-full overflow-hidden bg-[#0A0A0E] text-white"
-      style={{ paddingTop: 120, paddingBottom: 140 }}
+      className="relative w-full overflow-hidden"
+      style={{ background: BG_ALT, color: INK, paddingTop: 120, paddingBottom: 140 }}
     >
       <div
         className="mx-auto"
@@ -356,29 +350,28 @@ function Services() {
           {SERVICES.map(({ icon: Icon, title, desc }, i) => (
             <Reveal key={title} delay={i * 70}>
               <div
-                className="group relative h-full overflow-hidden rounded-3xl border border-white/10 p-7 transition-all duration-500 hover:-translate-y-2 hover:border-white/25"
+                className="group relative h-full overflow-hidden rounded-3xl p-7 transition-all duration-500 hover:-translate-y-2"
                 style={{
-                  background:
-                    "linear-gradient(160deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
+                  background: BG,
+                  border: `1px solid ${BORDER}`,
+                  boxShadow: "0 10px 40px -20px rgba(11,11,15,0.15)",
                 }}
               >
-                {/* hover glow */}
                 <div
                   className="pointer-events-none absolute -right-20 -top-20 h-48 w-48 rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                   style={{
                     background:
-                      "radial-gradient(circle, rgba(231,194,122,0.35) 0%, transparent 70%)",
+                      "radial-gradient(circle, rgba(184,137,58,0.25) 0%, transparent 70%)",
                   }}
                 />
                 <div
                   className="flex h-14 w-14 items-center justify-center rounded-2xl"
                   style={{
-                    background:
-                      "linear-gradient(135deg, rgba(231,194,122,0.25), rgba(231,194,122,0.05))",
-                    border: "1px solid rgba(231,194,122,0.35)",
+                    background: "linear-gradient(135deg, rgba(184,137,58,0.18), rgba(184,137,58,0.04))",
+                    border: `1px solid rgba(184,137,58,0.3)`,
                   }}
                 >
-                  <Icon className="h-6 w-6" style={{ color: "#E7C27A" }} />
+                  <Icon className="h-6 w-6" style={{ color: GOLD }} />
                 </div>
                 <h3
                   className="mt-6"
@@ -386,7 +379,7 @@ function Services() {
                     fontFamily: HEADING_FONT,
                     fontSize: 26,
                     letterSpacing: "0.01em",
-                    color: "#fff",
+                    color: INK,
                   }}
                 >
                   {title}
@@ -397,7 +390,7 @@ function Services() {
                     fontFamily: BODY_FONT,
                     fontSize: 14,
                     lineHeight: "24px",
-                    color: "rgba(255,255,255,0.65)",
+                    color: INK_SOFT,
                   }}
                 >
                   {desc}
@@ -411,7 +404,7 @@ function Services() {
                     fontFamily: BODY_FONT,
                     fontSize: 13,
                     fontWeight: 600,
-                    color: "#E7C27A",
+                    color: GOLD,
                     letterSpacing: "0.04em",
                   }}
                 >
@@ -451,7 +444,6 @@ const DESTINATIONS = [
 function Destinations() {
   const [index, setIndex] = useState(0);
   const [perView, setPerView] = useState(4);
-  const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const calc = () => {
@@ -467,8 +459,7 @@ function Destinations() {
   }, []);
 
   const max = DESTINATIONS.length - perView;
-  const go = (d: number) =>
-    setIndex((i) => Math.max(0, Math.min(max, i + d)));
+  const go = (d: number) => setIndex((i) => Math.max(0, Math.min(max, i + d)));
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -480,8 +471,8 @@ function Destinations() {
   return (
     <section
       id="destinations"
-      className="relative w-full overflow-hidden bg-[#070709] text-white"
-      style={{ paddingTop: 120, paddingBottom: 140 }}
+      className="relative w-full overflow-hidden"
+      style={{ background: BG, color: INK, paddingTop: 120, paddingBottom: 140 }}
     >
       <div
         className="mx-auto"
@@ -501,14 +492,25 @@ function Destinations() {
             <div className="flex gap-3">
               <button
                 onClick={() => go(-1)}
-                className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-white/5 backdrop-blur-md transition-all hover:bg-white/15"
+                className="flex h-12 w-12 items-center justify-center rounded-full transition-all hover:-translate-y-0.5"
+                style={{
+                  background: BG_ALT,
+                  border: `1px solid ${BORDER}`,
+                  color: INK,
+                  boxShadow: "0 10px 25px -10px rgba(11,11,15,0.15)",
+                }}
                 aria-label="Previous"
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
               <button
                 onClick={() => go(1)}
-                className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-white/5 backdrop-blur-md transition-all hover:bg-white/15"
+                className="flex h-12 w-12 items-center justify-center rounded-full transition-all hover:-translate-y-0.5"
+                style={{
+                  background: INK,
+                  color: "#fff",
+                  boxShadow: "0 10px 25px -10px rgba(11,11,15,0.4)",
+                }}
                 aria-label="Next"
               >
                 <ChevronRight className="h-5 w-5" />
@@ -519,7 +521,6 @@ function Destinations() {
 
         <div className="mt-14 overflow-hidden">
           <div
-            ref={trackRef}
             className="flex"
             style={{
               transform: `translateX(-${(index * 100) / perView}%)`,
@@ -532,7 +533,10 @@ function Destinations() {
                 className="shrink-0 px-3"
                 style={{ width: `${100 / perView}%` }}
               >
-                <div className="group relative h-[440px] overflow-hidden rounded-3xl border border-white/10">
+                <div
+                  className="group relative h-[440px] overflow-hidden rounded-3xl"
+                  style={{ boxShadow: "0 20px 60px -20px rgba(11,11,15,0.25)" }}
+                >
                   <img
                     src={d.img}
                     alt={d.name}
@@ -545,16 +549,16 @@ function Destinations() {
                         "linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.85) 100%)",
                     }}
                   />
-                  <div className="absolute inset-x-0 bottom-0 p-6">
+                  <div className="absolute inset-x-0 bottom-0 p-6 text-white">
                     <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4" style={{ color: "#E7C27A" }} />
+                      <MapPin className="h-4 w-4" style={{ color: GOLD_SOFT }} />
                       <span
                         style={{
                           fontFamily: BODY_FONT,
                           fontSize: 12,
                           letterSpacing: "0.18em",
                           textTransform: "uppercase",
-                          color: "rgba(255,255,255,0.8)",
+                          color: "rgba(255,255,255,0.85)",
                         }}
                       >
                         South India
@@ -580,7 +584,7 @@ function Destinations() {
                         fontFamily: BODY_FONT,
                         fontSize: 13,
                         fontWeight: 600,
-                        color: "#E7C27A",
+                        color: GOLD_SOFT,
                       }}
                     >
                       Explore <ArrowRight className="h-4 w-4" />
@@ -610,8 +614,8 @@ const COVERAGE = ["Chavakkad", "Guruvayur", "Orumanayur", "Pavaratty", "Mullasse
 function Airports() {
   return (
     <section
-      className="relative w-full overflow-hidden bg-[#0A0A0E] text-white"
-      style={{ paddingTop: 120, paddingBottom: 140 }}
+      className="relative w-full overflow-hidden"
+      style={{ background: BG_ALT, color: INK, paddingTop: 120, paddingBottom: 140 }}
     >
       <div
         className="mx-auto"
@@ -634,21 +638,21 @@ function Airports() {
           {AIRPORTS.map((a, i) => (
             <Reveal key={a} delay={i * 80}>
               <div
-                className="group relative h-full overflow-hidden rounded-3xl border border-white/10 p-7 transition-all hover:-translate-y-2 hover:border-white/30"
+                className="group relative h-full overflow-hidden rounded-3xl p-7 transition-all hover:-translate-y-2"
                 style={{
-                  background:
-                    "linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
+                  background: BG,
+                  border: `1px solid ${BORDER}`,
+                  boxShadow: "0 10px 40px -20px rgba(11,11,15,0.15)",
                 }}
               >
                 <div
                   className="flex h-14 w-14 items-center justify-center rounded-2xl transition-transform group-hover:rotate-6"
                   style={{
-                    background:
-                      "linear-gradient(135deg, rgba(120,160,255,0.3), rgba(120,160,255,0.05))",
-                    border: "1px solid rgba(120,160,255,0.35)",
+                    background: "linear-gradient(135deg, rgba(60,100,200,0.18), rgba(60,100,200,0.04))",
+                    border: `1px solid rgba(60,100,200,0.25)`,
                   }}
                 >
-                  <Plane className="h-6 w-6" style={{ color: "#9DB4FF" }} />
+                  <Plane className="h-6 w-6" style={{ color: "#3C64C8" }} />
                 </div>
                 <h3
                   className="mt-6"
@@ -657,6 +661,7 @@ function Airports() {
                     fontSize: 24,
                     letterSpacing: "0.01em",
                     lineHeight: 1.1,
+                    color: INK,
                   }}
                 >
                   {a}
@@ -670,7 +675,7 @@ function Airports() {
                     fontFamily: BODY_FONT,
                     fontSize: 13,
                     fontWeight: 600,
-                    color: "#9DB4FF",
+                    color: "#3C64C8",
                   }}
                 >
                   Book Transfer <ArrowRight className="h-4 w-4" />
@@ -682,10 +687,10 @@ function Airports() {
 
         <Reveal delay={250}>
           <div
-            className="mt-14 rounded-3xl border border-white/10 p-8 backdrop-blur-md"
+            className="mt-14 rounded-3xl p-8"
             style={{
-              background:
-                "linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))",
+              background: BG,
+              border: `1px solid ${BORDER}`,
             }}
           >
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -696,18 +701,15 @@ function Airports() {
                     fontSize: 12,
                     letterSpacing: "0.18em",
                     textTransform: "uppercase",
-                    color: "rgba(255,255,255,0.6)",
+                    color: INK_MUTE,
+                    fontWeight: 600,
                   }}
                 >
                   Pickup & Drop Coverage
                 </div>
                 <div
                   className="mt-2"
-                  style={{
-                    fontFamily: HEADING_FONT,
-                    fontSize: 32,
-                    letterSpacing: "0.01em",
-                  }}
+                  style={{ fontFamily: HEADING_FONT, fontSize: 32, letterSpacing: "0.01em", color: INK }}
                 >
                   Serving Across Thrissur Region
                 </div>
@@ -716,11 +718,14 @@ function Airports() {
                 {COVERAGE.map((c) => (
                   <span
                     key={c}
-                    className="rounded-full border border-white/15 bg-white/5 px-4 py-2"
+                    className="rounded-full px-4 py-2"
                     style={{
+                      background: BG_ALT,
+                      border: `1px solid ${BORDER}`,
                       fontFamily: BODY_FONT,
                       fontSize: 13,
-                      color: "rgba(255,255,255,0.85)",
+                      color: INK,
+                      fontWeight: 500,
                     }}
                   >
                     {c}
@@ -769,8 +774,8 @@ function Fleets() {
   return (
     <section
       id="fleet"
-      className="relative w-full overflow-hidden bg-[#070709] text-white"
-      style={{ paddingTop: 120, paddingBottom: 140 }}
+      className="relative w-full overflow-hidden"
+      style={{ background: BG, color: INK, paddingTop: 120, paddingBottom: 140 }}
     >
       <div
         className="mx-auto"
@@ -793,10 +798,11 @@ function Fleets() {
           {FLEETS.map((f, i) => (
             <Reveal key={f.name} delay={i * 90}>
               <div
-                className="group relative overflow-hidden rounded-3xl border border-white/10"
+                className="group relative overflow-hidden rounded-3xl"
                 style={{
-                  background:
-                    "linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))",
+                  background: BG_ALT,
+                  border: `1px solid ${BORDER}`,
+                  boxShadow: "0 20px 60px -25px rgba(11,11,15,0.2)",
                 }}
               >
                 <div className="relative h-64 overflow-hidden">
@@ -805,37 +811,22 @@ function Fleets() {
                     alt={f.name}
                     className="h-full w-full object-cover transition-transform duration-[1400ms] group-hover:scale-110"
                   />
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      background:
-                        "linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.7) 100%)",
-                    }}
-                  />
                   <span
-                    className="absolute left-5 top-5 rounded-full px-3 py-1 backdrop-blur-md"
+                    className="absolute left-5 top-5 rounded-full px-3 py-1"
                     style={{
-                      background: "rgba(231,194,122,0.18)",
-                      border: "1px solid rgba(231,194,122,0.4)",
-                      color: "#E7C27A",
+                      background: "rgba(255,255,255,0.95)",
+                      backdropFilter: "blur(10px)",
+                      color: GOLD,
                       fontFamily: BODY_FONT,
                       fontSize: 11,
                       letterSpacing: "0.16em",
                       textTransform: "uppercase",
+                      fontWeight: 700,
                     }}
                   >
                     {f.badge}
                   </span>
                 </div>
-                {/* hover glow */}
-                <div
-                  className="pointer-events-none absolute -bottom-20 left-1/2 h-40 w-2/3 -translate-x-1/2 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                  style={{
-                    background:
-                      "radial-gradient(ellipse at center, rgba(231,194,122,0.4) 0%, transparent 70%)",
-                    filter: "blur(30px)",
-                  }}
-                />
                 <div className="p-7">
                   <div className="flex items-start justify-between gap-4">
                     <h3
@@ -843,17 +834,21 @@ function Fleets() {
                         fontFamily: HEADING_FONT,
                         fontSize: 30,
                         letterSpacing: "0.01em",
+                        color: INK,
                       }}
                     >
                       {f.name}
                     </h3>
                     <span
-                      className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5"
+                      className="rounded-full px-3 py-1.5"
                       style={{
+                        background: BG,
+                        border: `1px solid ${BORDER}`,
                         fontFamily: BODY_FONT,
                         fontSize: 12,
-                        color: "rgba(255,255,255,0.85)",
+                        color: INK,
                         whiteSpace: "nowrap",
+                        fontWeight: 600,
                       }}
                     >
                       {f.seats}
@@ -863,13 +858,15 @@ function Fleets() {
                     href={WHATSAPP}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-6 inline-flex items-center gap-2 rounded-lg bg-white px-5 transition-all hover:-translate-y-0.5"
+                    className="mt-6 inline-flex items-center gap-2 rounded-lg px-5 transition-all hover:-translate-y-0.5"
                     style={{
                       height: 44,
-                      color: "#272835",
+                      background: INK,
+                      color: "#fff",
                       fontFamily: BODY_FONT,
                       fontSize: 14,
                       fontWeight: 600,
+                      boxShadow: "0 10px 30px -10px rgba(11,11,15,0.35)",
                     }}
                   >
                     <Bus className="h-4 w-4" />
@@ -903,8 +900,8 @@ const RESORTS = [
 function Resorts() {
   return (
     <section
-      className="relative w-full overflow-hidden bg-[#0A0A0E] text-white"
-      style={{ paddingTop: 120, paddingBottom: 140 }}
+      className="relative w-full overflow-hidden"
+      style={{ background: BG_ALT, color: INK, paddingTop: 120, paddingBottom: 140 }}
     >
       <div
         className="mx-auto"
@@ -926,7 +923,10 @@ function Resorts() {
         <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {RESORTS.map((r, i) => (
             <Reveal key={r.name} delay={i * 60}>
-              <div className="group relative h-80 overflow-hidden rounded-3xl border border-white/10">
+              <div
+                className="group relative h-80 overflow-hidden rounded-3xl"
+                style={{ boxShadow: "0 20px 60px -25px rgba(11,11,15,0.25)" }}
+              >
                 <img
                   src={r.img}
                   alt={r.name}
@@ -939,25 +939,22 @@ function Resorts() {
                       "linear-gradient(180deg, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.85) 100%)",
                   }}
                 />
-                <div className="absolute inset-x-0 bottom-0 p-6">
+                <div className="absolute inset-x-0 bottom-0 p-6 text-white">
                   <div
                     style={{
                       fontFamily: BODY_FONT,
                       fontSize: 11,
                       letterSpacing: "0.2em",
                       textTransform: "uppercase",
-                      color: "rgba(231,194,122,0.95)",
+                      color: GOLD_SOFT,
+                      fontWeight: 600,
                     }}
                   >
                     Luxury Stay
                   </div>
                   <h3
                     className="mt-1"
-                    style={{
-                      fontFamily: HEADING_FONT,
-                      fontSize: 32,
-                      letterSpacing: "0.02em",
-                    }}
+                    style={{ fontFamily: HEADING_FONT, fontSize: 32, letterSpacing: "0.02em" }}
                   >
                     {r.name}
                   </h3>
@@ -966,12 +963,7 @@ function Resorts() {
                     target="_blank"
                     rel="noreferrer"
                     className="mt-3 inline-flex items-center gap-1.5 transition-all group-hover:gap-3"
-                    style={{
-                      fontFamily: BODY_FONT,
-                      fontSize: 13,
-                      fontWeight: 600,
-                      color: "#fff",
-                    }}
+                    style={{ fontFamily: BODY_FONT, fontSize: 13, fontWeight: 600, color: "#fff" }}
                   >
                     Book Stay <ArrowRight className="h-4 w-4" />
                   </a>
@@ -1003,14 +995,14 @@ function Testimonials() {
   const t = TESTIMONIALS[i];
   return (
     <section
-      className="relative w-full overflow-hidden bg-[#070709] text-white"
-      style={{ paddingTop: 120, paddingBottom: 140 }}
+      className="relative w-full overflow-hidden"
+      style={{ background: BG, color: INK, paddingTop: 120, paddingBottom: 140 }}
     >
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(231,194,122,0.10) 0%, transparent 60%)",
+            "radial-gradient(ellipse at center, rgba(184,137,58,0.10) 0%, transparent 60%)",
         }}
       />
       <div
@@ -1022,26 +1014,23 @@ function Testimonials() {
         }}
       >
         <Reveal>
-          <SectionHeading
-            eyebrow="Testimonials"
-            title="Loved by travelers"
-            center
-          />
+          <SectionHeading eyebrow="Testimonials" title="Loved by travelers" center />
         </Reveal>
 
         <Reveal delay={150}>
           <div
             key={i}
-            className="mt-14 rounded-3xl border border-white/10 p-10 sm:p-14 text-center backdrop-blur-xl animate-fade-in"
+            className="mt-14 rounded-3xl p-10 sm:p-14 text-center animate-fade-in"
             style={{
-              background:
-                "linear-gradient(160deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02))",
-              boxShadow: "0 30px 80px -20px rgba(0,0,0,0.6)",
+              background: "rgba(255,255,255,0.7)",
+              backdropFilter: "blur(20px)",
+              border: `1px solid ${BORDER}`,
+              boxShadow: "0 30px 80px -20px rgba(11,11,15,0.18)",
             }}
           >
             <div className="flex justify-center gap-1">
               {Array.from({ length: 5 }).map((_, k) => (
-                <Star key={k} className="h-5 w-5 fill-current" style={{ color: "#E7C27A" }} />
+                <Star key={k} className="h-5 w-5 fill-current" style={{ color: GOLD }} />
               ))}
             </div>
             <p
@@ -1052,28 +1041,17 @@ function Testimonials() {
                 lineHeight: 1.2,
                 letterSpacing: "0.01em",
                 maxWidth: 800,
+                color: INK,
               }}
             >
               "{t.quote}"
             </p>
             <div className="mt-8">
-              <div
-                style={{
-                  fontFamily: BODY_FONT,
-                  fontSize: 15,
-                  fontWeight: 600,
-                  color: "#fff",
-                }}
-              >
+              <div style={{ fontFamily: BODY_FONT, fontSize: 15, fontWeight: 600, color: INK }}>
                 {t.name}
               </div>
               <div
-                style={{
-                  fontFamily: BODY_FONT,
-                  fontSize: 13,
-                  color: "rgba(255,255,255,0.6)",
-                  marginTop: 4,
-                }}
+                style={{ fontFamily: BODY_FONT, fontSize: 13, color: INK_SOFT, marginTop: 4 }}
               >
                 {t.role}
               </div>
@@ -1086,7 +1064,7 @@ function Testimonials() {
                   className="h-1.5 rounded-full transition-all"
                   style={{
                     width: k === i ? 32 : 12,
-                    background: k === i ? "#E7C27A" : "rgba(255,255,255,0.25)",
+                    background: k === i ? GOLD : "rgba(11,11,15,0.15)",
                   }}
                   aria-label={`Go to testimonial ${k + 1}`}
                 />
@@ -1113,8 +1091,8 @@ function Faq() {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <section
-      className="relative w-full overflow-hidden bg-[#0A0A0E] text-white"
-      style={{ paddingTop: 120, paddingBottom: 140 }}
+      className="relative w-full overflow-hidden"
+      style={{ background: BG_ALT, color: INK, paddingTop: 120, paddingBottom: 140 }}
     >
       <div
         className="mx-auto"
@@ -1125,11 +1103,7 @@ function Faq() {
         }}
       >
         <Reveal>
-          <SectionHeading
-            eyebrow="FAQ"
-            title="Questions, answered"
-            center
-          />
+          <SectionHeading eyebrow="FAQ" title="Questions, answered" center />
         </Reveal>
 
         <div className="mt-14 space-y-4">
@@ -1138,11 +1112,11 @@ function Faq() {
             return (
               <Reveal key={f.q} delay={i * 70}>
                 <div
-                  className="overflow-hidden rounded-2xl border border-white/10 backdrop-blur-md transition-all"
+                  className="overflow-hidden rounded-2xl transition-all"
                   style={{
-                    background: isOpen
-                      ? "linear-gradient(160deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03))"
-                      : "rgba(255,255,255,0.03)",
+                    background: isOpen ? BG : "transparent",
+                    border: `1px solid ${BORDER}`,
+                    boxShadow: isOpen ? "0 10px 30px -15px rgba(11,11,15,0.15)" : "none",
                   }}
                 >
                   <button
@@ -1150,12 +1124,7 @@ function Faq() {
                     className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left"
                   >
                     <span
-                      style={{
-                        fontFamily: BODY_FONT,
-                        fontSize: 17,
-                        fontWeight: 600,
-                        color: "#fff",
-                      }}
+                      style={{ fontFamily: BODY_FONT, fontSize: 17, fontWeight: 600, color: INK }}
                     >
                       {f.q}
                     </span>
@@ -1163,15 +1132,13 @@ function Faq() {
                       className="h-5 w-5 shrink-0 transition-transform"
                       style={{
                         transform: isOpen ? "rotate(180deg)" : "rotate(0)",
-                        color: "#E7C27A",
+                        color: GOLD,
                       }}
                     />
                   </button>
                   <div
                     className="grid transition-all duration-500"
-                    style={{
-                      gridTemplateRows: isOpen ? "1fr" : "0fr",
-                    }}
+                    style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
                   >
                     <div className="overflow-hidden">
                       <p
@@ -1180,7 +1147,7 @@ function Faq() {
                           fontFamily: BODY_FONT,
                           fontSize: 15,
                           lineHeight: "26px",
-                          color: "rgba(255,255,255,0.7)",
+                          color: INK_SOFT,
                         }}
                       >
                         {f.a}
@@ -1198,7 +1165,7 @@ function Faq() {
 }
 
 /* ============================================================
-   CONTACT
+   CONTACT  (kept dark for premium contrast)
 ============================================================ */
 function Contact() {
   return (
@@ -1208,8 +1175,7 @@ function Contact() {
       style={{
         paddingTop: 140,
         paddingBottom: 140,
-        background:
-          "radial-gradient(ellipse at top, #1a1a22 0%, #050507 60%)",
+        background: "radial-gradient(ellipse at top, #1a1a22 0%, #050507 60%)",
       }}
     >
       <div
@@ -1228,7 +1194,20 @@ function Contact() {
         }}
       >
         <Reveal>
-          <SectionLabel>Get In Touch</SectionLabel>
+          <span
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 backdrop-blur-md"
+            style={{
+              fontFamily: BODY_FONT,
+              fontSize: 12,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: GOLD_SOFT,
+              fontWeight: 600,
+            }}
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            Get In Touch
+          </span>
           <h2
             className="mt-6"
             style={{
@@ -1268,7 +1247,7 @@ function Contact() {
                 color: "#fff",
               }}
             >
-              <Phone className="h-5 w-5" style={{ color: "#E7C27A" }} />
+              <Phone className="h-5 w-5" style={{ color: GOLD_SOFT }} />
               +91 91887 00777
             </a>
             <a
@@ -1278,8 +1257,7 @@ function Contact() {
               className="inline-flex items-center gap-3 rounded-lg px-6 transition-all hover:-translate-y-0.5"
               style={{
                 height: 56,
-                background:
-                  "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+                background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
                 color: "#fff",
                 fontFamily: BODY_FONT,
                 fontSize: 16,
@@ -1317,7 +1295,7 @@ function Contact() {
                     color: "rgba(255,255,255,0.85)",
                   }}
                 >
-                  <MapPin className="mr-1.5 -mt-0.5 inline h-3.5 w-3.5" style={{ color: "#E7C27A" }} />
+                  <MapPin className="mr-1.5 -mt-0.5 inline h-3.5 w-3.5" style={{ color: GOLD_SOFT }} />
                   {s}
                 </span>
               ))}
@@ -1346,7 +1324,6 @@ function Footer() {
         }}
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Brand */}
           <div>
             <div
               style={{
@@ -1383,24 +1360,12 @@ function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <FooterCol
-            title="Quick Links"
-            items={["Home", "About Us", "Fleet", "Destinations", "Contact"]}
-          />
-          {/* Services */}
+          <FooterCol title="Quick Links" items={["Home", "About Us", "Fleet", "Destinations", "Contact"]} />
           <FooterCol
             title="Services"
-            items={[
-              "Family Tours",
-              "Honeymoon Packages",
-              "Group Tours",
-              "Airport Transfers",
-              "Resort Booking",
-            ]}
+            items={["Family Tours", "Honeymoon Packages", "Group Tours", "Airport Transfers", "Resort Booking"]}
           />
 
-          {/* Contact */}
           <div>
             <div
               style={{
@@ -1423,11 +1388,11 @@ function Footer() {
               }}
             >
               <li className="flex items-start gap-3">
-                <Phone className="h-4 w-4 mt-1" style={{ color: "#E7C27A" }} />
+                <Phone className="h-4 w-4 mt-1" style={{ color: GOLD_SOFT }} />
                 +91 91887 00777
               </li>
               <li className="flex items-start gap-3">
-                <MapPin className="h-4 w-4 mt-1" style={{ color: "#E7C27A" }} />
+                <MapPin className="h-4 w-4 mt-1" style={{ color: GOLD_SOFT }} />
                 Guruvayur, Thrissur, Kerala
               </li>
               <li>
@@ -1437,8 +1402,7 @@ function Footer() {
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 mt-2 rounded-lg px-4 py-2 transition-all hover:-translate-y-0.5"
                   style={{
-                    background:
-                      "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+                    background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
                     fontFamily: BODY_FONT,
                     fontSize: 13,
                     fontWeight: 600,
@@ -1454,11 +1418,7 @@ function Footer() {
 
         <div
           className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/10 pt-8"
-          style={{
-            fontFamily: BODY_FONT,
-            fontSize: 13,
-            color: "rgba(255,255,255,0.5)",
-          }}
+          style={{ fontFamily: BODY_FONT, fontSize: 13, color: "rgba(255,255,255,0.5)" }}
         >
           <span>© {new Date().getFullYear()} Marshal Holidays. All rights reserved.</span>
           <span>Crafted with care for luxury travel.</span>

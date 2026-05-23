@@ -8,7 +8,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <main className="bg-[#070709]">
+    <main className="bg-[#F7F5F0]">
       <MarshalHero />
       <MarshalSections />
     </main>
