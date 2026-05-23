@@ -16,6 +16,7 @@ import munnarImg from "@/assets/munnar.jpg";
 import cochinAirportImg from "@/assets/cochin-airport.jpg";
 import calicutAirportImg from "@/assets/calicut-airport.jpg";
 import trivandrumAirportImg from "@/assets/trivandrum-airport.jpg";
+import kannurAirportImg from "@/assets/kannur-airport.jpg";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -641,7 +642,7 @@ function Airports() {
           />
         </Reveal>
         <Reveal>
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <div
               className="w-full overflow-hidden"
               style={{ borderRadius: RADIUS, boxShadow: SHADOW_CARD, aspectRatio: "4 / 3" }}
@@ -671,6 +672,17 @@ function Airports() {
               <img
                 src={trivandrumAirportImg}
                 alt="Trivandrum International Airport pickup with premium Toyota Innova Crysta"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <div
+              className="w-full overflow-hidden"
+              style={{ borderRadius: RADIUS, boxShadow: SHADOW_CARD, aspectRatio: "4 / 3" }}
+            >
+              <img
+                src={kannurAirportImg}
+                alt="Kannur International Airport pickup at dusk with premium Toyota Innova Crysta"
                 className="h-full w-full object-cover"
                 loading="lazy"
               />
