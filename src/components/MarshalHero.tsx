@@ -1,6 +1,7 @@
 import { ArrowRight, Compass, Menu, Plane } from "lucide-react";
 import busImage from "@/assets/marshal-bus.png";
 import posterImage from "@/assets/kerala-road-poster.jpg";
+import keralaVideo from "../../public/videos/kerala-hero.mp4.asset.json";
 
 const NAV_LINKS = ["Home", "Fleet", "Packages", "About Us", "Contact"];
 
@@ -19,11 +20,9 @@ export default function MarshalHero() {
         playsInline
         poster={posterImage}
       >
-        <source
-          src="https://assets.mixkit.co/videos/4067/4067-720.mp4"
-          type="video/mp4"
-        />
+        <source src={keralaVideo.url} type="video/mp4" />
       </video>
+
 
       {/* Gradient overlays */}
       <div
