@@ -7,6 +7,8 @@ import yercaudImg from "@/assets/yercaud.jpg";
 import ootyImg from "@/assets/ooty.jpg";
 import kodaikanalImg from "@/assets/kodaikanal.jpg";
 import hyderabadImg from "@/assets/hyderabad.jpg";
+import wayanadImg from "@/assets/wayanad.jpg";
+import thekkadyImg from "@/assets/thekkady.jpg";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -455,7 +457,8 @@ const DESTINATIONS = [
   { name: "Dhanushkodi", region: "Tamil Nadu", img: dhanushkodiImg },
   { name: "Yercaud", region: "Tamil Nadu", img: yercaudImg },
   { name: "Varkala", region: "Kerala", img: varkalaImg },
-  { name: "Wayanad", region: "Kerala", img: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Wayanad", region: "Kerala", img: wayanadImg },
+  { name: "Thekkady", region: "Kerala", img: thekkadyImg },
   { name: "Alleppey", region: "Kerala", img: alleppeyImg },
   { name: "Goa", region: "Goa", img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80" },
   { name: "Pondicherry", region: "Tamil Nadu", img: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80" },
@@ -897,8 +900,8 @@ function Fleets() {
 const RESORTS = [
   { name: "Guruvayoor", img: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80" },
   { name: "Munnar", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80" },
-  { name: "Thekkady", img: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80" },
-  { name: "Wayanad", img: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80" },
+  { name: "Thekkady", img: thekkadyImg },
+  { name: "Wayanad", img: wayanadImg },
   { name: "Varkala", img: varkalaImg },
   { name: "Alleppey", img: alleppeyImg },
 ];
