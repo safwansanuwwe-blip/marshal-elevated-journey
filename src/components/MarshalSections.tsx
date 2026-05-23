@@ -1266,6 +1266,12 @@ function Contact() {
     >
       <div className="relative mx-auto text-center" style={{ ...container, maxWidth: 1000 }}>
         <Reveal>
+          <img
+            src={marshalLogoImg}
+            alt="Marshal Travels logo"
+            className="mx-auto mb-6"
+            style={{ height: 64, width: "auto", objectFit: "contain" }}
+          />
           <Eyebrow>Get In Touch</Eyebrow>
           <h2
             className="mt-8"
