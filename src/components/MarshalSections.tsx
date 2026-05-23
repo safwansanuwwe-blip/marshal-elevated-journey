@@ -392,7 +392,36 @@ function Services() {
       className="relative w-full overflow-hidden"
       style={{ background: SOFT, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
-      <div className="mx-auto" style={container}>
+      {/* Decorative background blobs */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-32 -left-32 h-[520px] w-[520px] rounded-full opacity-50"
+        style={{
+          background: `radial-gradient(circle, ${GOLD}22 0%, transparent 70%)`,
+          filter: "blur(40px)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-40 -right-32 h-[560px] w-[560px] rounded-full opacity-40"
+        style={{
+          background: `radial-gradient(circle, ${INK}15 0%, transparent 70%)`,
+          filter: "blur(50px)",
+        }}
+      />
+      {/* Subtle grid pattern */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: `linear-gradient(${INK} 1px, transparent 1px), linear-gradient(90deg, ${INK} 1px, transparent 1px)`,
+          backgroundSize: "64px 64px",
+          maskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
+          WebkitMaskImage: "radial-gradient(ellipse at center, black 30%, transparent 75%)",
+        }}
+      />
+
+      <div className="relative mx-auto" style={container}>
         <Reveal>
           <SectionHeading
             eyebrow="Our Services"
@@ -406,35 +435,86 @@ function Services() {
           {SERVICES.map(({ icon: Icon, title, desc }, i) => (
             <Reveal key={title} delay={i * 60}>
               <div
-                className="group relative h-full transition-all duration-700 hover:-translate-y-2"
+                className="group relative h-full overflow-hidden transition-all duration-700 hover:-translate-y-2"
                 style={{
                   borderRadius: RADIUS,
                   background: WHITE,
                   border: `1px solid ${HAIR}`,
                   padding: 32,
                   boxShadow: SHADOW_CARD,
-                  minHeight: 280,
+                  minHeight: 300,
                 }}
               >
-                <div className="flex items-start justify-between">
+                {/* Hover gradient wash */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+                  style={{
+                    background: `radial-gradient(circle at top right, ${GOLD}1f 0%, transparent 60%)`,
+                  }}
+                />
+                {/* Gold corner accent */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -top-px -right-px h-16 w-16 origin-top-right scale-0 transition-transform duration-500 group-hover:scale-100"
+                  style={{
+                    background: `linear-gradient(135deg, transparent 50%, ${GOLD} 50%)`,
+                    borderTopRightRadius: RADIUS,
+                  }}
+                />
+                {/* Bottom gold bar reveal */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute bottom-0 left-0 h-[3px] w-0 transition-all duration-700 group-hover:w-full"
+                  style={{ background: `linear-gradient(90deg, ${GOLD}, transparent)` }}
+                />
+
+                {/* Number watermark */}
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute right-6 bottom-2 select-none transition-all duration-700 group-hover:translate-y-[-4px] group-hover:opacity-20"
+                  style={{
+                    fontFamily: HEADING_FONT,
+                    fontSize: 110,
+                    lineHeight: 1,
+                    color: INK,
+                    opacity: 0.05,
+                    letterSpacing: "-0.04em",
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+
+                <div className="relative flex items-start justify-between">
                   <div
-                    className="flex h-12 w-12 items-center justify-center"
+                    className="relative flex h-14 w-14 items-center justify-center overflow-hidden transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
                     style={{
-                      borderRadius: 14,
+                      borderRadius: 16,
                       background: SOFT,
                       border: `1px solid ${HAIR}`,
                     }}
                   >
-                    <Icon className="h-5 w-5" strokeWidth={1.4} style={{ color: INK }} />
+                    <div
+                      aria-hidden
+                      className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                      style={{
+                        background: `linear-gradient(135deg, ${GOLD}, ${GOLD}88)`,
+                      }}
+                    />
+                    <Icon
+                      className="relative h-6 w-6 transition-colors duration-500 group-hover:text-white"
+                      strokeWidth={1.4}
+                      style={{ color: INK }}
+                    />
                   </div>
                   <ArrowUpRight
-                    className="h-5 w-5 opacity-30 transition-all duration-500 group-hover:opacity-100 group-hover:rotate-12"
-                    style={{ color: INK }}
+                    className="h-5 w-5 opacity-30 transition-all duration-500 group-hover:opacity-100 group-hover:rotate-45 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    style={{ color: GOLD }}
                     strokeWidth={1.4}
                   />
                 </div>
                 <h3
-                  className="mt-10"
+                  className="relative mt-10 transition-colors duration-500"
                   style={{
                     fontFamily: HEADING_FONT,
                     fontSize: 30,
@@ -446,7 +526,7 @@ function Services() {
                   {title}
                 </h3>
                 <p
-                  className="mt-3"
+                  className="relative mt-3"
                   style={{
                     fontFamily: BODY_FONT,
                     fontSize: 14,
@@ -464,6 +544,7 @@ function Services() {
     </section>
   );
 }
+
 
 /* ============================================================
    DESTINATIONS — cinematic slider
