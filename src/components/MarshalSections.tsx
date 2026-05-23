@@ -969,8 +969,11 @@ function Fleets() {
                   <img
                     src={f.img}
                     alt={f.name}
+                    loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-contain p-6 transition-transform duration-[1800ms] group-hover:scale-105"
                   />
+
                   <span
                     className="absolute left-6 top-6 px-4 py-2"
                     style={{
