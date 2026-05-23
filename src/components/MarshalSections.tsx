@@ -46,15 +46,27 @@ function useReveal<T extends HTMLElement>() {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     if (!ref.current) return;
+    // If element is already in/near viewport on mount, show immediately
+    const rect = ref.current.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      setVisible(true);
+      return;
+    }
     const io = new IntersectionObserver(
-      ([e]) => e.isIntersecting && setVisible(true),
-      { threshold: 0.15 }
+      ([e]) => {
+        if (e.isIntersecting) {
+          setVisible(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -10% 0px" }
     );
     io.observe(ref.current);
     return () => io.disconnect();
   }, []);
   return { ref, visible };
 }
+
 
 function Reveal({
   children,
