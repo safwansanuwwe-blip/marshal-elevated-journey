@@ -14,6 +14,7 @@ import pondicherryImg from "@/assets/pondicherry.jpg";
 import chikmagalurImg from "@/assets/chikmagalur.jpg";
 import munnarImg from "@/assets/munnar.jpg";
 import cochinAirportImg from "@/assets/cochin-airport.jpg";
+import calicutAirportImg from "@/assets/calicut-airport.jpg";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -639,16 +640,29 @@ function Airports() {
           />
         </Reveal>
         <Reveal>
-          <div
-            className="mt-16 w-full overflow-hidden"
-            style={{ borderRadius: RADIUS, boxShadow: SHADOW_CARD, aspectRatio: "21 / 9" }}
-          >
-            <img
-              src={cochinAirportImg}
-              alt="Cochin International Airport pickup with premium Force Urbania traveller"
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div
+              className="w-full overflow-hidden"
+              style={{ borderRadius: RADIUS, boxShadow: SHADOW_CARD, aspectRatio: "4 / 3" }}
+            >
+              <img
+                src={cochinAirportImg}
+                alt="Cochin International Airport pickup with premium Force Urbania traveller"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <div
+              className="w-full overflow-hidden"
+              style={{ borderRadius: RADIUS, boxShadow: SHADOW_CARD, aspectRatio: "4 / 3" }}
+            >
+              <img
+                src={calicutAirportImg}
+                alt="Calicut International Airport pickup with premium Toyota Innova Crysta"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
           </div>
         </Reveal>
 
