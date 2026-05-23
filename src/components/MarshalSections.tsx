@@ -21,6 +21,7 @@ import fleetInnovaImg from "@/assets/fleet-innova.png";
 import fleetUrbaniaImg from "@/assets/fleet-urbania.png";
 import fleetTravellerImg from "@/assets/fleet-traveller.png";
 import fleetBusImg from "@/assets/fleet-bus.png";
+import marshalLogoImg from "@/assets/marshal-logo.png";
 import {
   ArrowRight,
   ArrowUpRight,
