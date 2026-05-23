@@ -1095,8 +1095,11 @@ function Resorts() {
                   <img
                     src={r.img}
                     alt={r.name}
+                    loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-cover transition-transform duration-[1800ms] group-hover:scale-110"
                   />
+
                 </div>
                 <div className="flex items-center justify-between gap-4 p-7">
                   <div>
