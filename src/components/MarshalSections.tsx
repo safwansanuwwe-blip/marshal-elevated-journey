@@ -1268,6 +1268,7 @@ function Faq() {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <section
+      id="faq"
       className="relative w-full overflow-hidden"
       style={{ background: SOFT, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
