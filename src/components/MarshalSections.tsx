@@ -1687,7 +1687,7 @@ function Footer() {
                     { label: "About Marshal Holidays", href: "#about" },
                     { label: "Testimonials", href: "#testimonials" },
                     { label: "FAQ", href: "#faq" },
-                    { label: "Privacy Policy", href: "#" },
+                    { label: "Contact", href: "#contact" },
                   ]}
                 />
               </div>
