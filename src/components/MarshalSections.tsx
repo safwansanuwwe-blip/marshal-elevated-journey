@@ -1440,6 +1440,25 @@ function Contact() {
               +91 91887 00777
             </a>
             <a
+              href="mailto:info.marshalholidays@gmail.com"
+              className="inline-flex items-center gap-3 transition-all hover:-translate-y-1 hover:gap-5"
+              style={{
+                height: 60,
+                padding: "0 32px",
+                borderRadius: 999,
+                background: "#EA4335",
+                color: WHITE,
+                fontFamily: BODY_FONT,
+                fontSize: 15,
+                fontWeight: 500,
+                letterSpacing: "0.04em",
+              }}
+            >
+              <Mail className="h-4 w-4" strokeWidth={1.4} />
+              info.marshalholidays@gmail.com
+              <ArrowUpRight className="h-4 w-4" strokeWidth={1.4} />
+            </a>
+            <a
               href={WHATSAPP}
               target="_blank"
               rel="noreferrer"
