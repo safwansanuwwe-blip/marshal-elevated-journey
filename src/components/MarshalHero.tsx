@@ -63,7 +63,7 @@ export default function MarshalHero() {
           className="leading-none tracking-[0.04em] animate-fade-in"
           style={{
             fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: "clamp(72px, 16vw, 260px)",
+            fontSize: "clamp(40px, 8vw, 140px)",
             background:
               "linear-gradient(to bottom, rgba(255,255,255,0.83) 0%, rgba(255,255,255,0.12) 100%)",
             WebkitBackgroundClip: "text",
@@ -72,7 +72,7 @@ export default function MarshalHero() {
             filter: "blur(0.4px) drop-shadow(0 8px 40px rgba(255,255,255,0.08))",
           }}
         >
-          M&nbsp;A&nbsp;R&nbsp;S&nbsp;H&nbsp;A&nbsp;L
+          Welcome to Marshal Holidays
         </h2>
       </div>
 
@@ -238,7 +238,7 @@ export default function MarshalHero() {
                   letterSpacing: "0.02em",
                 }}
               >
-                Premium Kerala Chauffeur & Tour Experience
+                Premium Kerala Tour & Transport Services
               </p>
               <p
                 className="mt-3 text-white/80"
