@@ -224,67 +224,33 @@ export default function MarshalHero() {
         className="absolute inset-x-0 bottom-0 z-30 pb-10 md:pb-14 animate-fade-in"
         style={{ paddingLeft: "clamp(20px, 6vw, 80px)", paddingRight: "clamp(20px, 6vw, 80px)" }}
       >
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
-          {/* Left - tagline + CTA */}
-          <div className="flex flex-col sm:flex-row sm:items-end gap-6 max-w-2xl">
-            <div style={{ maxWidth: "414px" }}>
-              <p
-                className="text-white"
-                style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: "clamp(28px, 3.5vw, 40px)",
-                  lineHeight: 1.1,
-                  fontWeight: 400,
-                  letterSpacing: "0.02em",
-                }}
-              >
-                Premium Kerala Chauffeur & Tour Experience
-              </p>
-              <p
-                className="mt-3 text-white/80"
-                style={{
-                  fontFamily: "Inter, sans-serif",
-                  fontSize: "15px",
-                  lineHeight: "24px",
-                  fontWeight: 400,
-                }}
-              >
-                Airport Transfers • Holiday Packages • Luxury Rides
-              </p>
-            </div>
-            <a
-              href="#fleet"
-              className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-6 transition-all hover:-translate-y-0.5 hover:shadow-2xl"
-              style={{
-                height: "48px",
-                borderRadius: "8px",
-                color: "#272835",
-                fontFamily: "Inter, sans-serif",
-                fontSize: "15px",
-                fontWeight: 600,
-                border: "1px solid #EEEFF2",
-                boxShadow: "0 10px 30px -10px rgba(0,0,0,0.4)",
-              }}
-            >
-              View Fleet
-              <ArrowRight className="h-4 w-4" />
-            </a>
-
-          </div>
-
-          {/* Right - tagline */}
+        <div className="flex flex-col items-start gap-4">
+          {/* Big headline */}
           <h1
             className="text-white"
             style={{
               fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: "clamp(48px, 6vw, 64px)",
+              fontSize: "clamp(52px, 8vw, 96px)",
               lineHeight: 1,
-              maxWidth: "466px",
               letterSpacing: "0.01em",
             }}
           >
-            Luxury journeys begin with Marshal
+            Welcome to Marshal Holidays
           </h1>
+          {/* Small subtitle */}
+          <p
+            className="text-white/85"
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: "clamp(16px, 2.2vw, 24px)",
+              lineHeight: 1.4,
+              fontWeight: 400,
+              letterSpacing: "1px",
+              textTransform: "uppercase",
+            }}
+          >
+            Premium Kerala Tour & Transport Services
+          </p>
         </div>
       </div>
     </section>
