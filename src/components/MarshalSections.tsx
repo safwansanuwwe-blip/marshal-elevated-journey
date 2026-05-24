@@ -727,6 +727,7 @@ const COVERAGE = ["Chavakkad", "Guruvayur", "Orumanayur", "Pavaratty", "Mullasse
 function Airports() {
   return (
     <section
+      id="airports"
       className="relative w-full overflow-hidden"
       style={{ background: SOFT, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
@@ -1064,6 +1065,7 @@ const RESORTS = [
 function Resorts() {
   return (
     <section
+      id="resorts"
       className="relative w-full overflow-hidden"
       style={{ background: SOFT, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
@@ -1165,6 +1167,7 @@ function Testimonials() {
   const t = TESTIMONIALS[i];
   return (
     <section
+      id="testimonials"
       className="relative w-full overflow-hidden"
       style={{ background: WHITE, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
@@ -1265,6 +1268,7 @@ function Faq() {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <section
+      id="faq"
       className="relative w-full overflow-hidden"
       style={{ background: SOFT, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
@@ -1670,11 +1674,11 @@ function Footer() {
                 <FooterCol
                   title="Services"
                   items={[
-                    { label: "Family Tours", href: "#services" },
-                    { label: "Honeymoon Packages", href: "#services" },
-                    { label: "Group Tours", href: "#services" },
+                    { label: "Family Tours", href: `${WHATSAPP}?text=${encodeURIComponent("Hi Marshal Holidays, I'd like to enquire about Family Tours.")}` },
+                    { label: "Honeymoon Packages", href: `${WHATSAPP}?text=${encodeURIComponent("Hi Marshal Holidays, I'd like to enquire about Honeymoon Packages.")}` },
+                    { label: "Group Tours", href: `${WHATSAPP}?text=${encodeURIComponent("Hi Marshal Holidays, I'd like to enquire about Group Tours.")}` },
                     { label: "Resort Booking", href: "#resorts" },
-                    { label: "Custom Packages", href: "#services" },
+                    { label: "Custom Packages", href: `${WHATSAPP}?text=${encodeURIComponent("Hi Marshal Holidays, I'd like a Custom Package quote.")}` },
                   ]}
                 />
                 <FooterCol
@@ -1683,7 +1687,7 @@ function Footer() {
                     { label: "About Marshal Holidays", href: "#about" },
                     { label: "Testimonials", href: "#testimonials" },
                     { label: "FAQ", href: "#faq" },
-                    { label: "Privacy Policy", href: "#" },
+                    { label: "Contact", href: "#contact" },
                   ]}
                 />
               </div>
@@ -1831,25 +1835,41 @@ function ColTitle({ children }: { children: React.ReactNode }) {
 }
 
 function FooterCol({ title, items }: { title: string; items: { label: string; href: string }[] }) {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      if (href === "#") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+      const el = document.querySelector(href);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
   return (
     <div>
       <ColTitle>{title}</ColTitle>
       <ul className="mt-6 space-y-3.5">
-        {items.map((it) => (
-          <li key={it.label}>
-            <a
-              href={it.href}
-              className="inline-block transition-all hover:translate-x-1 hover:text-black"
-              style={{
-                fontFamily: BODY_FONT,
-                fontSize: 14,
-                color: INK_SOFT,
-              }}
-            >
-              {it.label}
-            </a>
-          </li>
-        ))}
+        {items.map((it) => {
+          const external = !it.href.startsWith("#");
+          return (
+            <li key={it.label}>
+              <a
+                href={it.href}
+                onClick={(e) => handleClick(e, it.href)}
+                {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                className="inline-block cursor-pointer transition-all hover:translate-x-1 hover:text-black"
+                style={{
+                  fontFamily: BODY_FONT,
+                  fontSize: 14,
+                  color: INK_SOFT,
+                }}
+              >
+                {it.label}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
