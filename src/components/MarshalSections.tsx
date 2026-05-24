@@ -41,6 +41,7 @@ import {
   Facebook,
   Instagram,
   Youtube,
+  X,
   Mail,
   ShieldCheck,
   Clock,
@@ -1583,10 +1584,10 @@ function Footer() {
 
                 <div className="mt-8 flex gap-2.5">
                   {[
-                    { Icon: Instagram, href: "https://www.instagram.com/marshalholidays", label: "Instagram" },
-                    { Icon: MessageCircle, href: WHATSAPP, label: "WhatsApp" },
-                    { Icon: Facebook, href: "https://www.facebook.com/marshalholidays", label: "Facebook" },
-                    { Icon: Youtube, href: "https://www.youtube.com/@marshalholidays", label: "YouTube" },
+                    { Icon: Facebook, href: "https://www.facebook.com/share/1ErcXUcLtx/?mibextid=wwXIfr", label: "Facebook" },
+                    { Icon: Instagram, href: "https://www.instagram.com/marshalholidays?utm_source=qr", label: "Instagram" },
+                    { Icon: X, href: "https://x.com/marshalholidays?s=11", label: "X" },
+                    { Icon: Youtube, href: "https://youtube.com/@marshalholidays?si=twP5Fp6i0YLahBI6", label: "YouTube" },
                   ].map(({ Icon, href, label }, i) => (
                     <a
                       key={i}
