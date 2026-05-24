@@ -1499,130 +1499,310 @@ function Contact() {
 }
 
 /* ============================================================
-   FOOTER — minimal luxury
+   FOOTER — premium dual-card, cinematic watermark
 ============================================================ */
 function Footer() {
   return (
     <footer
-      className="relative w-full"
-      style={{ background: WHITE, color: INK, borderTop: `1px solid ${HAIR}` }}
+      className="relative w-full overflow-hidden"
+      style={{ background: SOFT, color: INK, paddingTop: 120, paddingBottom: 0 }}
     >
-      <div
-        className="mx-auto"
-        style={{
-          ...container,
-          paddingTop: 100,
-          paddingBottom: 40,
-        }}
-      >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-14">
-          <div>
+      <div className="relative mx-auto" style={container}>
+        {/* Floating dual-card */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* LEFT — cinematic video card */}
+          <Reveal className="lg:col-span-5">
             <div
+              className="relative h-full min-h-[560px] overflow-hidden flex flex-col justify-between"
               style={{
-                fontFamily: HEADING_FONT,
-                fontSize: 40,
-                letterSpacing: "0.06em",
-                color: INK,
-                lineHeight: 1,
+                borderRadius: RADIUS,
+                boxShadow: SHADOW_LIFT,
+                padding: 36,
+                color: WHITE,
               }}
             >
-              MARSHAL
-            </div>
-            <p
-              className="mt-5"
-              style={{
-                fontFamily: BODY_FONT,
-                fontSize: 14,
-                lineHeight: "26px",
-                color: INK_SOFT,
-                maxWidth: 280,
-              }}
-            >
-              Premium tourist vehicles, airport transfers and bespoke holiday
-              packages across South India.
-            </p>
-            <div className="mt-8 flex gap-2.5">
-              {[
-                { Icon: Facebook, href: "https://www.facebook.com/marshalholidays" },
-                { Icon: Instagram, href: "https://www.instagram.com/marshalholidays" },
-                { Icon: Youtube, href: "https://www.youtube.com/@marshalholidays" },
-                { Icon: Mail, href: "mailto:info@marshalholidays.com" },
-              ].map(({ Icon, href }, i) => (
-                <a
-                  key={i}
-                  href={href}
-                  target={href.startsWith("http") ? "_blank" : undefined}
-                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="flex h-10 w-10 items-center justify-center rounded-full transition-all hover:-translate-y-0.5"
+              <video
+                src="/videos/marshal-about.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              <div
+                aria-hidden
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(17,17,17,0.25) 0%, rgba(17,17,17,0.55) 60%, rgba(17,17,17,0.85) 100%)",
+                }}
+              />
+
+              <div className="relative">
+                <img
+                  src={marshalLogoImg}
+                  alt="Marshal Holidays"
+                  className="h-11 w-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+                />
+              </div>
+
+              <div className="relative">
+                <h3
                   style={{
-                    background: SOFT,
-                    border: `1px solid ${HAIR}`,
-                    color: INK,
+                    fontFamily: HEADING_FONT,
+                    fontSize: "clamp(32px, 3.4vw, 44px)",
+                    lineHeight: 1.05,
+                    letterSpacing: "0.01em",
                   }}
                 >
-                  <Icon className="h-4 w-4" strokeWidth={1.4} />
-                </a>
-              ))}
+                  Travel more beautifully,
+                  <br />
+                  with comfort and care.
+                </h3>
+                <p
+                  className="mt-5 max-w-md"
+                  style={{
+                    fontFamily: BODY_FONT,
+                    fontSize: 14,
+                    lineHeight: "26px",
+                    color: "rgba(255,255,255,0.78)",
+                  }}
+                >
+                  Premium tourist vehicles, airport transfers, and customized
+                  holiday packages across Kerala and South India.
+                </p>
+
+                <div className="mt-8 flex gap-2.5">
+                  {[
+                    { Icon: Instagram, href: "https://www.instagram.com/marshalholidays", label: "Instagram" },
+                    { Icon: MessageCircle, href: WHATSAPP, label: "WhatsApp" },
+                    { Icon: Facebook, href: "https://www.facebook.com/marshalholidays", label: "Facebook" },
+                    { Icon: Youtube, href: "https://www.youtube.com/@marshalholidays", label: "YouTube" },
+                  ].map(({ Icon, href, label }, i) => (
+                    <a
+                      key={i}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={label}
+                      className="flex h-11 w-11 items-center justify-center rounded-full transition-all hover:-translate-y-0.5 hover:bg-white hover:text-black"
+                      style={{
+                        background: "rgba(255,255,255,0.12)",
+                        backdropFilter: "blur(14px)",
+                        WebkitBackdropFilter: "blur(14px)",
+                        border: "1px solid rgba(255,255,255,0.22)",
+                        color: WHITE,
+                      }}
+                    >
+                      <Icon className="h-4 w-4" strokeWidth={1.5} />
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
+          </Reveal>
 
-          </div>
-
-          <FooterCol
-            title="Quick Links"
-            items={[
-              { label: "Home", href: "#" },
-              { label: "About Us", href: "#about" },
-              { label: "Fleet", href: "#fleet" },
-              { label: "Destinations", href: "#destinations" },
-              { label: "Contact", href: "#contact" },
-            ]}
-          />
-          <FooterCol
-            title="Services"
-            items={[
-              { label: "Family Tours", href: "#services" },
-              { label: "Honeymoon", href: "#services" },
-              { label: "Group Tours", href: "#services" },
-              { label: "Airport Transfers", href: "#services" },
-              { label: "Resort Booking", href: "#services" },
-            ]}
-          />
-
-
-          <div>
-            <ColTitle>Contact</ColTitle>
-            <ul
-              className="mt-7 space-y-4"
+          {/* RIGHT — premium glass card */}
+          <Reveal delay={120} className="lg:col-span-7">
+            <div
+              className="relative h-full min-h-[560px] overflow-hidden"
               style={{
-                fontFamily: BODY_FONT,
-                fontSize: 14,
-                color: INK_SOFT,
+                borderRadius: RADIUS,
+                background: WHITE,
+                border: `1px solid ${HAIR}`,
+                boxShadow: SHADOW_CARD,
+                padding: "44px 44px 40px",
               }}
             >
-              <li className="flex items-start gap-3">
-                <Phone className="h-4 w-4 mt-1" strokeWidth={1.4} style={{ color: GOLD }} />
-                +91 91887 00777
-              </li>
-              <li className="flex items-start gap-3">
-                <MapPin className="h-4 w-4 mt-1" strokeWidth={1.4} style={{ color: GOLD }} />
-                Guruvayur, Thrissur, Kerala
-              </li>
-            </ul>
-          </div>
+              {/* Floating cube badge */}
+              <div
+                className="absolute -top-6 -right-6 animate-[float_7s_ease-in-out_infinite]"
+                style={{
+                  width: 96,
+                  height: 96,
+                  borderRadius: 22,
+                  background: `linear-gradient(135deg, ${INK} 0%, #2a2a2a 100%)`,
+                  color: WHITE,
+                  boxShadow: "0 30px 60px -20px rgba(17,17,17,0.5)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontFamily: HEADING_FONT,
+                  fontSize: 56,
+                  lineHeight: 1,
+                  letterSpacing: "0.02em",
+                  border: `1px solid ${GOLD}55`,
+                }}
+              >
+                M
+              </div>
+
+              {/* Handwritten text */}
+              <div
+                style={{
+                  fontFamily: "'Caveat', 'Brush Script MT', cursive",
+                  fontSize: 32,
+                  color: GOLD,
+                  lineHeight: 1.1,
+                  letterSpacing: "0.01em",
+                }}
+              >
+                Ready for your next journey?
+              </div>
+
+              {/* Three nav columns */}
+              <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-10">
+                <FooterCol
+                  title="Navigation"
+                  items={[
+                    { label: "Home", href: "#" },
+                    { label: "Destinations", href: "#destinations" },
+                    { label: "Fleets", href: "#fleet" },
+                    { label: "Airport Transfers", href: "#airports" },
+                    { label: "Contact", href: "#contact" },
+                  ]}
+                />
+                <FooterCol
+                  title="Services"
+                  items={[
+                    { label: "Family Tours", href: "#services" },
+                    { label: "Honeymoon Packages", href: "#services" },
+                    { label: "Group Tours", href: "#services" },
+                    { label: "Resort Booking", href: "#resorts" },
+                    { label: "Custom Packages", href: "#services" },
+                  ]}
+                />
+                <FooterCol
+                  title="Company"
+                  items={[
+                    { label: "About Marshal Holidays", href: "#about" },
+                    { label: "Testimonials", href: "#testimonials" },
+                    { label: "FAQ", href: "#faq" },
+                    { label: "Privacy Policy", href: "#" },
+                  ]}
+                />
+              </div>
+
+              {/* Bottom CTA */}
+              <div
+                className="mt-12 pt-10"
+                style={{ borderTop: `1px solid ${HAIR}` }}
+              >
+                <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+                  <h4
+                    style={{
+                      fontFamily: HEADING_FONT,
+                      fontSize: "clamp(26px, 2.4vw, 34px)",
+                      lineHeight: 1.1,
+                      color: INK,
+                      letterSpacing: "0.005em",
+                      maxWidth: 420,
+                    }}
+                  >
+                    Travel smarter.
+                    <br />
+                    Stay comfortable with Marshal Holidays.
+                  </h4>
+
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      const fd = new FormData(e.currentTarget);
+                      const phone = String(fd.get("phone") || "").trim();
+                      const msg = phone
+                        ? `Hi Marshal Holidays, please contact me on ${phone}.`
+                        : "";
+                      window.open(
+                        `${WHATSAPP}${msg ? `?text=${encodeURIComponent(msg)}` : ""}`,
+                        "_blank",
+                        "noopener,noreferrer"
+                      );
+                    }}
+                    className="flex items-center w-full lg:w-auto"
+                    style={{
+                      borderRadius: 999,
+                      background: SOFT,
+                      border: `1px solid ${HAIR_STRONG}`,
+                      padding: 6,
+                      minWidth: 320,
+                    }}
+                  >
+                    <input
+                      name="phone"
+                      type="tel"
+                      placeholder="Enter your phone number"
+                      className="flex-1 bg-transparent outline-none px-4"
+                      style={{
+                        fontFamily: BODY_FONT,
+                        fontSize: 14,
+                        color: INK,
+                        height: 44,
+                      }}
+                    />
+                    <button
+                      type="submit"
+                      className="inline-flex items-center gap-2 transition-all hover:gap-3"
+                      style={{
+                        height: 44,
+                        padding: "0 22px",
+                        borderRadius: 999,
+                        background: INK,
+                        color: WHITE,
+                        fontFamily: BODY_FONT,
+                        fontSize: 13,
+                        fontWeight: 500,
+                        letterSpacing: "0.04em",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      <MessageCircle className="h-4 w-4" strokeWidth={1.6} />
+                      Chat on WhatsApp
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </div>
 
+        {/* Bottom copyright */}
         <div
-          className="mt-20 flex flex-col sm:flex-row items-center justify-between gap-4 pt-8"
+          className="mt-14 pb-10 flex flex-col sm:flex-row items-center justify-between gap-4"
           style={{
-            borderTop: `1px solid ${HAIR}`,
             fontFamily: BODY_FONT,
             fontSize: 12,
             color: INK_MUTE,
             letterSpacing: "0.04em",
           }}
         >
-          <span>© {new Date().getFullYear()} Marshal Holidays. All rights reserved.</span>
+          <span>© 2026 Marshal Holidays. All rights reserved.</span>
           <span>Crafted with care for luxury travel.</span>
+        </div>
+      </div>
+
+      {/* Cinematic watermark — flush to edges */}
+      <div
+        aria-hidden
+        className="relative w-full overflow-hidden select-none pointer-events-none"
+        style={{ marginTop: -20 }}
+      >
+        <div
+          style={{
+            fontFamily: HEADING_FONT,
+            fontSize: "clamp(80px, 22vw, 340px)",
+            lineHeight: 0.85,
+            letterSpacing: "-0.02em",
+            color: "transparent",
+            background: `linear-gradient(180deg, ${INK}26 0%, ${INK}08 100%)`,
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            whiteSpace: "nowrap",
+            textAlign: "center",
+            paddingBottom: "0.05em",
+          }}
+        >
+          MARSHAL&nbsp;HOLIDAYS
         </div>
       </div>
     </footer>
@@ -1650,12 +1830,12 @@ function FooterCol({ title, items }: { title: string; items: { label: string; hr
   return (
     <div>
       <ColTitle>{title}</ColTitle>
-      <ul className="mt-7 space-y-4">
+      <ul className="mt-6 space-y-3.5">
         {items.map((it) => (
           <li key={it.label}>
             <a
               href={it.href}
-              className="inline-block transition-all hover:translate-x-1"
+              className="inline-block transition-all hover:translate-x-1 hover:text-black"
               style={{
                 fontFamily: BODY_FONT,
                 fontSize: 14,
