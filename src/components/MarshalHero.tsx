@@ -1,6 +1,5 @@
 import { ArrowRight, Menu, Plane, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import busImage from "@/assets/marshal-bus.png";
 import logoImage from "@/assets/marshal-logo.png";
 
 const NAV_LINKS: { label: string; href: string }[] = [
@@ -219,35 +218,6 @@ export default function MarshalHero() {
         </div>
       </div>
 
-
-      {/* Featured bus image */}
-      <div
-        className="absolute left-1/2 z-20 -translate-x-1/2 w-full px-4 sm:px-6 bottom-[42%] sm:bottom-[32%] md:bottom-[26%]"
-        style={{ maxWidth: "1200px" }}
-      >
-        <div className="animate-[float_6s_ease-in-out_infinite]">
-          <div className="relative">
-            <img
-              src={busImage}
-              alt="Marshal Holidays luxury tourist bus"
-              className="relative z-10 mx-auto w-full max-w-[95vw] sm:max-w-[800px] md:max-w-[900px] drop-shadow-[0_30px_40px_rgba(0,0,0,0.55)]"
-            />
-            {/* Soft ground shadow */}
-            <div
-              className="absolute left-1/2 -translate-x-1/2 z-2"
-              style={{
-                bottom: "-10px",
-                width: "70%",
-                height: "40px",
-                background:
-                  "radial-gradient(ellipse at center, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 70%)",
-                filter: "blur(8px)",
-              }}
-            />
-          </div>
-        </div>
-
-      </div>
 
       {/* HERO BOTTOM CONTENT */}
       <div
