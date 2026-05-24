@@ -434,8 +434,12 @@ function Services() {
         <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {SERVICES.map(({ icon: Icon, title, desc }, i) => (
             <Reveal key={title} delay={i * 60}>
-              <div
-                className="group relative h-full overflow-hidden transition-all duration-700 hover:-translate-y-2"
+              <a
+                href={`${WHATSAPP}?text=${encodeURIComponent(`Hi Marshal Holidays, I'd like to enquire about ${title}.`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Enquire about ${title} on WhatsApp`}
+                className="group relative block h-full overflow-hidden transition-all duration-700 hover:-translate-y-2 cursor-pointer"
                 style={{
                   borderRadius: RADIUS,
                   background: WHITE,
@@ -536,7 +540,7 @@ function Services() {
                 >
                   {desc}
                 </p>
-              </div>
+              </a>
             </Reveal>
           ))}
         </div>
