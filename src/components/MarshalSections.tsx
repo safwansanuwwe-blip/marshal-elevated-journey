@@ -1458,6 +1458,27 @@ function Contact() {
               Chat on WhatsApp
               <ArrowUpRight className="h-4 w-4" strokeWidth={1.4} />
             </a>
+            <a
+              href="https://maps.app.goo.gl/ZgufaygNto4HigW3A?g_st=ic"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-3 transition-all hover:-translate-y-1 hover:gap-5"
+              style={{
+                height: 60,
+                padding: "0 32px",
+                borderRadius: 999,
+                background: "linear-gradient(135deg, #4285F4 0%, #34A853 50%, #FBBC04 75%, #EA4335 100%)",
+                color: WHITE,
+                fontFamily: BODY_FONT,
+                fontSize: 15,
+                fontWeight: 500,
+                letterSpacing: "0.04em",
+              }}
+            >
+              <MapPin className="h-4 w-4" strokeWidth={1.4} />
+              View on Google Maps
+              <ArrowUpRight className="h-4 w-4" strokeWidth={1.4} />
+            </a>
           </div>
         </Reveal>
 
