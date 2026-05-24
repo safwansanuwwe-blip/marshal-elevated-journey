@@ -1405,14 +1405,15 @@ function Contact() {
               aspectRatio: "16 / 9",
             }}
           >
-            <video
-              src="/videos/marshal-contact.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="metadata"
-              className="h-full w-full object-cover"
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3922.6385!2d76.0764!3d10.5796!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba79300216e31ff%3A0xb7393fa9ab1137c8!2sMarshal%20Holidays!5e0!3m2!1sen!2sin!4v1716540000000!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style={{ border: 0, minHeight: 460 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Marshal Holidays Location"
             />
           </div>
         </Reveal>
@@ -1456,6 +1457,27 @@ function Contact() {
               }}
             >
               Chat on WhatsApp
+              <ArrowUpRight className="h-4 w-4" strokeWidth={1.4} />
+            </a>
+            <a
+              href="https://maps.app.goo.gl/ZgufaygNto4HigW3A?g_st=ic"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-3 transition-all hover:-translate-y-1 hover:gap-5"
+              style={{
+                height: 60,
+                padding: "0 32px",
+                borderRadius: 999,
+                background: "linear-gradient(135deg, #4285F4 0%, #34A853 50%, #FBBC04 75%, #EA4335 100%)",
+                color: WHITE,
+                fontFamily: BODY_FONT,
+                fontSize: 15,
+                fontWeight: 500,
+                letterSpacing: "0.04em",
+              }}
+            >
+              <MapPin className="h-4 w-4" strokeWidth={1.4} />
+              View on Google Maps
               <ArrowUpRight className="h-4 w-4" strokeWidth={1.4} />
             </a>
           </div>
