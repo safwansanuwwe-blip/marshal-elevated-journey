@@ -1,6 +1,5 @@
 import { ArrowRight, Menu, Plane, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import busImage from "@/assets/marshal-bus.png";
 import logoImage from "@/assets/marshal-logo.png";
 
 const NAV_LINKS: { label: string; href: string }[] = [
