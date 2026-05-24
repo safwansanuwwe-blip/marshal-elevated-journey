@@ -2,7 +2,6 @@ import { ArrowRight, Menu, Plane, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import busImage from "@/assets/marshal-bus.png";
 import logoImage from "@/assets/marshal-logo.png";
-import bgImage from "@/assets/marshal-bg.jpg";
 
 const NAV_LINKS: { label: string; href: string }[] = [
   { label: "Home", href: "#" },
@@ -44,7 +43,6 @@ export default function MarshalHero() {
         muted
         loop
         playsInline
-        poster={bgImage}
       />
       <video
         className="absolute inset-0 h-full w-full object-cover md:hidden"
@@ -53,7 +51,6 @@ export default function MarshalHero() {
         muted
         loop
         playsInline
-        poster={bgImage}
       />
       <div className="absolute inset-0 bg-black/30" />
 
