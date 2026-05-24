@@ -727,6 +727,7 @@ const COVERAGE = ["Chavakkad", "Guruvayur", "Orumanayur", "Pavaratty", "Mullasse
 function Airports() {
   return (
     <section
+      id="airports"
       className="relative w-full overflow-hidden"
       style={{ background: SOFT, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
