@@ -1065,6 +1065,7 @@ const RESORTS = [
 function Resorts() {
   return (
     <section
+      id="resorts"
       className="relative w-full overflow-hidden"
       style={{ background: SOFT, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
