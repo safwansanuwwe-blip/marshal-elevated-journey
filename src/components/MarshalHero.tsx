@@ -255,22 +255,33 @@ export default function MarshalHero() {
         style={{ paddingLeft: "clamp(20px, 6vw, 80px)", paddingRight: "clamp(20px, 6vw, 80px)" }}
       >
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
-          {/* Left - paragraph + CTA */}
+          {/* Left - tagline + CTA */}
           <div className="flex flex-col sm:flex-row sm:items-end gap-6 max-w-2xl">
-            <p
-              className="text-white"
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontSize: "18px",
-                lineHeight: "30px",
-                fontWeight: 400,
-                maxWidth: "414px",
-              }}
-            >
-              Travel across Kerala with comfort, luxury, and unforgettable
-              experiences. Premium tourist buses for family trips, group tours,
-              and corporate journeys.
-            </p>
+            <div style={{ maxWidth: "414px" }}>
+              <p
+                className="text-white"
+                style={{
+                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontSize: "clamp(28px, 3.5vw, 40px)",
+                  lineHeight: 1.1,
+                  fontWeight: 400,
+                  letterSpacing: "0.02em",
+                }}
+              >
+                Premium Kerala Chauffeur & Tour Experience
+              </p>
+              <p
+                className="mt-3 text-white/80"
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontSize: "15px",
+                  lineHeight: "24px",
+                  fontWeight: 400,
+                }}
+              >
+                Airport Transfers • Holiday Packages • Luxury Rides
+              </p>
+            </div>
             <a
               href="#fleet"
               className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-6 transition-all hover:-translate-y-0.5 hover:shadow-2xl"
