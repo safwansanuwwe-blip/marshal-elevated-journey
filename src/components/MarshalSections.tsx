@@ -1167,6 +1167,7 @@ function Testimonials() {
   const t = TESTIMONIALS[i];
   return (
     <section
+      id="testimonials"
       className="relative w-full overflow-hidden"
       style={{ background: WHITE, color: INK, paddingTop: 160, paddingBottom: 180 }}
     >
