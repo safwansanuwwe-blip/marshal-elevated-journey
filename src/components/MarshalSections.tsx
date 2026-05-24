@@ -1674,11 +1674,11 @@ function Footer() {
                 <FooterCol
                   title="Services"
                   items={[
-                    { label: "Family Tours", href: "#services" },
-                    { label: "Honeymoon Packages", href: "#services" },
-                    { label: "Group Tours", href: "#services" },
+                    { label: "Family Tours", href: `${WHATSAPP}?text=${encodeURIComponent("Hi Marshal Holidays, I'd like to enquire about Family Tours.")}` },
+                    { label: "Honeymoon Packages", href: `${WHATSAPP}?text=${encodeURIComponent("Hi Marshal Holidays, I'd like to enquire about Honeymoon Packages.")}` },
+                    { label: "Group Tours", href: `${WHATSAPP}?text=${encodeURIComponent("Hi Marshal Holidays, I'd like to enquire about Group Tours.")}` },
                     { label: "Resort Booking", href: "#resorts" },
-                    { label: "Custom Packages", href: "#services" },
+                    { label: "Custom Packages", href: `${WHATSAPP}?text=${encodeURIComponent("Hi Marshal Holidays, I'd like a Custom Package quote.")}` },
                   ]}
                 />
                 <FooterCol
