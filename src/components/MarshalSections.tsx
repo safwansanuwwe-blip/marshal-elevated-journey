@@ -1835,25 +1835,41 @@ function ColTitle({ children }: { children: React.ReactNode }) {
 }
 
 function FooterCol({ title, items }: { title: string; items: { label: string; href: string }[] }) {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      if (href === "#") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+      const el = document.querySelector(href);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
   return (
     <div>
       <ColTitle>{title}</ColTitle>
       <ul className="mt-6 space-y-3.5">
-        {items.map((it) => (
-          <li key={it.label}>
-            <a
-              href={it.href}
-              className="inline-block transition-all hover:translate-x-1 hover:text-black"
-              style={{
-                fontFamily: BODY_FONT,
-                fontSize: 14,
-                color: INK_SOFT,
-              }}
-            >
-              {it.label}
-            </a>
-          </li>
-        ))}
+        {items.map((it) => {
+          const external = !it.href.startsWith("#");
+          return (
+            <li key={it.label}>
+              <a
+                href={it.href}
+                onClick={(e) => handleClick(e, it.href)}
+                {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                className="inline-block cursor-pointer transition-all hover:translate-x-1 hover:text-black"
+                style={{
+                  fontFamily: BODY_FONT,
+                  fontSize: 14,
+                  color: INK_SOFT,
+                }}
+              >
+                {it.label}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
