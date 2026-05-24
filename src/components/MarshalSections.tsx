@@ -540,7 +540,7 @@ function Services() {
                 >
                   {desc}
                 </p>
-              </div>
+              </a>
             </Reveal>
           ))}
         </div>
