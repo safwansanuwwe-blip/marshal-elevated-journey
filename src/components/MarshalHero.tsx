@@ -44,7 +44,6 @@ export default function MarshalHero() {
         muted
         loop
         playsInline
-        poster={bgImage}
       />
       <video
         className="absolute inset-0 h-full w-full object-cover md:hidden"
@@ -53,7 +52,6 @@ export default function MarshalHero() {
         muted
         loop
         playsInline
-        poster={bgImage}
       />
       <div className="absolute inset-0 bg-black/30" />
 
