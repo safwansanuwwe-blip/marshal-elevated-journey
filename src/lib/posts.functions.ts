@@ -43,7 +43,10 @@ function nowISO() {
 
 export const listPublishedPosts = createServerFn({ method: "GET" }).handler(
   async (): Promise<PublicPost[]> => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { supabaseAdmin, isSupabaseConfigured } = await import(
+      "@/integrations/supabase/client.server"
+    );
+    if (!isSupabaseConfigured) return [];
     const { data, error } = await supabaseAdmin
       .from("posts")
       .select(
@@ -53,7 +56,10 @@ export const listPublishedPosts = createServerFn({ method: "GET" }).handler(
       .not("published_at", "is", null)
       .lte("published_at", nowISO())
       .order("published_at", { ascending: false });
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[listPublishedPosts]", error.message);
+      return [];
+    }
     return (data ?? []).map((p) => ({
       ...p,
       published_at: p.published_at as string,
