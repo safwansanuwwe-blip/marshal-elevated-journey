@@ -24,7 +24,7 @@ function AdminHome() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const del = useServerFn(deletePost);
-  const { data: posts } = useSuspenseQuery<<AdminPost[]>({
+  const { data: posts } = useSuspenseQuery<AdminPost[]>({
     queryKey: ["admin", "posts"],
     queryFn: () => listAllPosts(),
   });

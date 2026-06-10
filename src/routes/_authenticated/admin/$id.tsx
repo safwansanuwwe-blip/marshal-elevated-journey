@@ -90,7 +90,7 @@ function EditorPage() {
     [post],
   );
 
-  const [f, setF] = useState<<FormState>(initial);
+  const [f, setF] = useState<FormState>(initial);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -138,7 +138,7 @@ function EditorPage() {
     }
   }
 
-  async function onFile(e: React.ChangeEvent<<HTMLInputElement>) {
+  async function onFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > 8 * 1024 * 1024) {
