@@ -165,10 +165,10 @@ function SectionHeading({
   center?: boolean;
 }) {
   return (
-    <div className={center ? "text-center mx-auto max-w-2xl" : "max-w-2xl"}>
+    <div className={center ? "text-center" : ""}>
       <Eyebrow>{eyebrow}</Eyebrow>
       <h2
-        className="mt-6"
+        className="mt-6 md:whitespace-nowrap"
         style={{
           fontFamily: HEADING_FONT,
           fontSize: "clamp(40px, 5.5vw, 76px)",
@@ -181,7 +181,7 @@ function SectionHeading({
       </h2>
       {subtitle && (
         <p
-          className="mt-6"
+          className={center ? "mt-6 mx-auto max-w-2xl" : "mt-6 max-w-2xl"}
           style={{
             fontFamily: BODY_FONT,
             fontSize: 17,
