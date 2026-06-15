@@ -1,113 +1,79 @@
 import { createServerFn } from "@tanstack/react-start";
+import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
-export type PublicPost = {
-  slug: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  cover_image: string | null;
-  category: string;
-  tags: string[];
-  author: string;
-  reading_minutes: number;
-  published_at: string;
-  meta_title: string | null;
-  meta_description: string | null;
-};
+type PostRow = Database["public"]["Tables"]["posts"]["Row"];
 
-export type AdminPost = {
-  id: string;
-  slug: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  cover_image: string | null;
-  category: string;
-  tags: string[];
-  author: string;
-  reading_minutes: number;
-  status: "draft" | "published";
-  published_at: string | null;
-  scheduled_for: string | null;
-  meta_title: string | null;
-  meta_description: string | null;
-  created_at: string;
-  updated_at: string;
-};
+// Shape returned to the public blog (published_at is guaranteed present).
+export type PublicPost = Omit<PostRow, "published_at"> & { published_at: string };
 
-const BUCKET = "blog-images";
+// Full row used by the admin dashboard/editor.
+export type AdminPost = PostRow;
 
-function nowISO() {
-  return new Date().toISOString();
+const STORAGE_BUCKET = "post-images";
+
+function toPublic(row: PostRow): PublicPost {
+  return { ...row, published_at: row.published_at ?? row.created_at };
 }
+
+// ---------- Public (blog) ----------
 
 export const listPublishedPosts = createServerFn({ method: "GET" }).handler(
   async (): Promise<PublicPost[]> => {
-    const { supabaseAdmin, isSupabaseConfigured } = await import(
-      "@/integrations/supabase/client.server"
-    );
-    if (!isSupabaseConfigured) return [];
-    const { data, error } = await supabaseAdmin
+    const nowIso = new Date().toISOString();
+    const { data, error } = await supabase
       .from("posts")
-      .select(
-        "slug, title, excerpt, content, cover_image, category, tags, author, reading_minutes, published_at, meta_title, meta_description"
-      )
+      .select("*")
       .eq("status", "published")
-      .not("published_at", "is", null)
-      .lte("published_at", nowISO())
+      .lte("published_at", nowIso)
       .order("published_at", { ascending: false });
-    if (error) {
-      console.error("[listPublishedPosts]", error.message);
-      return [];
-    }
-    return (data ?? []).map((p) => ({
-      ...p,
-      published_at: p.published_at as string,
-    })) as PublicPost[];
-  }
+
+    if (error) throw new Error(error.message);
+    return (data ?? []).map(toPublic);
+  },
 );
 
 export const getPublishedPostBySlug = createServerFn({ method: "GET" })
-  .inputValidator((d: { slug: string }) => d)
+  .validator((d: { slug: string }) => d)
   .handler(async ({ data }): Promise<PublicPost | null> => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: p, error } = await supabaseAdmin
+    const nowIso = new Date().toISOString();
+    const { data: row, error } = await supabase
       .from("posts")
-      .select(
-        "slug, title, excerpt, content, cover_image, category, tags, author, reading_minutes, published_at, meta_title, meta_description, status"
-      )
+      .select("*")
       .eq("slug", data.slug)
+      .eq("status", "published")
+      .lte("published_at", nowIso)
       .maybeSingle();
+
     if (error) throw new Error(error.message);
-    if (!p || p.status !== "published" || !p.published_at) return null;
-    if (new Date(p.published_at) > new Date()) return null;
-    const { status: _s, ...rest } = p;
-    return { ...rest, published_at: p.published_at } as PublicPost;
+    return row ? toPublic(row) : null;
   });
+
+// ---------- Admin ----------
 
 export const listAllPosts = createServerFn({ method: "GET" }).handler(
   async (): Promise<AdminPost[]> => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await supabase
       .from("posts")
       .select("*")
       .order("updated_at", { ascending: false });
+
     if (error) throw new Error(error.message);
-    return (data ?? []) as AdminPost[];
-  }
+    return data ?? [];
+  },
 );
 
 export const getPostById = createServerFn({ method: "GET" })
-  .inputValidator((d: { id: string }) => d)
+  .validator((d: { id: string }) => d)
   .handler(async ({ data }): Promise<AdminPost | null> => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: p, error } = await supabaseAdmin
+    const { data: row, error } = await supabase
       .from("posts")
       .select("*")
       .eq("id", data.id)
       .maybeSingle();
+
     if (error) throw new Error(error.message);
-    return (p as AdminPost) ?? null;
+    return row;
   });
 
 type SaveInput = {
@@ -129,71 +95,41 @@ type SaveInput = {
 };
 
 export const savePost = createServerFn({ method: "POST" })
-  .inputValidator((d: SaveInput) => d)
+  .validator((d: SaveInput) => d)
   .handler(async ({ data }): Promise<AdminPost> => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const payload = {
-      slug: data.slug,
-      title: data.title,
-      excerpt: data.excerpt,
-      content: data.content,
-      cover_image: data.cover_image,
-      category: data.category,
-      tags: data.tags,
-      author: data.author,
-      meta_title: data.meta_title,
-      meta_description: data.meta_description,
-      reading_minutes: data.reading_minutes,
-      status: data.status,
-      published_at: data.published_at,
-      scheduled_for: data.scheduled_for,
-      updated_at: nowISO(),
-    };
-    if (data.id) {
-      const { data: row, error } = await supabaseAdmin
-        .from("posts")
-        .update(payload)
-        .eq("id", data.id)
-        .select("*")
-        .single();
-      if (error) throw new Error(error.message);
-      return row as AdminPost;
-    } else {
-      const { data: row, error } = await supabaseAdmin
-        .from("posts")
-        .insert(payload)
-        .select("*")
-        .single();
-      if (error) throw new Error(error.message);
-      return row as AdminPost;
-    }
+    const { id, ...fields } = data;
+    const payload = { ...fields, updated_at: new Date().toISOString() };
+
+    const query = id
+      ? supabase.from("posts").update(payload).eq("id", id).select("*").single()
+      : supabase.from("posts").insert(payload).select("*").single();
+
+    const { data: row, error } = await query;
+    if (error) throw new Error(error.message);
+    return row;
   });
 
 export const deletePost = createServerFn({ method: "POST" })
-  .inputValidator((d: { id: string }) => d)
-  .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.from("posts").delete().eq("id", data.id);
+  .validator((d: { id: string }) => d)
+  .handler(async ({ data }): Promise<{ ok: true }> => {
+    const { error } = await supabase.from("posts").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
 
 export const uploadCoverImage = createServerFn({ method: "POST" })
-  .inputValidator((d: { filename: string; contentType: string; base64: string }) => d)
+  .validator((d: { filename: string; contentType: string; base64: string }) => d)
   .handler(async ({ data }): Promise<{ url: string }> => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    // Ensure bucket exists (idempotent)
-    const { data: buckets } = await supabaseAdmin.storage.listBuckets();
-    if (!buckets?.some((b) => b.name === BUCKET)) {
-      await supabaseAdmin.storage.createBucket(BUCKET, { public: true });
-    }
-    const ext = (data.filename.split(".").pop() || "jpg").toLowerCase();
-    const key = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-    const bytes = Buffer.from(data.base64, "base64");
-    const { error } = await supabaseAdmin.storage
-      .from(BUCKET)
-      .upload(key, bytes, { contentType: data.contentType, upsert: false });
+    const bytes = Uint8Array.from(atob(data.base64), (c) => c.charCodeAt(0));
+    const ext = data.filename.split(".").pop()?.toLowerCase() || "jpg";
+    const path = `${crypto.randomUUID()}.${ext}`;
+
+    const { error } = await supabase.storage
+      .from(STORAGE_BUCKET)
+      .upload(path, bytes, { contentType: data.contentType, upsert: false });
+
     if (error) throw new Error(error.message);
-    const { data: pub } = supabaseAdmin.storage.from(BUCKET).getPublicUrl(key);
+
+    const { data: pub } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(path);
     return { url: pub.publicUrl };
   });

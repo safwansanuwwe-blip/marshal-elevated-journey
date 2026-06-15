@@ -7,6 +7,7 @@ const NAV_LINKS: { label: string; href: string }[] = [
   { label: "Fleet", href: "#fleet" },
   { label: "Packages", href: "#services" },
   { label: "About Us", href: "#about" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "#contact" },
 ];
 const WHATSAPP = "https://wa.me/919188700777";

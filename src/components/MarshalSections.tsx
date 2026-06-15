@@ -1710,6 +1710,7 @@ function Footer() {
                     { label: "Destinations", href: "#destinations" },
                     { label: "Fleets", href: "#fleet" },
                     { label: "Airport Transfers", href: "#airports" },
+                    { label: "Blog", href: "/blog" },
                     { label: "Contact", href: "#contact" },
                   ]}
                 />
@@ -1893,7 +1894,8 @@ function FooterCol({ title, items }: { title: string; items: { label: string; hr
       <ColTitle>{title}</ColTitle>
       <ul className="mt-6 space-y-3.5">
         {items.map((it) => {
-          const external = !it.href.startsWith("#");
+          const internalRoute = it.href.startsWith("/");
+          const external = !it.href.startsWith("#") && !internalRoute;
           return (
             <li key={it.label}>
               <a
