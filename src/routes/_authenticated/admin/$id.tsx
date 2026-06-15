@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import {
   getPostById,
   savePost,
@@ -9,13 +10,20 @@ import {
   type AdminPost,
 } from "@/lib/posts.functions";
 
+async function getAccessToken(): Promise<string> {
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  if (!token) throw new Error("Your session has expired. Please sign in again.");
+  return token;
+}
+
 export const Route = createFileRoute("/_authenticated/admin/$id")({
   head: () => ({
     meta: [{ title: "Edit post · Marshal Holidays" }, { name: "robots", content: "noindex, nofollow" }],
   }),
   loader: async ({ params }) => {
     if (params.id === "new") return { post: null };
-    const post = await getPostById({ data: { id: params.id } });
+    const post = await getPostById({ data: { id: params.id, accessToken: await getAccessToken() } });
     return { post };
   },
   component: EditorPage,
@@ -109,6 +117,7 @@ function EditorPage() {
       const isFuture = scheduledISO ? new Date(scheduledISO) > new Date() : false;
       const saved = await save({
         data: {
+          accessToken: await getAccessToken(),
           id: f.id,
           slug: f.slug || slugify(f.title),
           title: f.title,
@@ -154,7 +163,12 @@ function EditorPage() {
       for (let i = 0; i < bytes.byteLength; i++) bin += String.fromCharCode(bytes[i]);
       const base64 = btoa(bin);
       const res = await upload({
-        data: { filename: file.name, contentType: file.type || "image/jpeg", base64 },
+        data: {
+          filename: file.name,
+          contentType: file.type || "image/jpeg",
+          base64,
+          accessToken: await getAccessToken(),
+        },
       });
       update("cover_image", res.url);
     } catch (e: unknown) {

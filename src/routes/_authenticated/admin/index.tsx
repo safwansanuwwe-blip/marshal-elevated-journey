@@ -5,6 +5,13 @@ import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { listAllPosts, deletePost, type AdminPost } from "@/lib/posts.functions";
 
+async function getAccessToken(): Promise<string> {
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  if (!token) throw new Error("Your session has expired. Please sign in again.");
+  return token;
+}
+
 export const Route = createFileRoute("/_authenticated/admin/")({
   head: () => ({
     meta: [{ title: "Admin · Marshal Holidays" }, { name: "robots", content: "noindex, nofollow" }],
@@ -12,7 +19,7 @@ export const Route = createFileRoute("/_authenticated/admin/")({
   loader: ({ context }) =>
     context.queryClient.ensureQueryData({
       queryKey: ["admin", "posts"],
-      queryFn: () => listAllPosts(),
+      queryFn: async () => listAllPosts({ data: { accessToken: await getAccessToken() } }),
     }),
   component: AdminHome,
   errorComponent: ({ error }) => (
@@ -26,7 +33,7 @@ function AdminHome() {
   const del = useServerFn(deletePost);
   const { data: posts } = useSuspenseQuery<AdminPost[]>({
     queryKey: ["admin", "posts"],
-    queryFn: () => listAllPosts(),
+    queryFn: async () => listAllPosts({ data: { accessToken: await getAccessToken() } }),
   });
 
   const [busy, setBusy] = useState<string | null>(null);
@@ -40,7 +47,7 @@ function AdminHome() {
     if (!confirm(`Delete "${p.title}"? This cannot be undone.`)) return;
     setBusy(p.id);
     try {
-      await del({ data: { id: p.id } });
+      await del({ data: { id: p.id, accessToken: await getAccessToken() } });
       await qc.invalidateQueries({ queryKey: ["admin", "posts"] });
     } finally {
       setBusy(null);
