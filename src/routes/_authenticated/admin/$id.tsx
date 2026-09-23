@@ -9,6 +9,7 @@ import {
   uploadCoverImage,
   type AdminPost,
 } from "@/lib/posts.functions";
+import { SITE, SEO_LIMITS, absoluteUrl } from "@/lib/site";
 
 async function getAccessToken(): Promise<string> {
   const { data } = await supabase.auth.getSession();
@@ -349,8 +350,16 @@ function EditorPage() {
             </div>
           </section>
 
-          <section className="rounded-xl border border-black/5 bg-white p-5 space-y-3">
-            <h3 className="text-sm font-semibold text-[#272835]">SEO</h3>
+          <section className="rounded-xl border border-black/5 bg-white p-5 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-[#272835]">SEO</h3>
+              <SeoScoreBadge
+                title={f.meta_title || f.title}
+                desc={f.meta_description || f.excerpt}
+                hasImage={!!f.cover_image}
+              />
+            </div>
+
             <div>
               <label className={lbl}>Meta title</label>
               <input
@@ -358,10 +367,15 @@ function EditorPage() {
                 value={f.meta_title}
                 onChange={(e) => update("meta_title", e.target.value)}
                 maxLength={80}
-                placeholder="Falls back to post title"
+                placeholder={f.title ? `Falls back to: ${f.title}` : "Falls back to post title"}
               />
-              <p className="text-[10px] text-[#272835]/50 mt-1">{f.meta_title.length}/80</p>
+              <QualityBar
+                length={(f.meta_title || f.title).length}
+                min={SEO_LIMITS.titleMin}
+                max={SEO_LIMITS.titleMax}
+              />
             </div>
+
             <div>
               <label className={lbl}>Meta description</label>
               <textarea
@@ -372,11 +386,115 @@ function EditorPage() {
                 maxLength={200}
                 placeholder="Falls back to excerpt"
               />
-              <p className="text-[10px] text-[#272835]/50 mt-1">{f.meta_description.length}/200</p>
+              <QualityBar
+                length={(f.meta_description || f.excerpt).length}
+                min={SEO_LIMITS.descMin}
+                max={SEO_LIMITS.descMax}
+              />
+            </div>
+
+            <div>
+              <p className={lbl}>Google preview</p>
+              <div className="rounded-lg border border-black/5 bg-[#fafafa] p-3">
+                <div className="text-[11px] text-[#202124]/70 truncate">
+                  {absoluteUrl(`/blog/${f.slug || slugify(f.title) || "your-post"}`)}
+                </div>
+                <div className="text-[15px] leading-tight text-[#1a0dab] mt-0.5 truncate">
+                  {f.meta_title || f.title || "Your post title"}
+                </div>
+                <div className="text-[12px] text-[#4d5156] mt-1 line-clamp-2">
+                  {f.meta_description || f.excerpt || "Your meta description or excerpt appears here."}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <p className={lbl}>Social card</p>
+              <div className="overflow-hidden rounded-lg border border-black/10">
+                <div className="aspect-[1.91/1] bg-[#f3f3f3]">
+                  <img
+                    src={f.cover_image || SITE.ogImage}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div className="p-2.5 bg-[#f7f8fa]">
+                  <div className="text-[10px] uppercase text-[#606770] tracking-wide">
+                    {new URL(SITE.url).hostname}
+                  </div>
+                  <div className="text-[13px] font-semibold text-[#1c1e21] mt-0.5 line-clamp-1">
+                    {f.meta_title || f.title || "Your post title"}
+                  </div>
+                </div>
+              </div>
+              {!f.cover_image && (
+                <p className="text-[10px] text-amber-600 mt-1">
+                  No cover image — a generic image is used. Add one above for a better preview.
+                </p>
+              )}
             </div>
           </section>
         </aside>
       </main>
     </div>
   );
+}
+
+/* ---------- SEO helpers ---------- */
+
+function QualityBar({ length, min, max }: { length: number; min: number; max: number }) {
+  let status: "empty" | "short" | "good" | "long";
+  if (length === 0) status = "empty";
+  else if (length < min) status = "short";
+  else if (length > max) status = "long";
+  else status = "good";
+
+  const color =
+    status === "good" ? "bg-emerald-500" : status === "empty" ? "bg-black/10" : "bg-amber-500";
+  const pct = Math.min(100, Math.round((length / max) * 100));
+  const msg =
+    status === "empty"
+      ? `Add ${min}-${max} characters`
+      : status === "short"
+        ? `Too short — aim for ${min}-${max}`
+        : status === "long"
+          ? `Too long — may be truncated`
+          : "Ideal length";
+
+  return (
+    <div className="mt-1.5">
+      <div className="h-1 w-full rounded-full bg-black/5 overflow-hidden">
+        <div className={`h-full rounded-full transition-all ${color}`} style={{ width: `${pct}%` }} />
+      </div>
+      <div className="mt-1 flex items-center justify-between">
+        <span
+          className={`text-[10px] ${status === "good" ? "text-emerald-600" : status === "empty" ? "text-[#272835]/40" : "text-amber-600"}`}
+        >
+          {msg}
+        </span>
+        <span className="text-[10px] text-[#272835]/40">
+          {length}/{max}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function SeoScoreBadge({ title, desc, hasImage }: { title: string; desc: string; hasImage: boolean }) {
+  let pts = 0;
+  const total = 3;
+  if (title.length >= SEO_LIMITS.titleMin && title.length <= SEO_LIMITS.titleMax) pts++;
+  else if (title.length > 0) pts += 0.5;
+  if (desc.length >= SEO_LIMITS.descMin && desc.length <= SEO_LIMITS.descMax) pts++;
+  else if (desc.length > 0) pts += 0.5;
+  if (hasImage) pts++;
+
+  const score = Math.round((pts / total) * 100);
+  const cls =
+    score >= 80
+      ? "bg-emerald-100 text-emerald-800"
+      : score >= 50
+        ? "bg-amber-100 text-amber-800"
+        : "bg-red-100 text-red-800";
+  return <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${cls}`}>SEO {score}</span>;
 }
