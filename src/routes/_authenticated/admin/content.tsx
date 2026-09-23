@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { getSiteContent, saveSiteContent } from "@/lib/content.functions";
 import { uploadCoverImage } from "@/lib/posts.functions";
 import { DEFAULT_CONTENT, type SiteContent } from "@/lib/content";
+import { AdminShell, ADMIN } from "@/components/admin/AdminShell";
 
 async function getAccessToken(): Promise<string> {
   const { data } = await supabase.auth.getSession();
@@ -102,39 +103,26 @@ function ContentEditor() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fafafa]" style={{ fontFamily: "Inter, sans-serif" }}>
-      <header className="border-b border-black/5 bg-white sticky top-0 z-20">
-        <div className="mx-auto max-w-5xl px-6 py-4 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 min-w-0">
-            <Link to="/admin" className="text-sm text-[#272835]/60 hover:text-[#272835]">← Dashboard</Link>
-            <span className="text-[#272835]/30">·</span>
-            <span className="truncate text-sm font-semibold text-[#272835]">Edit site content</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={resetToDefaults}
-              className="rounded-md border border-black/10 bg-white text-[#272835]/70 px-3 py-2 text-xs font-semibold hover:bg-[#fafafa]"
-            >
-              Reset to defaults
-            </button>
-            <button
-              onClick={onSave}
-              disabled={busy}
-              className="rounded-md bg-[#272835] text-white px-5 py-2 text-sm font-semibold hover:bg-black disabled:opacity-50"
-            >
-              {busy ? "Saving…" : "Save changes"}
-            </button>
-          </div>
-        </div>
+    <AdminShell
+      title="Site Content"
+      subtitle="Edit every section of your public homepage — changes go live on save."
+      crumbs={[{ label: "Dashboard", to: "/admin" }, { label: "Site Content" }]}
+      contentClassName="mx-auto max-w-4xl space-y-4"
+      actions={
+        <>
+          <button onClick={resetToDefaults} className={ADMIN.btnGhost}>Reset</button>
+          <button onClick={onSave} disabled={busy} className={ADMIN.btnPrimary}>
+            {busy ? "Saving…" : "Save changes"}
+          </button>
+        </>
+      }
+    >
         {(msg || err) && (
-          <div className="mx-auto max-w-5xl px-6 pb-3">
-            {msg && <p className="rounded-md bg-emerald-50 border border-emerald-200 px-3 py-2 text-sm text-emerald-700">{msg}</p>}
-            {err && <p className="rounded-md bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700">{err}</p>}
+          <div className="mb-2">
+            {msg && <p className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-2.5 text-sm text-emerald-700">{msg}</p>}
+            {err && <p className="rounded-xl bg-red-50 border border-red-200 px-4 py-2.5 text-sm text-red-700">{err}</p>}
           </div>
         )}
-      </header>
-
-      <main className="mx-auto max-w-5xl px-6 py-8 space-y-4">
         {/* SEO */}
         <Panel title="SEO & sharing" defaultOpen>
           <Txt label="Page title" value={c.seo.title} onChange={(v) => up((d) => { d.seo.title = v; })} max={60} />
@@ -410,16 +398,11 @@ function ContentEditor() {
         </Panel>
 
         <div className="pt-2">
-          <button
-            onClick={onSave}
-            disabled={busy}
-            className="w-full rounded-md bg-[#272835] text-white px-5 py-3 text-sm font-semibold hover:bg-black disabled:opacity-50"
-          >
+          <button onClick={onSave} disabled={busy} className={`${ADMIN.btnPrimary} w-full py-3`}>
             {busy ? "Saving…" : "Save changes"}
           </button>
         </div>
-      </main>
-    </div>
+    </AdminShell>
   );
 }
 
