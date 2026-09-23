@@ -14,6 +14,20 @@ async function getAccessToken(): Promise<string> {
   return token;
 }
 
+// Upload photos/videos straight to Supabase Storage from the browser using the
+// signed-in admin session. This bypasses server-function body limits, so large
+// video files upload reliably. RLS on the `post-images` bucket restricts writes
+// to admins.
+async function uploadMedia(file: File): Promise<string> {
+  const ext = file.name.split(".").pop()?.toLowerCase() || "bin";
+  const path = `media/${crypto.randomUUID()}.${ext}`;
+  const { error } = await supabase.storage
+    .from("post-images")
+    .upload(path, file, { contentType: file.type || undefined, upsert: false });
+  if (error) throw new Error(error.message);
+  return supabase.storage.from("post-images").getPublicUrl(path).data.publicUrl;
+}
+
 export const Route = createFileRoute("/_authenticated/admin/content")({
   head: () => ({
     meta: [
@@ -154,6 +168,33 @@ function ContentEditor() {
                 <Txt label="Label" value={item.label} onChange={(v) => up((d) => { d.hero.navLinks[i].label = v; })} />
                 <Txt label="Link (href)" value={item.href} onChange={(v) => up((d) => { d.hero.navLinks[i].href = v; })} />
               </Row>
+            )}
+          />
+        </Panel>
+
+        {/* Media */}
+        <Panel title="Photos & videos">
+          <p className="text-xs text-[#272835]/50">
+            Upload images or videos (MP4 recommended for background clips). Large files upload
+            directly to storage. You can also paste a URL.
+          </p>
+          <MediaField kind="image" label="Logo" value={c.media.logo} onChange={(v) => up((d) => { d.media.logo = v; })} setErr={setErr} />
+          <MediaField kind="image" label="Hero poster (shows before video loads)" value={c.media.heroPoster} onChange={(v) => up((d) => { d.media.heroPoster = v; })} setErr={setErr} />
+          <MediaField kind="video" label="Hero background video — desktop" value={c.media.heroVideoDesktop} onChange={(v) => up((d) => { d.media.heroVideoDesktop = v; })} setErr={setErr} />
+          <MediaField kind="video" label="Hero background video — mobile" value={c.media.heroVideoMobile} onChange={(v) => up((d) => { d.media.heroVideoMobile = v; })} setErr={setErr} />
+          <MediaField kind="video" label="About video 1 (large tile)" value={c.media.aboutVideo1} onChange={(v) => up((d) => { d.media.aboutVideo1 = v; })} setErr={setErr} />
+          <MediaField kind="video" label="About video 2 (small tile)" value={c.media.aboutVideo2} onChange={(v) => up((d) => { d.media.aboutVideo2 = v; })} setErr={setErr} />
+          <MediaField kind="video" label="Footer video" value={c.media.footerVideo} onChange={(v) => up((d) => { d.media.footerVideo = v; })} setErr={setErr} />
+          <SubHead>Airport photos (4-up grid)</SubHead>
+          <ListEditor
+            items={c.media.airportPhotos}
+            onAdd={() => up((d) => d.media.airportPhotos.push({ img: "", alt: "" }))}
+            onRemove={(i) => up((d) => d.media.airportPhotos.splice(i, 1))}
+            render={(item, i) => (
+              <>
+                <MediaField kind="image" label="Photo" value={item.img} onChange={(v) => up((d) => { d.media.airportPhotos[i].img = v; })} setErr={setErr} />
+                <Txt label="Alt text (describe the photo for SEO/accessibility)" value={item.alt} onChange={(v) => up((d) => { d.media.airportPhotos[i].alt = v; })} />
+              </>
             )}
           />
         </Panel>
@@ -470,6 +511,81 @@ function ImgField({
           {uploading ? "…" : "Upload"}
         </button>
         <input ref={inputRef} type="file" accept="image/*" onChange={handle} className="hidden" />
+      </div>
+    </div>
+  );
+}
+
+function MediaField({
+  kind, label, value, onChange, setErr,
+}: {
+  kind: "image" | "video";
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  setErr: (m: string | null) => void;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const maxMb = kind === "video" ? 50 : 8;
+
+  async function handle(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > maxMb * 1024 * 1024) {
+      setErr(`${kind === "video" ? "Video" : "Image"} must be under ${maxMb} MB`);
+      return;
+    }
+    setUploading(true);
+    setProgress(0);
+    setErr(null);
+    // Rough progress cue since the storage SDK upload here is not streamed.
+    const timer = setInterval(() => setProgress((p) => Math.min(p + 8, 92)), 400);
+    try {
+      onChange(await uploadMedia(file));
+      setProgress(100);
+    } catch (err: unknown) {
+      setErr(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      clearInterval(timer);
+      setUploading(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
+  }
+
+  return (
+    <div>
+      <label className={LBL}>{label}</label>
+      <div className="flex items-start gap-3">
+        <div className="h-16 w-24 shrink-0 overflow-hidden rounded-md border border-black/10 bg-[#111] flex items-center justify-center">
+          {value ? (
+            kind === "video" ? (
+              <video src={value} muted loop playsInline autoPlay className="h-full w-full object-cover" />
+            ) : (
+              <img src={value} alt="" className="h-full w-full object-cover" />
+            )
+          ) : (
+            <span className="text-[10px] text-white/50">none</span>
+          )}
+        </div>
+        <div className="flex-1">
+          <input className={INP} value={value} onChange={(e) => onChange(e.target.value)} placeholder={`${kind === "video" ? "Video" : "Image"} URL or upload →`} />
+          {uploading && (
+            <div className="mt-1.5 h-1 w-full rounded-full bg-black/10 overflow-hidden">
+              <div className="h-full rounded-full bg-[#9a8666] transition-all" style={{ width: `${progress}%` }} />
+            </div>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          disabled={uploading}
+          className="shrink-0 rounded-md border border-black/10 bg-white px-3 py-2 text-xs font-semibold text-[#272835] hover:bg-[#fafafa] disabled:opacity-50"
+        >
+          {uploading ? "Uploading…" : "Upload"}
+        </button>
+        <input ref={inputRef} type="file" accept={kind === "video" ? "video/*" : "image/*"} onChange={handle} className="hidden" />
       </div>
     </div>
   );

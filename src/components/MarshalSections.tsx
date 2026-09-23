@@ -1,9 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import cochinAirportImg from "@/assets/cochin-airport.jpg";
-import calicutAirportImg from "@/assets/calicut-airport.jpg";
-import trivandrumAirportImg from "@/assets/trivandrum-airport.jpg";
-import kannurAirportImg from "@/assets/kannur-airport.jpg";
-import marshalLogoImg from "@/assets/marshal-logo.png";
 import type { SiteContent } from "@/lib/content";
 import {
   ArrowRight,
@@ -42,13 +37,6 @@ const ABOUT_FEATURE_ICONS: LucideIcon[] = [ShieldCheck, Clock, Award];
 const SOCIAL_ICONS: Record<string, LucideIcon> = {
   Facebook, Instagram, X, YouTube: Youtube, Youtube,
 };
-
-const AIRPORT_PHOTOS = [
-  { img: cochinAirportImg, alt: "Cochin International Airport pickup with premium Force Urbania traveller" },
-  { img: calicutAirportImg, alt: "Calicut International Airport pickup with premium Toyota Innova Crysta" },
-  { img: trivandrumAirportImg, alt: "Trivandrum International Airport pickup with premium Toyota Innova Crysta" },
-  { img: kannurAirportImg, alt: "Kannur International Airport pickup at dusk with premium Toyota Innova Crysta" },
-];
 
 const HEADING_FONT = "'Bebas Neue', sans-serif";
 const BODY_FONT = "Inter, sans-serif";
@@ -221,7 +209,7 @@ function About({ content }: SectionProps) {
               style={{ borderRadius: RADIUS, boxShadow: SHADOW_LIFT }}
             >
               <video
-                src="/videos/marshal-years.mp4"
+                src={content.media.aboutVideo1}
                 autoPlay
                 loop
                 muted
@@ -235,7 +223,7 @@ function About({ content }: SectionProps) {
               style={{ borderRadius: RADIUS, boxShadow: SHADOW_LIFT }}
             >
               <video
-                src="/videos/marshal-about.mp4"
+                src={content.media.aboutVideo2}
                 autoPlay
                 loop
                 muted
@@ -717,7 +705,7 @@ function Airports({ content }: SectionProps) {
         </Reveal>
         <Reveal>
           <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {AIRPORT_PHOTOS.map((photo) => (
+            {content.media.airportPhotos.map((photo) => (
               <div
                 key={photo.alt}
                 className="w-full overflow-hidden"
@@ -1261,7 +1249,7 @@ function Contact({ content }: SectionProps) {
       <div className="relative mx-auto text-center" style={{ ...container, maxWidth: 1000 }}>
         <Reveal>
           <img
-            src={marshalLogoImg}
+            src={content.media.logo}
             alt="Marshal Travels logo"
             className="mx-auto mb-6"
             style={{ height: 64, width: "auto", objectFit: "contain" }}
@@ -1477,7 +1465,7 @@ function Footer({ content }: SectionProps) {
               }}
             >
               <video
-                src="/videos/marshal-about.mp4"
+                src={content.media.footerVideo}
                 autoPlay
                 loop
                 muted
@@ -1496,7 +1484,7 @@ function Footer({ content }: SectionProps) {
 
               <div className="relative">
                 <img
-                  src={marshalLogoImg}
+                  src={content.media.logo}
                   alt="Marshal Holidays"
                   className="h-11 w-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
                 />
