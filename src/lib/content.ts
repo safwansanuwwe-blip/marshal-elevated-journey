@@ -28,6 +28,8 @@ import fleetInnovaImg from "@/assets/fleet-innova.png";
 import fleetUrbaniaImg from "@/assets/fleet-urbania.png";
 import fleetTravellerImg from "@/assets/fleet-traveller.png";
 import fleetBusImg from "@/assets/fleet-bus.png";
+import marshalLogoImg from "@/assets/marshal-logo.png";
+import heroPosterImg from "@/assets/marshal-bg.jpg";
 
 export type NavLink = { label: string; href: string };
 export type SocialLink = { platform: string; href: string };
@@ -113,6 +115,16 @@ export type SiteContent = {
   footer: {
     heading: string;
     description: string;
+  };
+  media: {
+    logo: string;
+    heroPoster: string;
+    heroVideoDesktop: string;
+    heroVideoMobile: string;
+    aboutVideo1: string;
+    aboutVideo2: string;
+    footerVideo: string;
+    airportPhotos: { img: string; alt: string }[];
   };
 };
 
@@ -277,6 +289,21 @@ export const DEFAULT_CONTENT: SiteContent = {
     heading: "Travel more beautifully, with comfort and care.",
     description:
       "Premium tourist vehicles, airport transfers, and customized holiday packages across Kerala and South India.",
+  },
+  media: {
+    logo: marshalLogoImg,
+    heroPoster: heroPosterImg,
+    heroVideoDesktop: "/marshal-bg.mp4",
+    heroVideoMobile: "/marshal-bg-mobile.mp4",
+    aboutVideo1: "/videos/marshal-years.mp4",
+    aboutVideo2: "/videos/marshal-about.mp4",
+    footerVideo: "/videos/marshal-about.mp4",
+    airportPhotos: [
+      { img: cochinAirportImg, alt: "Cochin International Airport pickup with premium Force Urbania traveller" },
+      { img: calicutAirportImg, alt: "Calicut International Airport pickup with premium Toyota Innova Crysta" },
+      { img: trivandrumAirportImg, alt: "Trivandrum International Airport pickup with premium Toyota Innova Crysta" },
+      { img: kannurAirportImg, alt: "Kannur International Airport pickup at dusk with premium Toyota Innova Crysta" },
+    ],
   },
 };
 

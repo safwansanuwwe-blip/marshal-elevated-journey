@@ -1,12 +1,13 @@
 import { ArrowRight, Menu, Plane, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import logoImage from "@/assets/marshal-logo.png";
-import heroPoster from "@/assets/marshal-bg.jpg";
 import type { SiteContent } from "@/lib/content";
 
 export default function MarshalHero({ content }: { content: SiteContent }) {
   const NAV_LINKS = content.hero.navLinks;
   const WHATSAPP = content.contact.whatsapp;
+  const logoImage = content.media.logo;
+  const heroPoster = content.media.heroPoster;
+  const { heroVideoDesktop, heroVideoMobile } = content.media;
   const [menuOpen, setMenuOpen] = useState(false);
   // Load only the video that matches the viewport, and only after mount — this
   // avoids downloading BOTH the desktop (~7 MB) and mobile (~7 MB) clips, and
@@ -15,11 +16,11 @@ export default function MarshalHero({ content }: { content: SiteContent }) {
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px)");
-    const pick = () => setVideoSrc(mq.matches ? "/marshal-bg-mobile.mp4" : "/marshal-bg.mp4");
+    const pick = () => setVideoSrc(mq.matches ? heroVideoMobile : heroVideoDesktop);
     pick();
     mq.addEventListener("change", pick);
     return () => mq.removeEventListener("change", pick);
-  }, []);
+  }, [heroVideoDesktop, heroVideoMobile]);
 
   useEffect(() => {
     if (menuOpen) {
