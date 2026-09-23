@@ -16,6 +16,7 @@ import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminSeoRouteImport } from './routes/_authenticated/admin/seo'
+import { Route as AuthenticatedAdminContentRouteImport } from './routes/_authenticated/admin/content'
 import { Route as AuthenticatedAdminIdRouteImport } from './routes/_authenticated/admin/$id'
 
 const AuthRoute = AuthRouteImport.update({
@@ -52,6 +53,12 @@ const AuthenticatedAdminSeoRoute = AuthenticatedAdminSeoRouteImport.update({
   path: '/admin/seo',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminContentRoute =
+  AuthenticatedAdminContentRouteImport.update({
+    id: '/admin/content',
+    path: '/admin/content',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminIdRoute = AuthenticatedAdminIdRouteImport.update({
   id: '/admin/$id',
   path: '/admin/$id',
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
   '/admin/$id': typeof AuthenticatedAdminIdRoute
+  '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/seo': typeof AuthenticatedAdminSeoRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -73,6 +81,7 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/blog': typeof BlogIndexRoute
   '/admin/$id': typeof AuthenticatedAdminIdRoute
+  '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/seo': typeof AuthenticatedAdminSeoRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
@@ -84,6 +93,7 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
   '/_authenticated/admin/$id': typeof AuthenticatedAdminIdRoute
+  '/_authenticated/admin/content': typeof AuthenticatedAdminContentRoute
   '/_authenticated/admin/seo': typeof AuthenticatedAdminSeoRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/blog/'
     | '/admin/$id'
+    | '/admin/content'
     | '/admin/seo'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/blog'
     | '/admin/$id'
+    | '/admin/content'
     | '/admin/seo'
     | '/admin'
   id:
@@ -114,6 +126,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/blog/'
     | '/_authenticated/admin/$id'
+    | '/_authenticated/admin/content'
     | '/_authenticated/admin/seo'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
@@ -177,6 +190,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSeoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/content': {
+      id: '/_authenticated/admin/content'
+      path: '/admin/content'
+      fullPath: '/admin/content'
+      preLoaderRoute: typeof AuthenticatedAdminContentRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin/$id': {
       id: '/_authenticated/admin/$id'
       path: '/admin/$id'
@@ -189,12 +209,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminIdRoute: typeof AuthenticatedAdminIdRoute
+  AuthenticatedAdminContentRoute: typeof AuthenticatedAdminContentRoute
   AuthenticatedAdminSeoRoute: typeof AuthenticatedAdminSeoRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminIdRoute: AuthenticatedAdminIdRoute,
+  AuthenticatedAdminContentRoute: AuthenticatedAdminContentRoute,
   AuthenticatedAdminSeoRoute: AuthenticatedAdminSeoRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
