@@ -11,6 +11,7 @@ import {
   buildSitemapXml,
   type SeoCheck,
 } from "@/lib/site";
+import { AdminShell, ADMIN } from "@/components/admin/AdminShell";
 
 async function getAccessToken(): Promise<string> {
   const { data } = await supabase.auth.getSession();
@@ -70,34 +71,17 @@ function SeoCenter() {
   const missingImage = posts.filter((p) => !p.cover_image).length;
 
   return (
-    <div className="min-h-screen bg-[#fafafa]" style={{ fontFamily: "Inter, sans-serif" }}>
-      <header className="border-b border-black/5 bg-white">
-        <div className="mx-auto max-w-6xl px-6 py-5 flex items-center justify-between">
-          <div>
-            <p className="text-[#9a8666] text-[11px] font-semibold tracking-[0.18em] uppercase">
-              Marshal Holidays · CMS
-            </p>
-            <h1 className="text-[#272835] leading-none" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "36px" }}>
-              SEO Center
-            </h1>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link to="/admin" className="text-sm text-[#272835]/70 hover:text-[#272835]">
-              ← Dashboard
-            </Link>
-            <a
-              href={`${SITE.url}/blog`}
-              target="_blank"
-              rel="noreferrer"
-              className="text-sm text-[#272835]/70 hover:text-[#272835]"
-            >
-              View blog ↗
-            </a>
-          </div>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-6xl px-6 py-10 space-y-10">
+    <AdminShell
+      title="SEO Center"
+      subtitle="On-page SEO health across your blog and site."
+      crumbs={[{ label: "Dashboard", to: "/admin" }, { label: "SEO Center" }]}
+      contentClassName="space-y-10"
+      actions={
+        <a href={`${SITE.url}/blog`} target="_blank" rel="noreferrer" className={ADMIN.btnGhost}>
+          View blog
+        </a>
+      }
+    >
         {/* Overview stats */}
         <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatCard label="Total posts" value={String(posts.length)} />
@@ -243,8 +227,7 @@ Sitemap: ${SITE.url}/sitemap.xml`}</pre>
             &amp; auth pages are excluded from search engines.
           </p>
         </section>
-      </main>
-    </div>
+    </AdminShell>
   );
 }
 
