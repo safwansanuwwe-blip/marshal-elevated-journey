@@ -3,6 +3,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { listAllPosts, type AdminPost } from "@/lib/posts.functions";
+import { getSiteContent } from "@/lib/content.functions";
+import type { SiteContent } from "@/lib/content";
 import {
   SITE,
   auditPost,
@@ -24,11 +26,16 @@ export const Route = createFileRoute("/_authenticated/admin/seo")({
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
-  loader: ({ context }) =>
-    context.queryClient.ensureQueryData({
+  loader: async ({ context }) => {
+    await context.queryClient.ensureQueryData({
       queryKey: ["admin", "posts"],
       queryFn: async () => listAllPosts({ data: { accessToken: await getAccessToken() } }),
-    }),
+    });
+    await context.queryClient.ensureQueryData({
+      queryKey: ["site", "content"],
+      queryFn: () => getSiteContent(),
+    });
+  },
   component: SeoCenter,
   errorComponent: ({ error }) => (
     <div className="p-10 text-red-600">SEO Center load failed: {error.message}</div>
@@ -44,6 +51,11 @@ function SeoCenter() {
     queryKey: ["admin", "posts"],
     queryFn: async () => listAllPosts({ data: { accessToken: await getAccessToken() } }),
   });
+  const { data: content } = useSuspenseQuery<SiteContent>({
+    queryKey: ["site", "content"],
+    queryFn: () => getSiteContent(),
+  });
+  const seo = content.seo;
 
   const audits = useMemo(
     () => posts.map((p) => ({ post: p, ...auditPost(p) })),
@@ -107,14 +119,17 @@ function SeoCenter() {
           <SectionTitle>Site-wide SEO</SectionTitle>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="rounded-xl border border-black/5 bg-white p-6 space-y-4">
-              <Field label="Site title" value={SITE.title} max={60} />
-              <Field label="Meta description" value={SITE.description} max={160} multiline />
+              <Field label="Site title" value={seo.title} max={60} />
+              <Field label="Meta description" value={seo.description} max={160} multiline />
               <Field label="Canonical URL" value={SITE.url} />
-              <Field label="Phone / WhatsApp" value={SITE.phone} />
+              <Field label="Phone / WhatsApp" value={content.contact.phone} />
               <p className="text-xs text-[#272835]/50 leading-relaxed pt-1">
-                These defaults apply to every page and power the homepage's Organization &amp;
-                WebSite structured data. Edit them in{" "}
-                <code className="rounded bg-[#f3f3f3] px-1">src/lib/site.ts</code>.
+                These apply to the homepage and power the Organization &amp; WebSite structured
+                data. Edit them in the{" "}
+                <Link to="/admin/content" className="font-semibold text-[#9a8666] hover:text-[#272835]">
+                  Site Content
+                </Link>{" "}
+                editor (SEO &amp; sharing panel).
               </p>
             </div>
 
@@ -123,14 +138,14 @@ function SeoCenter() {
               <h3 className="text-sm font-semibold text-[#272835] mb-3">Google preview — homepage</h3>
               <SerpPreview
                 url={SITE.url}
-                title={SITE.title}
-                description={SITE.description}
+                title={seo.title}
+                description={seo.description}
               />
               <h3 className="text-sm font-semibold text-[#272835] mt-6 mb-3">Social card</h3>
               <SocialPreview
-                title={SITE.title}
-                description={SITE.socialDescription}
-                image={SITE.ogImage}
+                title={seo.title}
+                description={seo.socialDescription}
+                image={seo.ogImage}
                 domain={new URL(SITE.url).hostname}
               />
             </div>

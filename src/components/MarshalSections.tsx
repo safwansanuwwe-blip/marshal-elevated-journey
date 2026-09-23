@@ -1,27 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import alleppeyImg from "@/assets/alleppey.jpg";
-import coorgImg from "@/assets/coorg.jpg";
-import dhanushkodiImg from "@/assets/dhanushkodi.jpg";
-import varkalaImg from "@/assets/varkala.jpg";
-import yercaudImg from "@/assets/yercaud.jpg";
-import ootyImg from "@/assets/ooty.jpg";
-import kodaikanalImg from "@/assets/kodaikanal.jpg";
-import hyderabadImg from "@/assets/hyderabad.jpg";
-import wayanadImg from "@/assets/wayanad.jpg";
-import thekkadyImg from "@/assets/thekkady.jpg";
-import mysoreImg from "@/assets/mysore.jpg";
-import pondicherryImg from "@/assets/pondicherry.jpg";
-import chikmagalurImg from "@/assets/chikmagalur.jpg";
-import munnarImg from "@/assets/munnar.jpg";
 import cochinAirportImg from "@/assets/cochin-airport.jpg";
 import calicutAirportImg from "@/assets/calicut-airport.jpg";
 import trivandrumAirportImg from "@/assets/trivandrum-airport.jpg";
 import kannurAirportImg from "@/assets/kannur-airport.jpg";
-import fleetInnovaImg from "@/assets/fleet-innova.png";
-import fleetUrbaniaImg from "@/assets/fleet-urbania.png";
-import fleetTravellerImg from "@/assets/fleet-traveller.png";
-import fleetBusImg from "@/assets/fleet-bus.png";
 import marshalLogoImg from "@/assets/marshal-logo.png";
+import type { SiteContent } from "@/lib/content";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -47,8 +30,25 @@ import {
   Clock,
   Award,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-const WHATSAPP = "https://wa.me/919188700777";
+type SectionProps = { content: SiteContent };
+
+// Icons stay in code (paired to services by order); text/desc come from the CMS.
+const SERVICE_ICONS: LucideIcon[] = [
+  Users, Heart, UsersRound, Church, GraduationCap, Plane, Sparkles, MapPin,
+];
+const ABOUT_FEATURE_ICONS: LucideIcon[] = [ShieldCheck, Clock, Award];
+const SOCIAL_ICONS: Record<string, LucideIcon> = {
+  Facebook, Instagram, X, YouTube: Youtube, Youtube,
+};
+
+const AIRPORT_PHOTOS = [
+  { img: cochinAirportImg, alt: "Cochin International Airport pickup with premium Force Urbania traveller" },
+  { img: calicutAirportImg, alt: "Calicut International Airport pickup with premium Toyota Innova Crysta" },
+  { img: trivandrumAirportImg, alt: "Trivandrum International Airport pickup with premium Toyota Innova Crysta" },
+  { img: kannurAirportImg, alt: "Kannur International Airport pickup at dusk with premium Toyota Innova Crysta" },
+];
 
 const HEADING_FONT = "'Bebas Neue', sans-serif";
 const BODY_FONT = "Inter, sans-serif";
@@ -200,7 +200,9 @@ function SectionHeading({
 /* ============================================================
    ABOUT — editorial split, floating glass stat cards
 ============================================================ */
-function About() {
+function About({ content }: SectionProps) {
+  const a = content.about;
+  const WHATSAPP = content.contact.whatsapp;
   return (
     <section
       id="about"
@@ -256,7 +258,7 @@ function About() {
               }}
             >
               <div style={{ fontFamily: HEADING_FONT, fontSize: 28, lineHeight: 1.1, color: INK }}>
-                Years <span style={{ color: GOLD }}>of</span>
+                {a.stat1Top}
               </div>
               <div
                 className="mt-2"
@@ -269,7 +271,7 @@ function About() {
                   fontWeight: 500,
                 }}
               >
-                Service
+                {a.stat1Bottom}
               </div>
             </div>
             <div
@@ -284,7 +286,7 @@ function About() {
               }}
             >
               <div style={{ fontFamily: HEADING_FONT, fontSize: 44, lineHeight: 1, color: INK }}>
-                5K<span style={{ color: GOLD }}>+</span>
+                {a.stat2Top}
               </div>
               <div
                 className="mt-2"
@@ -297,7 +299,7 @@ function About() {
                   fontWeight: 500,
                 }}
               >
-                Happy Travelers
+                {a.stat2Bottom}
               </div>
             </div>
           </div>
@@ -307,17 +309,15 @@ function About() {
         <Reveal delay={150} className="lg:col-span-5">
           <div>
             <SectionHeading
-              eyebrow="About Marshal Holidays"
-              title="Quiet luxury, in motion."
-              subtitle="From premium tourist vehicles and discreet airport transfers to bespoke holiday journeys — we design effortless travel for those who value comfort, time, and the finer details."
+              eyebrow={a.eyebrow}
+              title={a.title}
+              subtitle={a.subtitle}
             />
 
             <div className="mt-12 grid grid-cols-3 gap-3 sm:gap-4">
-              {[
-                { icon: ShieldCheck, label: "Safe Travel" },
-                { icon: Clock, label: "24/7 Support" },
-                { icon: Award, label: "Premium Fleet" },
-              ].map(({ icon: Icon, label }) => (
+              {a.features.map((label, fi) => {
+                const Icon = ABOUT_FEATURE_ICONS[fi % ABOUT_FEATURE_ICONS.length];
+                return (
                 <div
                   key={label}
                   className="transition-all duration-500 hover:-translate-y-1"
@@ -342,7 +342,8 @@ function About() {
                     {label}
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
 
             <a
@@ -362,7 +363,7 @@ function About() {
                 letterSpacing: "0.04em",
               }}
             >
-              Plan Your Journey
+              {a.ctaLabel}
               <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>
@@ -375,18 +376,9 @@ function About() {
 /* ============================================================
    SERVICES — minimal large cards
 ============================================================ */
-const SERVICES = [
-  { icon: Users, title: "Family Tours", desc: "Comfortable getaways crafted for every age." },
-  { icon: Heart, title: "Honeymoon", desc: "Romantic escapes to dreamy destinations." },
-  { icon: UsersRound, title: "Group Tours", desc: "Memorable journeys for friends & teams." },
-  { icon: Church, title: "Pilgrimage", desc: "Spiritual travel with reverent comfort." },
-  { icon: GraduationCap, title: "College Trips", desc: "Safe, organised student travel." },
-  { icon: Plane, title: "Airport Transfer", desc: "On-time pickups and drops, always." },
-  { icon: Sparkles, title: "Custom Holidays", desc: "Tailored itineraries, made to fit you." },
-  { icon: MapPin, title: "Weekend Getaways", desc: "Short escapes, perfectly planned." },
-];
-
-function Services() {
+function Services({ content }: SectionProps) {
+  const s = content.services;
+  const WHATSAPP = content.contact.whatsapp;
   return (
     <section
       id="services"
@@ -425,15 +417,17 @@ function Services() {
       <div className="relative mx-auto" style={container}>
         <Reveal>
           <SectionHeading
-            eyebrow="Our Services"
-            title="Choose your journey."
-            subtitle="From short escapes to grand expeditions — pick the experience and we'll craft it to perfection."
+            eyebrow={s.eyebrow}
+            title={s.title}
+            subtitle={s.subtitle}
             center
           />
         </Reveal>
 
         <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {SERVICES.map(({ icon: Icon, title, desc }, i) => (
+          {s.items.map(({ title, desc }, i) => {
+            const Icon = SERVICE_ICONS[i % SERVICE_ICONS.length];
+            return (
             <Reveal key={title} delay={i * 60}>
               <a
                 href={`${WHATSAPP}?text=${encodeURIComponent(`Hi Marshal Holidays, I'd like to enquire about ${title}.`)}`}
@@ -543,7 +537,8 @@ function Services() {
                 </p>
               </a>
             </Reveal>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
@@ -554,25 +549,9 @@ function Services() {
 /* ============================================================
    DESTINATIONS — cinematic slider
 ============================================================ */
-const DESTINATIONS = [
-  { name: "Munnar", region: "Kerala", img: munnarImg },
-  { name: "Ooty", region: "Tamil Nadu", img: ootyImg },
-  { name: "Kodaikanal", region: "Tamil Nadu", img: kodaikanalImg },
-  { name: "Mysore", region: "Karnataka", img: mysoreImg },
-  { name: "Coorg", region: "Karnataka", img: coorgImg },
-  { name: "Hyderabad", region: "Telangana", img: hyderabadImg },
-  { name: "Dhanushkodi", region: "Tamil Nadu", img: dhanushkodiImg },
-  { name: "Yercaud", region: "Tamil Nadu", img: yercaudImg },
-  { name: "Varkala", region: "Kerala", img: varkalaImg },
-  { name: "Wayanad", region: "Kerala", img: wayanadImg },
-  { name: "Thekkady", region: "Kerala", img: thekkadyImg },
-  { name: "Alleppey", region: "Kerala", img: alleppeyImg },
-  { name: "Goa", region: "Goa", img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80" },
-  { name: "Pondicherry", region: "Tamil Nadu", img: pondicherryImg },
-  { name: "Chikmagalur", region: "Karnataka", img: chikmagalurImg },
-];
-
-function Destinations() {
+function Destinations({ content }: SectionProps) {
+  const DESTINATIONS = content.destinations.items;
+  const WHATSAPP = content.contact.whatsapp;
   const [index, setIndex] = useState(0);
   const [perView, setPerView] = useState(3);
 
@@ -606,9 +585,9 @@ function Destinations() {
         <Reveal>
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
             <SectionHeading
-              eyebrow="Popular Destinations"
-              title="Where do you dream of going?"
-              subtitle="Cinematic landscapes, vibrant cities and hidden gems across South India."
+              eyebrow={content.destinations.eyebrow}
+              title={content.destinations.title}
+              subtitle={content.destinations.subtitle}
             />
             <div className="flex gap-3">
               <button
@@ -717,15 +696,10 @@ function Destinations() {
 /* ============================================================
    AIRPORT TRANSFERS — glass premium cards
 ============================================================ */
-const AIRPORTS = [
-  { name: "Cochin", code: "COK", full: "Cochin International Airport" },
-  { name: "Trivandrum", code: "TRV", full: "Trivandrum International Airport" },
-  { name: "Calicut", code: "CCJ", full: "Calicut International Airport" },
-  { name: "Kannur", code: "CNN", full: "Kannur International Airport" },
-];
-const COVERAGE = ["Chavakkad", "Guruvayur", "Orumanayur", "Pavaratty", "Mullassery"];
-
-function Airports() {
+function Airports({ content }: SectionProps) {
+  const AIRPORTS = content.airports.items;
+  const COVERAGE = content.airports.coverage;
+  const WHATSAPP = content.contact.whatsapp;
   return (
     <section
       id="airports"
@@ -735,58 +709,28 @@ function Airports() {
       <div className="mx-auto" style={container}>
         <Reveal>
           <SectionHeading
-            eyebrow="Airport Transfers"
-            title="Smooth airport pickups & drops."
-            subtitle="Reliable, punctual, and discreet luxury transfers across Kerala's major airports."
+            eyebrow={content.airports.eyebrow}
+            title={content.airports.title}
+            subtitle={content.airports.subtitle}
             center
           />
         </Reveal>
         <Reveal>
           <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div
-              className="w-full overflow-hidden"
-              style={{ borderRadius: RADIUS, boxShadow: SHADOW_CARD, aspectRatio: "4 / 3" }}
-            >
-              <img
-                src={cochinAirportImg}
-                alt="Cochin International Airport pickup with premium Force Urbania traveller"
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div
-              className="w-full overflow-hidden"
-              style={{ borderRadius: RADIUS, boxShadow: SHADOW_CARD, aspectRatio: "4 / 3" }}
-            >
-              <img
-                src={calicutAirportImg}
-                alt="Calicut International Airport pickup with premium Toyota Innova Crysta"
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div
-              className="w-full overflow-hidden"
-              style={{ borderRadius: RADIUS, boxShadow: SHADOW_CARD, aspectRatio: "4 / 3" }}
-            >
-              <img
-                src={trivandrumAirportImg}
-                alt="Trivandrum International Airport pickup with premium Toyota Innova Crysta"
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div
-              className="w-full overflow-hidden"
-              style={{ borderRadius: RADIUS, boxShadow: SHADOW_CARD, aspectRatio: "4 / 3" }}
-            >
-              <img
-                src={kannurAirportImg}
-                alt="Kannur International Airport pickup at dusk with premium Toyota Innova Crysta"
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
-            </div>
+            {AIRPORT_PHOTOS.map((photo) => (
+              <div
+                key={photo.alt}
+                className="w-full overflow-hidden"
+                style={{ borderRadius: RADIUS, boxShadow: SHADOW_CARD, aspectRatio: "4 / 3" }}
+              >
+                <img
+                  src={photo.img}
+                  alt={photo.alt}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            ))}
           </div>
         </Reveal>
 
@@ -880,7 +824,7 @@ function Airports() {
                 className="mt-3"
                 style={{ fontFamily: HEADING_FONT, fontSize: 34, letterSpacing: "0.01em", color: INK, lineHeight: 1 }}
               >
-                Serving Across Thrissur
+                {content.airports.coverageTitle}
               </div>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -912,34 +856,9 @@ function Airports() {
 /* ============================================================
    FLEETS — automotive showcase
 ============================================================ */
-const FLEETS = [
-  {
-    name: "Toyota Innova Crysta",
-    seats: "7 Seats",
-    badge: "Premium",
-    img: fleetInnovaImg,
-  },
-  {
-    name: "Force Urbania",
-    seats: "12 Seats",
-    badge: "Luxury Van",
-    img: fleetUrbaniaImg,
-  },
-  {
-    name: "Force Traveller",
-    seats: "26 Seats",
-    badge: "Mini Coach",
-    img: fleetTravellerImg,
-  },
-  {
-    name: "Tourist Bus",
-    seats: "AC & Non-AC",
-    badge: "Group Travel",
-    img: fleetBusImg,
-  },
-];
-
-function Fleets() {
+function Fleets({ content }: SectionProps) {
+  const FLEETS = content.fleets.items;
+  const WHATSAPP = content.contact.whatsapp;
   return (
     <section
       id="fleet"
@@ -949,9 +868,9 @@ function Fleets() {
       <div className="mx-auto" style={container}>
         <Reveal>
           <SectionHeading
-            eyebrow="Our Fleet"
-            title="Travel in luxury & comfort."
-            subtitle="Hand-picked premium vehicles maintained to the highest standards."
+            eyebrow={content.fleets.eyebrow}
+            title={content.fleets.title}
+            subtitle={content.fleets.subtitle}
             center
           />
         </Reveal>
@@ -1054,16 +973,9 @@ function Fleets() {
 /* ============================================================
    RESORTS — editorial grid
 ============================================================ */
-const RESORTS = [
-  { name: "Guruvayoor", img: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80" },
-  { name: "Munnar", img: munnarImg },
-  { name: "Thekkady", img: thekkadyImg },
-  { name: "Wayanad", img: wayanadImg },
-  { name: "Varkala", img: varkalaImg },
-  { name: "Alleppey", img: alleppeyImg },
-];
-
-function Resorts() {
+function Resorts({ content }: SectionProps) {
+  const RESORTS = content.resorts.items;
+  const WHATSAPP = content.contact.whatsapp;
   return (
     <section
       id="resorts"
@@ -1073,9 +985,9 @@ function Resorts() {
       <div className="mx-auto" style={container}>
         <Reveal>
           <SectionHeading
-            eyebrow="Rooms & Resorts"
-            title="Stays as memorable as the journey."
-            subtitle="Curated luxury resorts and premium stays across the most loved destinations."
+            eyebrow={content.resorts.eyebrow}
+            title={content.resorts.title}
+            subtitle={content.resorts.subtitle}
             center
           />
         </Reveal>
@@ -1153,19 +1065,15 @@ function Resorts() {
 /* ============================================================
    TESTIMONIALS — minimal luxury
 ============================================================ */
-const TESTIMONIALS = [
-  { quote: "Excellent service and a truly comfortable trip from start to end.", name: "Arjun M.", role: "Family Tour" },
-  { quote: "The best airport transfer service we've found near Guruvayur.", name: "Priya S.", role: "Airport Transfer" },
-  { quote: "Our college tour was perfectly managed — every detail handled.", name: "Rahul K.", role: "College Trip" },
-];
-
-function Testimonials() {
+function Testimonials({ content }: SectionProps) {
+  const TESTIMONIALS = content.testimonials.items;
   const [i, setI] = useState(0);
   useEffect(() => {
     const t = setInterval(() => setI((x) => (x + 1) % TESTIMONIALS.length), 6000);
     return () => clearInterval(t);
-  }, []);
-  const t = TESTIMONIALS[i];
+  }, [TESTIMONIALS.length]);
+  const t = TESTIMONIALS[i] ?? TESTIMONIALS[0];
+  if (!t) return null;
   return (
     <section
       id="testimonials"
@@ -1258,14 +1166,8 @@ function Testimonials() {
 /* ============================================================
    FAQ — ultra clean accordion
 ============================================================ */
-const FAQS = [
-  { q: "Do you provide customized tour packages?", a: "Yes — we craft fully tailored itineraries for families, groups, honeymoons, corporate trips and more." },
-  { q: "Are airport pickup and drop services available?", a: "Absolutely. We cover Cochin, Trivandrum, Calicut and Kannur airports with premium vehicles, 24/7." },
-  { q: "Can we book vehicles for group tours?", a: "Yes. From 7-seater Innovas to 26-seater Travellers and full Tourist Buses — both AC and Non-AC." },
-  { q: "Do you provide hotel and resort booking?", a: "Yes, we partner with premium resorts across Munnar, Thekkady, Wayanad, Alleppey and more." },
-];
-
-function Faq() {
+function Faq({ content }: SectionProps) {
+  const FAQS = content.faqs.items;
   const [open, setOpen] = useState<number | null>(0);
   return (
     <section
@@ -1347,7 +1249,9 @@ function Faq() {
 /* ============================================================
    CONTACT — white luxury layout
 ============================================================ */
-function Contact() {
+function Contact({ content }: SectionProps) {
+  const c = content.contact;
+  const WHATSAPP = c.whatsapp;
   return (
     <section
       id="contact"
@@ -1406,7 +1310,7 @@ function Contact() {
             }}
           >
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3922.6385!2d76.0764!3d10.5796!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba79300216e31ff%3A0xb7393fa9ab1137c8!2sMarshal%20Holidays!5e0!3m2!1sen!2sin!4v1716540000000!5m2!1sen!2sin"
+              src={c.mapEmbedUrl}
               width="100%"
               height="100%"
               style={{ border: 0, minHeight: 460 }}
@@ -1422,7 +1326,7 @@ function Contact() {
         <Reveal delay={200}>
           <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="tel:+919188700777"
+              href={c.phoneHref}
               className="inline-flex items-center gap-3 transition-all hover:-translate-y-0.5"
               style={{
                 height: 60,
@@ -1437,10 +1341,10 @@ function Contact() {
               }}
             >
               <Phone className="h-4 w-4" strokeWidth={1.4} style={{ color: GOLD }} />
-              +91 91887 00777
+              {c.phone}
             </a>
             <a
-              href="mailto:info.marshalholidays@gmail.com"
+              href={`mailto:${c.email}`}
               className="inline-flex items-center gap-3 transition-all hover:-translate-y-1 hover:gap-5"
               style={{
                 height: 60,
@@ -1455,7 +1359,7 @@ function Contact() {
               }}
             >
               <Mail className="h-4 w-4" strokeWidth={1.4} />
-              info.marshalholidays@gmail.com
+              {c.email}
               <ArrowUpRight className="h-4 w-4" strokeWidth={1.4} />
             </a>
             <a
@@ -1479,7 +1383,7 @@ function Contact() {
               <ArrowUpRight className="h-4 w-4" strokeWidth={1.4} />
             </a>
             <a
-              href="https://maps.app.goo.gl/ZgufaygNto4HigW3A?g_st=ic"
+              href={c.mapLink}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-3 transition-all hover:-translate-y-1 hover:gap-5"
@@ -1506,7 +1410,7 @@ function Contact() {
           <div className="mt-20">
             <Eyebrow>Service Areas</Eyebrow>
             <div className="mt-6 flex flex-wrap justify-center gap-2">
-              {["Guruvayur", "Chavakkad", "Thrissur", "Kerala"].map((s) => (
+              {c.serviceAreas.map((s) => (
                 <span
                   key={s}
                   className="inline-flex items-center gap-2 px-5 py-2.5"
@@ -1551,7 +1455,8 @@ function Contact() {
 /* ============================================================
    FOOTER — premium dual-card, cinematic watermark
 ============================================================ */
-function Footer() {
+function Footer({ content }: SectionProps) {
+  const WHATSAPP = content.contact.whatsapp;
   return (
     <footer
       className="relative w-full overflow-hidden"
@@ -1606,9 +1511,7 @@ function Footer() {
                     letterSpacing: "0.01em",
                   }}
                 >
-                  Travel more beautifully,
-                  <br />
-                  with comfort and care.
+                  {content.footer.heading}
                 </h3>
                 <p
                   className="mt-5 max-w-md"
@@ -1619,23 +1522,19 @@ function Footer() {
                     color: "rgba(255,255,255,0.78)",
                   }}
                 >
-                  Premium tourist vehicles, airport transfers, and customized
-                  holiday packages across Kerala and South India.
+                  {content.footer.description}
                 </p>
 
                 <div className="mt-8 flex gap-2.5">
-                  {[
-                    { Icon: Facebook, href: "https://www.facebook.com/share/1ErcXUcLtx/?mibextid=wwXIfr", label: "Facebook" },
-                    { Icon: Instagram, href: "https://www.instagram.com/marshalholidays?utm_source=qr", label: "Instagram" },
-                    { Icon: X, href: "https://x.com/marshalholidays?s=11", label: "X" },
-                    { Icon: Youtube, href: "https://youtube.com/@marshalholidays?si=twP5Fp6i0YLahBI6", label: "YouTube" },
-                  ].map(({ Icon, href, label }, i) => (
+                  {content.social.map(({ platform, href }) => {
+                    const Icon = SOCIAL_ICONS[platform] ?? ArrowUpRight;
+                    return (
                     <a
-                      key={i}
+                      key={platform}
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={label}
+                      aria-label={platform}
                       className="flex h-11 w-11 items-center justify-center rounded-full transition-all hover:-translate-y-0.5 hover:bg-white hover:text-black"
                       style={{
                         background: "rgba(255,255,255,0.12)",
@@ -1647,7 +1546,8 @@ function Footer() {
                     >
                       <Icon className="h-4 w-4" strokeWidth={1.5} />
                     </a>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -1923,19 +1823,19 @@ function FooterCol({ title, items }: { title: string; items: { label: string; hr
 /* ============================================================
    EXPORT
 ============================================================ */
-export default function MarshalSections() {
+export default function MarshalSections({ content }: SectionProps) {
   return (
     <>
-      <About />
-      <Services />
-      <Destinations />
-      <Airports />
-      <Fleets />
-      <Resorts />
-      <Testimonials />
-      <Faq />
-      <Contact />
-      <Footer />
+      <About content={content} />
+      <Services content={content} />
+      <Destinations content={content} />
+      <Airports content={content} />
+      <Fleets content={content} />
+      <Resorts content={content} />
+      <Testimonials content={content} />
+      <Faq content={content} />
+      <Contact content={content} />
+      <Footer content={content} />
     </>
   );
 }

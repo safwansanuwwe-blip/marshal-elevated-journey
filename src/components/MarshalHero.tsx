@@ -2,19 +2,11 @@ import { ArrowRight, Menu, Plane, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import logoImage from "@/assets/marshal-logo.png";
 import heroPoster from "@/assets/marshal-bg.jpg";
+import type { SiteContent } from "@/lib/content";
 
-const NAV_LINKS: { label: string; href: string }[] = [
-  { label: "Home", href: "#" },
-  { label: "Fleet", href: "#fleet" },
-  { label: "Packages", href: "#services" },
-  { label: "About Us", href: "#about" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "#contact" },
-];
-const WHATSAPP = "https://wa.me/919188700777";
-
-
-export default function MarshalHero() {
+export default function MarshalHero({ content }: { content: SiteContent }) {
+  const NAV_LINKS = content.hero.navLinks;
+  const WHATSAPP = content.contact.whatsapp;
   const [menuOpen, setMenuOpen] = useState(false);
   // Load only the video that matches the viewport, and only after mount — this
   // avoids downloading BOTH the desktop (~7 MB) and mobile (~7 MB) clips, and
@@ -90,7 +82,7 @@ export default function MarshalHero() {
             filter: "blur(0.4px) drop-shadow(0 8px 40px rgba(255,255,255,0.08))",
           }}
         >
-          Welcome to Marshal Holidays
+          {content.hero.welcomeHeading}
         </h2>
       </div>
 
@@ -140,7 +132,7 @@ export default function MarshalHero() {
             className="hidden md:inline text-white/90 hover:text-white transition-colors"
             style={{ fontFamily: "Inter, sans-serif", fontSize: "15px", fontWeight: 500 }}
           >
-            Book Now
+            {content.hero.bookNowLabel}
           </a>
           <a
             href="#fleet"
@@ -156,7 +148,7 @@ export default function MarshalHero() {
             }}
           >
             <Plane className="h-4 w-4" />
-            Explore
+            {content.hero.exploreLabel}
           </a>
 
           <button
@@ -256,7 +248,7 @@ export default function MarshalHero() {
                   letterSpacing: "0.02em",
                 }}
               >
-                Premium Kerala Tour & Transport Services
+                {content.hero.taglineTitle}
               </p>
               <p
                 className="mt-3 text-white/80"
@@ -267,11 +259,11 @@ export default function MarshalHero() {
                   fontWeight: 400,
                 }}
               >
-                Airport Transfers • Holiday Packages • Luxury Rides
+                {content.hero.taglineSubtitle}
               </p>
             </div>
             <a
-              href="#fleet"
+              href={content.hero.ctaHref}
               className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-6 transition-all hover:-translate-y-0.5 hover:shadow-2xl"
               style={{
                 height: "48px",
@@ -284,7 +276,7 @@ export default function MarshalHero() {
                 boxShadow: "0 10px 30px -10px rgba(0,0,0,0.4)",
               }}
             >
-              View Fleet
+              {content.hero.ctaLabel}
               <ArrowRight className="h-4 w-4" />
             </a>
 
@@ -301,7 +293,7 @@ export default function MarshalHero() {
               letterSpacing: "0.01em",
             }}
           >
-            Luxury journeys begin with Marshal
+            {content.hero.headline}
           </h1>
         </div>
       </div>
