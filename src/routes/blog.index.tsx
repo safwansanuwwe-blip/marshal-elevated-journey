@@ -3,30 +3,48 @@ import { ArrowRight, Calendar, Clock, Tag } from "lucide-react";
 import BlogHeader from "@/components/BlogHeader";
 import BlogFooter from "@/components/BlogFooter";
 import { listPublishedPosts, type PublicPost } from "@/lib/posts.functions";
+import { SITE, absoluteUrl } from "@/lib/site";
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" });
 }
 
 export const Route = createFileRoute("/blog/")({
-  head: () => ({
-    meta: [
-      { title: "Blog — Kerala Travel Stories & Guides | Marshal Holidays" },
-      {
-        name: "description",
-        content:
-          "Destination guides, itineraries, travel tips, and behind-the-scenes stories from Marshal Holidays — Kerala's premium chauffeur-driven travel partner.",
-      },
-      { property: "og:title", content: "Blog — Kerala Travel Stories & Guides | Marshal Holidays" },
-      { property: "og:description", content: "Kerala journey updates, destination guides, and travel tips from Marshal Holidays." },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/blog" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Blog — Marshal Holidays" },
-      { name: "twitter:description", content: "Kerala journey updates, destination guides, and travel tips from Marshal Holidays." },
-    ],
-    links: [{ rel: "canonical", href: "/blog" }],
-  }),
+  head: () => {
+    const title = "Blog — Kerala Travel Stories & Guides | Marshal Holidays";
+    const description =
+      "Destination guides, itineraries, travel tips, and behind-the-scenes stories from Marshal Holidays — Kerala's premium chauffeur-driven travel partner.";
+    const url = absoluteUrl("/blog");
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { property: "og:url", content: url },
+        { property: "og:image", content: SITE.ogImage },
+        { name: "twitter:card", content: SITE.twitterCard },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+        { name: "twitter:image", content: SITE.ogImage },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            name: `${SITE.name} — The Marshal Journal`,
+            description,
+            url,
+            publisher: { "@id": `${SITE.url}/#organization` },
+          }),
+        },
+      ],
+    };
+  },
   loader: () => listPublishedPosts(),
   component: BlogIndex,
   errorComponent: ({ error }) => (
@@ -155,7 +173,7 @@ function PostCard({ post }: { post: PublicPost }) {
       className="group flex flex-col overflow-hidden rounded-xl border border-black/5 bg-white transition-all hover:-translate-y-1 hover:shadow-lg">
       <div className="relative aspect-[16/10] overflow-hidden bg-[#f3f3f3]">
         {post.cover_image && (
-          <img src={post.cover_image} alt={post.title}
+          <img src={post.cover_image} alt={post.title} loading="lazy" decoding="async"
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
         )}
         <span className="absolute top-4 left-4 rounded-full bg-white/95 px-2.5 py-1 text-[#272835]"

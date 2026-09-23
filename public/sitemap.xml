@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Static sitemap covering the core routes. Blog posts are managed in the CMS —
+  use the admin SEO Center (/admin/seo) to generate a full sitemap that
+  includes every published post, then paste it here or wire a server route.
+-->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://marshal-elevated-journey.vercel.app/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://marshal-elevated-journey.vercel.app/blog</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>

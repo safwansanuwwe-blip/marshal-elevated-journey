@@ -67,6 +67,9 @@ function AdminHome() {
             </h1>
           </div>
           <div className="flex items-center gap-3">
+            <Link to="/admin/seo" className="text-sm font-semibold text-[#9a8666] hover:text-[#272835]" style={{ fontFamily: "Inter, sans-serif" }}>
+              SEO Center
+            </Link>
             <Link to="/blog" className="text-sm text-[#272835]/70 hover:text-[#272835]" style={{ fontFamily: "Inter, sans-serif" }}>
               View public blog ↗
             </Link>

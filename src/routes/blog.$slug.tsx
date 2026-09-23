@@ -7,6 +7,7 @@ import {
   listPublishedPosts,
   type PublicPost,
 } from "@/lib/posts.functions";
+import { SITE, absoluteUrl } from "@/lib/site";
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" });
@@ -35,9 +36,9 @@ export const Route = createFileRoute("/blog/$slug")({
   head: ({ loaderData, params }) => {
     if (!loaderData) return { meta: [{ title: "Post not found — Marshal Holidays" }] };
     const { post } = loaderData;
-    const url = `/blog/${params.slug}`;
+    const url = absoluteUrl(`/blog/${params.slug}`);
     const desc = post.meta_description ?? post.excerpt;
-    const ogImage = post.cover_image ?? undefined;
+    const ogImage = post.cover_image ? absoluteUrl(post.cover_image) : SITE.ogImage;
     return {
       meta: [
         { title: post.meta_title ?? `${post.title} | Marshal Holidays` },
@@ -45,17 +46,19 @@ export const Route = createFileRoute("/blog/$slug")({
         { name: "keywords", content: post.tags.join(", ") },
         { name: "author", content: post.author },
         { property: "article:published_time", content: post.published_at },
+        { property: "article:modified_time", content: post.updated_at },
         { property: "article:section", content: post.category },
         ...post.tags.map((t) => ({ property: "article:tag", content: t })),
         { property: "og:type", content: "article" },
+        { property: "og:site_name", content: SITE.name },
         { property: "og:title", content: post.title },
         { property: "og:description", content: desc },
         { property: "og:url", content: url },
-        ...(ogImage ? [{ property: "og:image", content: ogImage }] : []),
-        { name: "twitter:card", content: "summary_large_image" },
+        { property: "og:image", content: ogImage },
+        { name: "twitter:card", content: SITE.twitterCard },
         { name: "twitter:title", content: post.title },
         { name: "twitter:description", content: desc },
-        ...(ogImage ? [{ name: "twitter:image", content: ogImage }] : []),
+        { name: "twitter:image", content: ogImage },
       ],
       links: [{ rel: "canonical", href: url }],
       scripts: [
@@ -64,14 +67,29 @@ export const Route = createFileRoute("/blog/$slug")({
           children: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "BlogPosting",
+            mainEntityOfPage: { "@type": "WebPage", "@id": url },
             headline: post.title,
             description: desc,
             image: ogImage,
+            url,
             datePublished: post.published_at,
+            dateModified: post.updated_at,
             author: { "@type": "Organization", name: post.author },
-            publisher: { "@type": "Organization", name: "Marshal Holidays" },
+            publisher: { "@id": `${SITE.url}/#organization` },
             articleSection: post.category,
             keywords: post.tags.join(", "),
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: SITE.url },
+              { "@type": "ListItem", position: 2, name: "Blog", item: absoluteUrl("/blog") },
+              { "@type": "ListItem", position: 3, name: post.title, item: url },
+            ],
           }),
         },
       ],
@@ -167,7 +185,7 @@ function PostPage() {
           <div style={{ paddingLeft: "clamp(20px, 6vw, 80px)", paddingRight: "clamp(20px, 6vw, 80px)" }}>
             <div className="mx-auto max-w-5xl -mt-px">
               <div className="overflow-hidden rounded-2xl aspect-[16/9] bg-[#f3f3f3]">
-                <img src={post.cover_image} alt={post.title} className="h-full w-full object-cover" />
+                <img src={post.cover_image} alt={post.title} decoding="async" fetchPriority="high" className="h-full w-full object-cover" />
               </div>
             </div>
           </div>
@@ -231,6 +249,8 @@ function RelatedCard({ post }: { post: PublicPost }) {
           <img
             src={post.cover_image}
             alt={post.title}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         )}

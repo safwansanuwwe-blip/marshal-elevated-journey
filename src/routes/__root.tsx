@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { SITE, organizationJsonLd, websiteJsonLd } from "@/lib/site";
 
 function NotFoundComponent() {
   return (
@@ -72,48 +73,40 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Marshal Holidays — Premium Kerala Chauffeur & Tour Experiences" },
-      {
-        name: "description",
-        content:
-          "Marshal Holidays offers premium chauffeur-driven tours and luxury travel across Kerala — backwaters, hill stations, and beaches with 12+ years of trusted service.",
-      },
-      { name: "author", content: "Marshal Holidays" },
-      { property: "og:title", content: "Marshal Holidays — Premium Kerala Chauffeur & Tour Experiences" },
-      {
-        property: "og:description",
-        content:
-          "Luxury chauffeur-driven journeys across Kerala. Backwaters, hills, beaches — crafted by Marshal Holidays.",
-      },
+      { title: SITE.title },
+      { name: "description", content: SITE.description },
+      { name: "author", content: SITE.name },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { name: "theme-color", content: "#010101" },
+      { property: "og:site_name", content: SITE.name },
+      { property: "og:locale", content: SITE.locale },
+      { property: "og:title", content: SITE.title },
+      { property: "og:description", content: SITE.socialDescription },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://marshal-elevated-journey.vercel.app" },
-      {
-        property: "og:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d4a66333-3f2c-48fc-b1b5-45a8816eb784/id-preview-5f23fa6f--a5daecb7-c446-425e-8ca3-a3b225f7e4c7.lovable.app-1779566633057.png",
-      },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Marshal Holidays — Premium Kerala Chauffeur & Tour Experiences" },
-      {
-        name: "twitter:description",
-        content:
-          "Luxury chauffeur-driven journeys across Kerala. Backwaters, hills, beaches — crafted by Marshal Holidays.",
-      },
-      {
-        name: "twitter:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d4a66333-3f2c-48fc-b1b5-45a8816eb784/id-preview-5f23fa6f--a5daecb7-c446-425e-8ca3-a3b225f7e4c7.lovable.app-1779566633057.png",
-      },
+      { property: "og:url", content: SITE.url },
+      { property: "og:image", content: SITE.ogImage },
+      { name: "twitter:card", content: SITE.twitterCard },
+      { name: "twitter:title", content: SITE.title },
+      { name: "twitter:description", content: SITE.socialDescription },
+      { name: "twitter:image", content: SITE.ogImage },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico" },
-      { rel: "canonical", href: "https://marshal-elevated-journey.vercel.app" },
+      // NOTE: canonical is set per-route (see index/blog routes), not here —
+      // TanStack merges child <link> tags without deduping, so a root canonical
+      // would emit a second, conflicting canonical on every page.
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500;600&family=Inter:wght@400;500;600&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify([organizationJsonLd(), websiteJsonLd()]),
       },
     ],
   }),

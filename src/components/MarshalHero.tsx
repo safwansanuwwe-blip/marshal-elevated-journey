@@ -1,6 +1,7 @@
 import { ArrowRight, Menu, Plane, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import logoImage from "@/assets/marshal-logo.png";
+import heroPoster from "@/assets/marshal-bg.jpg";
 
 const NAV_LINKS: { label: string; href: string }[] = [
   { label: "Home", href: "#" },
@@ -15,6 +16,18 @@ const WHATSAPP = "https://wa.me/919188700777";
 
 export default function MarshalHero() {
   const [menuOpen, setMenuOpen] = useState(false);
+  // Load only the video that matches the viewport, and only after mount — this
+  // avoids downloading BOTH the desktop (~7 MB) and mobile (~7 MB) clips, and
+  // defers the video so the poster image can paint first (faster LCP).
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const pick = () => setVideoSrc(mq.matches ? "/marshal-bg-mobile.mp4" : "/marshal-bg.mp4");
+    pick();
+    mq.addEventListener("change", pick);
+    return () => mq.removeEventListener("change", pick);
+  }, []);
 
   useEffect(() => {
     if (menuOpen) {
@@ -35,23 +48,27 @@ export default function MarshalHero() {
       className="relative w-full overflow-hidden bg-[#010101] text-white"
       style={{ minHeight: "600px", height: "100vh", maxHeight: "965px" }}
     >
-      {/* Cinematic background */}
-      <video
-        className="absolute inset-0 h-full w-full object-cover hidden md:block"
-        src="/marshal-bg.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
+      {/* Cinematic background — poster paints instantly, single video loads after mount */}
+      <img
+        src={heroPoster}
+        alt=""
+        aria-hidden
+        fetchPriority="high"
+        className="absolute inset-0 h-full w-full object-cover"
       />
-      <video
-        className="absolute inset-0 h-full w-full object-cover md:hidden"
-        src="/marshal-bg-mobile.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-      />
+      {videoSrc && (
+        <video
+          key={videoSrc}
+          className="absolute inset-0 h-full w-full object-cover"
+          src={videoSrc}
+          poster={heroPoster}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        />
+      )}
       <div className="absolute inset-0 bg-black/30" />
 
 
