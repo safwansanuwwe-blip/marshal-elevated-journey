@@ -6,7 +6,10 @@
 
 const RAW_SITE_URL =
   (import.meta.env.VITE_SITE_URL as string | undefined) ||
-  "https://marshal-elevated-journey.vercel.app";
+  "https://www.marshalholidays.in";
+
+/** Old hostnames that should permanently redirect to SITE_URL (see server.ts). */
+export const LEGACY_HOSTS = ["marshal-elevated-journey.vercel.app"];
 
 /** Canonical origin, always without a trailing slash. */
 export const SITE_URL = RAW_SITE_URL.replace(/\/+$/, "");

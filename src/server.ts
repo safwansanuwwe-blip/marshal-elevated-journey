@@ -2,6 +2,25 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { LEGACY_HOSTS, SITE_URL } from "./lib/site";
+
+// Permanently send visitors on an old hostname (e.g. the *.vercel.app
+// production URL) to the custom domain, so search engines and shared links
+// only ever see one address. Preview-deployment hostnames are unaffected.
+function legacyHostRedirect(request: Request): Response | null {
+  const url = new URL(request.url);
+  const host = (request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? url.host)
+    .split(",")[0]
+    .trim()
+    .toLowerCase();
+  if (!LEGACY_HOSTS.includes(host)) return null;
+  // Guard against a loop if SITE_URL were ever pointed at a legacy host.
+  if (new URL(SITE_URL).host === host) return null;
+  return new Response(null, {
+    status: 308,
+    headers: { location: `${SITE_URL}${url.pathname}${url.search}` },
+  });
+}
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -68,6 +87,8 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    const redirect = legacyHostRedirect(request);
+    if (redirect) return redirect;
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
