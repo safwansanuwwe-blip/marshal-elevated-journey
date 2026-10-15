@@ -41,6 +41,8 @@ export type SiteContent = {
     socialDescription: string;
     ogImage: string;
     keywords: string;
+    /** Google Search Console "HTML tag" verification code (content value). */
+    googleVerification: string;
   };
   contact: {
     phone: string;
@@ -141,6 +143,7 @@ export const DEFAULT_CONTENT: SiteContent = {
       "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d4a66333-3f2c-48fc-b1b5-45a8816eb784/id-preview-5f23fa6f--a5daecb7-c446-425e-8ca3-a3b225f7e4c7.lovable.app-1779566633057.png",
     keywords:
       "Kerala tour packages, chauffeur, airport transfer, Guruvayur, Thrissur, luxury travel, Innova, Urbania",
+    googleVerification: "",
   },
   contact: {
     phone: "+91 91887 00777",
@@ -322,6 +325,13 @@ export function deepMerge<T>(base: T, override: unknown): T {
     return out as T;
   }
   return override as T;
+}
+
+/** Accepts the bare verification code or the full `<meta ... content="...">` tag. */
+export function verificationCode(raw: string | undefined): string {
+  const value = (raw ?? "").trim();
+  const match = value.match(/content=["']([^"']+)["']/i);
+  return (match ? match[1] : value).trim();
 }
 
 /** Merge stored JSONB over the code defaults to produce a full SiteContent. */

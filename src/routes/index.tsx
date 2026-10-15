@@ -3,14 +3,16 @@ import MarshalHero from "@/components/MarshalHero";
 import MarshalSections from "@/components/MarshalSections";
 import { SITE } from "@/lib/site";
 import { getSiteContent } from "@/lib/content.functions";
-import { DEFAULT_CONTENT, type SiteContent } from "@/lib/content";
+import { DEFAULT_CONTENT, verificationCode, type SiteContent } from "@/lib/content";
 
 export const Route = createFileRoute("/")({
   loader: () => getSiteContent(),
   head: ({ loaderData }) => {
     const seo = (loaderData as SiteContent | undefined)?.seo ?? DEFAULT_CONTENT.seo;
+    const google = verificationCode(seo.googleVerification);
     return {
       meta: [
+        ...(google ? [{ name: "google-site-verification", content: google }] : []),
         { title: seo.title },
         { name: "description", content: seo.description },
         { name: "keywords", content: seo.keywords },
