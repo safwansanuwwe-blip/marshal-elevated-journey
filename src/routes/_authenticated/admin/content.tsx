@@ -7,6 +7,7 @@ import { getSiteContent, saveSiteContent } from "@/lib/content.functions";
 import { uploadCoverImage } from "@/lib/posts.functions";
 import { DEFAULT_CONTENT, type SiteContent } from "@/lib/content";
 import { AdminShell, ADMIN } from "@/components/admin/AdminShell";
+import { errorMessage } from "@/lib/utils";
 
 async function getAccessToken(): Promise<string> {
   const { data } = await supabase.auth.getSession();
@@ -39,7 +40,7 @@ export const Route = createFileRoute("/_authenticated/admin/content")({
   loader: () => getSiteContent(),
   component: ContentEditor,
   errorComponent: ({ error }) => (
-    <div className="p-10 text-red-600">Content editor failed: {error.message}</div>
+    <div className="p-10 text-red-600">Content editor failed: {errorMessage(error)}</div>
   ),
 });
 

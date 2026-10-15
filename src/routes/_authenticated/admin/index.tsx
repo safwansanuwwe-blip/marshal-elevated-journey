@@ -6,6 +6,7 @@ import { Plus, Trash2, ExternalLink, PenLine } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { listAllPosts, deletePost, type AdminPost } from "@/lib/posts.functions";
 import { AdminShell, StatCard, ADMIN } from "@/components/admin/AdminShell";
+import { errorMessage } from "@/lib/utils";
 
 async function getAccessToken(): Promise<string> {
   const { data } = await supabase.auth.getSession();
@@ -25,7 +26,7 @@ export const Route = createFileRoute("/_authenticated/admin/")({
     }),
   component: AdminHome,
   errorComponent: ({ error }) => (
-    <div className="p-10 text-red-600">Admin load failed: {error.message}</div>
+    <div className="p-10 text-red-600">Admin load failed: {errorMessage(error)}</div>
   ),
 });
 

@@ -11,6 +11,7 @@ import {
   type AdminPost,
 } from "@/lib/posts.functions";
 import { SITE, SEO_LIMITS, absoluteUrl } from "@/lib/site";
+import { errorMessage } from "@/lib/utils";
 
 async function getAccessToken(): Promise<string> {
   const { data } = await supabase.auth.getSession();
@@ -30,7 +31,7 @@ export const Route = createFileRoute("/_authenticated/admin/$id")({
   },
   component: EditorPage,
   errorComponent: ({ error }) => (
-    <div className="p-10 text-red-600">Editor load failed: {error.message}</div>
+    <div className="p-10 text-red-600">Editor load failed: {errorMessage(error)}</div>
   ),
 });
 

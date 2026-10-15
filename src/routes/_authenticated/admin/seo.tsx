@@ -12,6 +12,7 @@ import {
   type SeoCheck,
 } from "@/lib/site";
 import { AdminShell, ADMIN } from "@/components/admin/AdminShell";
+import { errorMessage } from "@/lib/utils";
 
 async function getAccessToken(): Promise<string> {
   const { data } = await supabase.auth.getSession();
@@ -39,7 +40,7 @@ export const Route = createFileRoute("/_authenticated/admin/seo")({
   },
   component: SeoCenter,
   errorComponent: ({ error }) => (
-    <div className="p-10 text-red-600">SEO Center load failed: {error.message}</div>
+    <div className="p-10 text-red-600">SEO Center load failed: {errorMessage(error)}</div>
   ),
 });
 
