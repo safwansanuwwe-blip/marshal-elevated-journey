@@ -8,6 +8,7 @@ import {
   type PublicPost,
 } from "@/lib/posts.functions";
 import { SITE, absoluteUrl } from "@/lib/site";
+import { errorMessage } from "@/lib/utils";
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" });
@@ -119,7 +120,7 @@ export const Route = createFileRoute("/blog/$slug")({
       <BlogHeader />
       <div className="mx-auto max-w-3xl px-6 py-32 text-center">
         <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "56px" }}>Something went wrong</h1>
-        <p className="mt-4 text-[#272835]/70" style={{ fontFamily: "Inter, sans-serif" }}>{error.message}</p>
+        <p className="mt-4 text-[#272835]/70" style={{ fontFamily: "Inter, sans-serif" }}>{errorMessage(error)}</p>
       </div>
       <BlogFooter />
     </div>

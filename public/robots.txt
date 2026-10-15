@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /auth
 
-Sitemap: https://marshal-elevated-journey.vercel.app/sitemap.xml
+Sitemap: https://www.marshalholidays.in/sitemap.xml
