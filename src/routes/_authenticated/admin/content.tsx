@@ -130,6 +130,17 @@ function ContentEditor() {
           <Txt label="Meta description" area value={c.seo.description} onChange={(v) => up((d) => { d.seo.description = v; })} max={160} />
           <Txt label="Social share description" area value={c.seo.socialDescription} onChange={(v) => up((d) => { d.seo.socialDescription = v; })} />
           <Txt label="Keywords (comma separated)" value={c.seo.keywords} onChange={(v) => up((d) => { d.seo.keywords = v; })} />
+          <div>
+            <Txt
+              label="Google Search Console verification code"
+              value={c.seo.googleVerification}
+              onChange={(v) => up((d) => { d.seo.googleVerification = v; })}
+            />
+            <p className="mt-1 text-xs text-[#272835]/50">
+              In Search Console choose <strong>HTML tag</strong> verification and paste the code
+              (or the whole <code>&lt;meta&gt;</code> tag). Save, then click Verify in Google.
+            </p>
+          </div>
           <ImgField label="Social share image (OG image)" value={c.seo.ogImage} onChange={(v) => up((d) => { d.seo.ogImage = v; })} onUpload={uploadImage} setErr={setErr} />
         </Panel>
 
